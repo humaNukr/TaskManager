@@ -14,6 +14,14 @@ namespace TaskManager.DataModels
 
         public string Name { get; set; }
         public string Description { get; set; }
-        public ProjectType projectType { get; set; }
+        public ProjectType ProjectType { get; set; }
+
+        public ProjectDataModel(int id, string name, string description, ProjectType projectType)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            ProjectType = projectType;
+        }
     }
 }
