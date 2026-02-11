@@ -8,4 +8,8 @@
 	  <RootNamespace>KMA.TaskManager.Services</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TaskManager.UIModels\TaskManager.UIModels.csproj" />
+  </ItemGroup>
+
 </Project>
