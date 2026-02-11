@@ -5,7 +5,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>KMA.TaskManager.Console</RootNamespace>
+    <RootNamespace>KMA.TaskManager.ConsoleApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
