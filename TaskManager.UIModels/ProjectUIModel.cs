@@ -27,9 +27,9 @@ namespace KMA.TaskManager.UIModels
                 return (double)CompletedTasksCount / TotalTasksCount * 100;
             }
         }
-        public ProjectUIModel(string name, string description, ProjectType projectType, int totalTasksCount, int completedTasksCount)
+        public ProjectUIModel(Guid id, string name, string description, ProjectType projectType, int totalTasksCount, int completedTasksCount)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             Name = name;
             Description = description;
             ProjectType = projectType;
