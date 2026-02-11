@@ -6,19 +6,20 @@ namespace KMA.TaskManager.Services
 {
     public class TaskService
     {
-        public TaskUIModel MapToUI(TaskDataModel data)
+        public List<TaskUIModel> GetTasksByProjectId(Guid projectId)
         {
-            return data is null
-                ? throw new ArgumentNullException(nameof(data))
-                : new TaskUIModel(
-                    data.Id,
-                    data.ProjectId,
-                    data.Name,
-                    data.Description,
-                    data.Priority,
-                    data.DueDate,
-                    data.IsCompleted
-                );
+            return MockStorage.Tasks
+                .Where(t => t.ProjectId == projectId)
+                .Select(TaskMapper.MapToUI)
+                .ToList();
         }
+
+        public TaskUIModel? GetTaskById(Guid taskId)
+        {
+            var task = MockStorage.Tasks.FirstOrDefault(t => t.Id == taskId);
+            return task != null ? TaskMapper.MapToUI(task) : null;
+        }
+
+
     }
 }
