@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using KMA.TaskManager.DataModels;
 using KMA.TaskManager.UIModels;
 
-namespace KMA.TaskManager.Services
+namespace KMA.TaskManager.Services.Mappers
 {
     internal static class ProjectMapper
     {

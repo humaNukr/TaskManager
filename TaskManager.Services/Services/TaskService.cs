@@ -1,5 +1,6 @@
 ﻿using System;
 using KMA.TaskManager.DataModels;
+using KMA.TaskManager.Services.Mappers;
 using KMA.TaskManager.UIModels;
 
 namespace KMA.TaskManager.Services
