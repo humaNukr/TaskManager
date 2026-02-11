@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KMA.TaskManager.Services
 {
-    internal class TaskMapper
+    internal static class TaskMapper
     {
         public static TaskUIModel MapToUI(TaskDataModel data)
         {
