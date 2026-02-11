@@ -36,5 +36,15 @@ namespace KMA.TaskManager.UIModels
             TotalTasksCount = totalTasksCount;
             CompletedTasksCount = completedTasksCount;
         }
+
+        public override string ToString()
+        {
+            return $"==========================================\n" +
+                   $"📁 Проєкт:   {Name}\n" +
+                   $"🏷️ Тип:      {ProjectType}\n" +
+                   $"📊 Прогрес:  {Progress:F1}% ({CompletedTasksCount}/{TotalTasksCount} завершено)\n" +
+                   $"📝 Опис:     {Description}\n" +
+                   $"==========================================";
+        }
     }
 }
