@@ -8,4 +8,8 @@
     <RootNamespace>KMA.TaskManager.Console</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TaskManager.Services\TaskManager.Services.csproj" />
+  </ItemGroup>
+
 </Project>
