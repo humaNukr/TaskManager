@@ -30,21 +30,11 @@ namespace KMA.TaskManager.ConsoleApp
                 Console.WriteLine(selectedProject);
 
                 var tasks = taskService.GetTasksByProjectId(selectedProject.Id);
+                PrintProjectDetailed(selectedProject, tasks);
 
                 if (tasks.Count > 0)
                 {
-                    PrintColored("\nСПИСОК ЗАВДАНЬ (коротко):", ConsoleColor.White);
-                    for (int i = 0; i < tasks.Count; i++)
-                    {
-                        Console.WriteLine($"{i + 1}. {tasks[i]}");
-                    }
-
-
                     HandleTaskDetails(tasks, taskService);
-                }
-                else
-                {
-                    PrintColored("\nУ цього проєкту ще немає завдань.", ConsoleColor.DarkGray);
                 }
 
                 PrintColored("\nУведіть будь що, щоб повернутись до меню, або 'exit' для виходу.", ConsoleColor.Gray);
@@ -66,7 +56,7 @@ namespace KMA.TaskManager.ConsoleApp
         {
             for (int i = 0; i < projects.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {projects[i].Name}");
+                Console.WriteLine($"{i + 1}. {projects[i]}");
             }
         }
 
@@ -151,6 +141,48 @@ namespace KMA.TaskManager.ConsoleApp
             Console.WriteLine($"  {task.Description}");
 
             PrintColored("└──────────────────────────────────────────────────────────┘", ConsoleColor.Magenta);
+        }
+
+        private static void PrintProjectDetailed(ProjectUIModel project, List<TaskUIModel> tasks)
+        {
+            Console.WriteLine();
+
+            int width = Console.WindowWidth - 2;
+            string topBorder = "╔" + new string('═', width - 2) + "╗";
+            string middleBorder = "╠" + new string('═', width - 2) + "╣";
+            string bottomBorder = "╚" + new string('═', width - 2) + "╝";
+
+            PrintColored(topBorder, ConsoleColor.DarkYellow);
+            PrintColored($"  ПРОЄКТ: {project.Name.ToUpper()}", ConsoleColor.White);
+            PrintColored($"  Тип:    {project.ProjectType}", ConsoleColor.DarkGray);
+
+            int barLength = 20;
+            int filledParts = (int)(project.Progress / (100.0 / barLength));
+            string bar = new string('█', filledParts) + new string('░', barLength - filledParts);
+            Console.Write("  Прогрес: ");
+            PrintColored($"[{bar}] {project.Progress:F1}%", ConsoleColor.DarkCyan);
+            PrintColored($"           ({project.CompletedTasksCount} з {project.TotalTasksCount} завершено)", ConsoleColor.Gray);
+
+            PrintColored(middleBorder, ConsoleColor.DarkYellow);
+            PrintColored("  ОПИС:", ConsoleColor.DarkGray);
+            Console.WriteLine($"  {project.Description}");
+
+            PrintColored(middleBorder, ConsoleColor.DarkYellow);
+
+            if (tasks.Count > 0)
+            {
+                PrintColored("  СПИСОК ЗАВДАНЬ:", ConsoleColor.White);
+                for (int i = 0; i < tasks.Count; i++)
+                {
+                    Console.WriteLine($"  {i + 1}. {tasks[i]}");
+                }
+            }
+            else
+            {
+                PrintColored("  Завдань у цьому проєкті ще немає.", ConsoleColor.DarkGray);
+            }
+
+            PrintColored(bottomBorder, ConsoleColor.DarkYellow);
         }
     }
 }
