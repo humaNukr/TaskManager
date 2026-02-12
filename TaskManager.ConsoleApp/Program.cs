@@ -114,8 +114,9 @@ namespace KMA.TaskManager.ConsoleApp
         private static void PrintTaskDetailed(TaskUIModel task)
         {
             Console.WriteLine();
-            PrintColored("┌──────────────────────────────────────────────────────────┐", ConsoleColor.Magenta);
+            var color = ConsoleColor.Magenta;
 
+            PrintBorderLine('╔', '═', '╗', color);
             PrintColored($"  ЗАВДАННЯ: {task.Name.ToUpper()}", ConsoleColor.White);
 
             Console.Write("  Пріоритет: ");
@@ -135,24 +136,19 @@ namespace KMA.TaskManager.ConsoleApp
             Console.Write("  Статус:    ");
             PrintColored(statusText, statusColor);
 
-            PrintColored("├──────────────────────────────────────────────────────────┤", ConsoleColor.Magenta);
+            PrintBorderLine('╠', '═', '╣', color);
             PrintColored("  ОПИС:", ConsoleColor.DarkGray);
 
             Console.WriteLine($"  {task.Description}");
-
-            PrintColored("└──────────────────────────────────────────────────────────┘", ConsoleColor.Magenta);
+            PrintBorderLine('╚', '═', '╝', color);
         }
 
         private static void PrintProjectDetailed(ProjectUIModel project, List<TaskUIModel> tasks)
         {
             Console.WriteLine();
+            var color = ConsoleColor.DarkYellow;
 
-            int width = Console.WindowWidth - 2;
-            string topBorder = "╔" + new string('═', width - 2) + "╗";
-            string middleBorder = "╠" + new string('═', width - 2) + "╣";
-            string bottomBorder = "╚" + new string('═', width - 2) + "╝";
-
-            PrintColored(topBorder, ConsoleColor.DarkYellow);
+            PrintBorderLine('╔', '═', '╗', color);
             PrintColored($"  ПРОЄКТ: {project.Name.ToUpper()}", ConsoleColor.White);
             PrintColored($"  Тип:    {project.ProjectType}", ConsoleColor.DarkGray);
 
@@ -163,11 +159,11 @@ namespace KMA.TaskManager.ConsoleApp
             PrintColored($"[{bar}] {project.Progress:F1}%", ConsoleColor.DarkCyan);
             PrintColored($"           ({project.CompletedTasksCount} з {project.TotalTasksCount} завершено)", ConsoleColor.Gray);
 
-            PrintColored(middleBorder, ConsoleColor.DarkYellow);
+            PrintBorderLine('╠', '═', '╣', color);
             PrintColored("  ОПИС:", ConsoleColor.DarkGray);
             Console.WriteLine($"  {project.Description}");
 
-            PrintColored(middleBorder, ConsoleColor.DarkYellow);
+            PrintBorderLine('╠', '═', '╣', color);
 
             if (tasks.Count > 0)
             {
@@ -182,7 +178,17 @@ namespace KMA.TaskManager.ConsoleApp
                 PrintColored("  Завдань у цьому проєкті ще немає.", ConsoleColor.DarkGray);
             }
 
-            PrintColored(bottomBorder, ConsoleColor.DarkYellow);
+            PrintBorderLine('╚', '═', '╝', color);
+        }
+
+        private static void PrintBorderLine(char left, char horizontal, char right, ConsoleColor color)
+        {
+            int width = Console.WindowWidth - 2;
+
+            if (width < 2) width = 2;
+
+            string line = left + new string(horizontal, width - 2) + right;
+            PrintColored(line, color);
         }
     }
 }
