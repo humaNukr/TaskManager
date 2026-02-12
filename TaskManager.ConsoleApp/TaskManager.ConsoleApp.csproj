@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskManager.Services\TaskManager.Services.csproj" />
+    <ProjectReference Include="..\TaskManager.UIModels\TaskManager.UIModels.csproj" />
   </ItemGroup>
 
 </Project>
