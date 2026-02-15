@@ -16,32 +16,27 @@ namespace KMA.TaskManager.ConsoleApp
             while (true)
             {
                 ClearScreen();
-                PrintColored("=== МЕНЕДЖЕР ЗАВДАНЬ===", ConsoleColor.Cyan);
+                PrintColored("===МЕНЕДЖЕР ЗАВДАНЬ===", ConsoleColor.Cyan);
 
                 var projects = projectService.GetAllProjects();
                 ShowProjects(projects);
 
-                int selectedIndex = ReadProjectIndex(projects.Count);
-
-                ClearScreen();
-                var selectedProject = projects[selectedIndex - 1];
-
-                PrintColored($"Проєкт №{selectedIndex}", ConsoleColor.Yellow);
-                Console.WriteLine(selectedProject);
-
-                var tasks = taskService.GetTasksByProjectId(selectedProject.Id);
-                PrintProjectDetailed(selectedProject, tasks);
-
-                if (tasks.Count > 0)
-                {
-                    HandleTaskDetails(tasks, taskService);
-                }
-
-                PrintColored("\nУведіть будь що, щоб повернутись до меню, або 'exit' для виходу.", ConsoleColor.Gray);
+                PrintColored("\nВведіть номер проєкту або 'exit' для виходу:", ConsoleColor.Gray);
                 string input = Console.ReadLine()?.ToLower();
-                if (input == "exit")
+
+                if (input == "exit") break;
+
+                if (int.TryParse(input, out int index) && index > 0 && index <= projects.Count)
                 {
-                    break;
+                    var selectedProject = projects[index - 1];
+                    var tasks = taskService.GetTasksByProjectId(selectedProject.Id);
+
+                    HandleTaskDetails(selectedProject, tasks, taskService);
+                }
+                else
+                {
+                    PrintColored("Некоректний номер. Спробуйте ще раз.", ConsoleColor.Red, "Помилка: ");
+                    Thread.Sleep(1200);
                 }
             }
         }
@@ -85,17 +80,37 @@ namespace KMA.TaskManager.ConsoleApp
             Console.ResetColor();
         }
 
-        private static void HandleTaskDetails(List<TaskUIModel> tasks, TaskService service)
+        private static void HandleTaskDetails(ProjectUIModel project, List<TaskUIModel> tasks, TaskService service)
         {
-            PrintColored("\nВведіть номер завдання для повного опису (або Enter):", ConsoleColor.DarkCyan);
-            var input = Console.ReadLine();
-
-            if (int.TryParse(input, out int index) && index > 0 && index <= tasks.Count)
+            while (true)
             {
                 ClearScreen();
-                PrintColored("=== ДЕТАЛЬНА ІНФОРМАЦІЯ ПРО ЗАВДАННЯ ===", ConsoleColor.Magenta);
-                var fullTask = service.GetTaskById(tasks[index - 1].Id);
-                if (fullTask != null) PrintTaskDetailed(fullTask);
+                PrintProjectDetailed(project, tasks);
+
+                PrintColored("\nВведіть номер завдання для повного опису або Enter, щоб змінити проєкт:", ConsoleColor.DarkCyan);
+                var input = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(input)) break;
+
+                if (int.TryParse(input, out int index) && index > 0 && index <= tasks.Count)
+                {
+                    ClearScreen();
+                    PrintColored("=== ПОВНА ІНФОРМАЦІЯ ПРО ЗАВДАННЯ ===", ConsoleColor.Magenta);
+
+                    var fullTask = service.GetTaskById(tasks[index - 1].Id);
+                    if (fullTask != null)
+                    {
+                        PrintTaskDetailed(fullTask);
+
+                        PrintColored("\nНатисніть будь-яку клавішу, щоб повернутись до завдань проєкту...", ConsoleColor.DarkGray);
+                        Console.ReadKey();
+                    }
+                }
+                else
+                {
+                    PrintColored("Некоректний номер. Спробуйте ще раз.", ConsoleColor.Red, "Помилка: ");
+                    Thread.Sleep(1200);
+                }
             }
         }
 

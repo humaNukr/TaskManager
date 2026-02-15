@@ -28,7 +28,7 @@ namespace KMA.TaskManager.DataModels
             DateTimeOffset dueDate, bool isCompleted)
         {
             Id = Guid.NewGuid();
-            this.ProjectId = projectId;
+            ProjectId = projectId;
             Name = name;
             Description = description;
             Priority = priority;
