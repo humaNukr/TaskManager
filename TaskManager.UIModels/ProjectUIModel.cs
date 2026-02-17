@@ -39,12 +39,18 @@ namespace KMA.TaskManager.UIModels
 
         public override string ToString()
         {
-            return $"==========================================\n" +
-                   $"📁 Проєкт:   {Name}\n" +
-                   $"🏷️ Тип:      {ProjectType}\n" +
-                   $"📊 Прогрес:  {Progress:F1}% ({CompletedTasksCount}/{TotalTasksCount} завершено)\n" +
-                   $"📝 Опис:     {Description}\n" +
-                   $"==========================================";
+            string categoryIcon = ProjectType switch
+            {
+                ProjectType.Educational => "🎓",
+                ProjectType.Work => "💼",
+                ProjectType.Personal => "🏠",
+                ProjectType.Research => "🔬",
+                ProjectType.Hobby => "🎨",
+                ProjectType.Volunteer => "🤝",
+                _ => "📁"
+            };
+
+            return $"{categoryIcon} {Name} ({Progress:F1}% виконано)";
         }
     }
 }

@@ -51,20 +51,7 @@ public class TaskUIModel
 
     public override string ToString()
     {
-        string statusText;
-        if (IsCompleted)
-            statusText = "✅ Виконано";
-        else if (IsOverdue)
-            statusText = "❌ ПРОСТРОЧЕНО";
-        else
-            statusText = "⏳ В процесі";
-
-        return $"------------------------------------------\n" +
-               $"Завдання:  {Name}\n" +
-               $"Статус:    {statusText}\n" +
-               $"Пріоритет: {Priority}\n" +
-               $"Термін до: {DueDate:dd.MM.yyyy HH:mm}\n" +
-               $"Опис:      {Description}\n" +
-               $"------------------------------------------";
+        string statusIcon = IsCompleted ? "✅" : (IsOverdue ? "❌" : "⏳");
+        return $"{statusIcon} {Name} (до {DueDate:dd.MM})";
     }
 }

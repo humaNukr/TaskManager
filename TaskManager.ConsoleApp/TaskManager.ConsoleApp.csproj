@@ -1,14 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	  <RootNamespace>KMA.TaskManager.Services</RootNamespace>
+    <RootNamespace>KMA.TaskManager.ConsoleApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TaskManager.Services\TaskManager.Services.csproj" />
     <ProjectReference Include="..\TaskManager.UIModels\TaskManager.UIModels.csproj" />
   </ItemGroup>
 
