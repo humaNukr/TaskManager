@@ -12,4 +12,8 @@
     <ProjectReference Include="..\TaskManager.UIModels\TaskManager.UIModels.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="KMA.TaskManager.Tests" />
+	</ItemGroup>
+
 </Project>
