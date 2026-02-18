@@ -9,11 +9,14 @@ namespace KMA.TaskManager.Services
     {
         private static readonly List<TaskDataModel> _tasks;
         private static readonly List<ProjectDataModel> _projects;
+
+        // повертаємо копію списку, щоб зовнішній код не міг змінити внутрішній стан напряму
         internal static IEnumerable<TaskDataModel> Tasks => _tasks.ToList();
         internal static IEnumerable<ProjectDataModel> Projects => _projects.ToList();
 
         static MockStorage()
         {
+            // проєкти створюються як змінні, щоб їх Id можна було прив'язати до завдань нижче
             var bakeryWebsite = new ProjectDataModel("Розробка вебсайту пекарні",
                 "Створення сайту-візитки з каталогом продукції для місцевої кондитерської \"Зефір\"", ProjectType.Work);
             var csharpCourse = new ProjectDataModel("Курс програмування на C#",

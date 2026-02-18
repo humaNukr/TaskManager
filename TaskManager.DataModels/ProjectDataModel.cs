@@ -9,8 +9,7 @@ namespace KMA.TaskManager.DataModels
 {
     public class ProjectDataModel
     {
-        // id is read-only
-        public Guid Id { get; }
+        public Guid Id { get; } // тільки get — Id не можна змінити після створення
 
         public string Name { get; set; }
         public string Description { get; set; }
@@ -18,7 +17,7 @@ namespace KMA.TaskManager.DataModels
 
         public ProjectDataModel(string name, string description, ProjectType projectType)
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid(); // генеруємо унікальний Id один раз при створенні
             Name = name;
             Description = description;
             ProjectType = projectType;

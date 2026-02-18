@@ -16,13 +16,15 @@ namespace KMA.TaskManager.UIModels
         public int TotalTasksCount { get; set; }
         public int CompletedTasksCount { get; set; }
 
+        // обчислюється динамічно — не зберігається в полі,
+        // щоб завжди відповідати актуальним TotalTasksCount / CompletedTasksCount
         public double Progress
         {
             get
             {
                 if (TotalTasksCount == 0)
                 {
-                    return 0;
+                    return 0; // захист від ділення на нуль
                 }
                 return (double)CompletedTasksCount / TotalTasksCount * 100;
             }
@@ -39,6 +41,7 @@ namespace KMA.TaskManager.UIModels
 
         public override string ToString()
         {
+            // іконка підбирається за типом проєкту для зручного відображення у списку
             string categoryIcon = ProjectType switch
             {
                 ProjectType.Educational => "🎓",

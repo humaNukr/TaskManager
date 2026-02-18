@@ -16,6 +16,8 @@ namespace KMA.TaskManager.Services
             return MockStorage.Projects
                 .Select(p =>
                 {
+                    // для кожного проєкту рахуємо завдання прямо тут,
+                    // бо ProjectDataModel їх не зберігає
                     var total = MockStorage.Tasks.Count(t => t.ProjectId == p.Id);
                     var completed = MockStorage.Tasks.Count(t => t.ProjectId == p.Id && t.IsCompleted);
                     return ProjectMapper.MapToUI(p, total, completed);

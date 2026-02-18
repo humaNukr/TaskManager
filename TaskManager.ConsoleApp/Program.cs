@@ -43,8 +43,8 @@ namespace KMA.TaskManager.ConsoleApp
 
         private static void ClearScreen()
         {
-            Console.Write("\x1b[3J"); // ANSI-command to clear scrollback
-            Console.Clear();
+            Console.Write("\x1b[3J"); // ANSI-escape для очищення scrollback-буфера,
+            Console.Clear();          // бо Console.Clear() сам по собі його не чистить
         }
 
         private static void ShowProjects(List<ProjectUIModel> projects)
@@ -168,6 +168,7 @@ namespace KMA.TaskManager.ConsoleApp
             PrintColored($"  Тип:    {project.ProjectType}", ConsoleColor.DarkGray);
 
             int barLength = 20;
+            // використовуємо double (100.0), щоб уникнути округлення до 0 при обчисленні кроку.
             int filledParts = (int)(project.Progress / (100.0 / barLength));
             string bar = new string('█', filledParts) + new string('░', barLength - filledParts);
             Console.Write("  Прогрес: ");

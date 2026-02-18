@@ -10,6 +10,8 @@ namespace KMA.TaskManager.Services.Mappers
 {
     internal static class ProjectMapper
     {
+        // total і completed передаються ззовні, бо DataModel не знає про завдання —
+        // це відповідальність сервісного шару
         public static ProjectUIModel MapToUI(ProjectDataModel data, int total, int completed)
         {
             if (data == null) return null;
