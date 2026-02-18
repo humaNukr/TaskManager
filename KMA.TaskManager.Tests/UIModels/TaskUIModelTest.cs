@@ -8,6 +8,7 @@ namespace KMA.TaskManager.Tests.UIModels
         [Fact]
         public void IsOverdue_WhenPastDateAndNotCompleted_ReturnsTrue()
         {
+            //Arrange
             var pastDate = DateTimeOffset.Now.AddDays(-1);
             var task = new TaskUIModel(
                 Guid.NewGuid(),
@@ -19,14 +20,17 @@ namespace KMA.TaskManager.Tests.UIModels
                 false
             );
 
+            //Act
             bool result = task.IsOverdue;
 
+            //Assert
             Assert.True(result);
         }
 
         [Fact]
         public void IsOverdue_WhenPastDateButCompleted_ReturnsFalse()
         {
+            //Arrange
             var pastDate = DateTimeOffset.Now.AddDays(-1);
             var task = new TaskUIModel(
                 Guid.NewGuid(),
@@ -38,14 +42,17 @@ namespace KMA.TaskManager.Tests.UIModels
                 true
             );
 
+            //Act
             bool result = task.IsOverdue;
 
+            //Assert
             Assert.False(result);
         }
 
         [Fact]
         public void IsOverdue_WhenFutureDate_ReturnsFalse()
         {
+            //Arrange
             var futureDate = DateTimeOffset.Now.AddDays(1);
             var task = new TaskUIModel(
                 Guid.NewGuid(),
@@ -57,8 +64,10 @@ namespace KMA.TaskManager.Tests.UIModels
                 false
             );
 
+            //Act
             bool result = task.IsOverdue;
 
+            //Arrange
             Assert.False(result);
         }
     }

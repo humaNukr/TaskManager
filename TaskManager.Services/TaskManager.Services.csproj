@@ -10,16 +10,13 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\TaskManager.UIModels\TaskManager.UIModels.csproj" />
+		<ProjectReference Include="..\TaskManager.DataModels\TaskManager.DataModels.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
 			<_Parameter1>KMA.TaskManager.Tests</_Parameter1>
 		</AssemblyAttribute>
-	</ItemGroup>
-
-	<ItemGroup>
-		<InternalsVisibleTo Include="KMA.TaskManager.Tests" />
 	</ItemGroup>
 
 </Project>

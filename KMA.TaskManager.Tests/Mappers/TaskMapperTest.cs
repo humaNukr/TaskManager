@@ -14,6 +14,7 @@ namespace KMA.TaskManager.Tests.Mappers
         [Fact]
         public void MapToUI_ValidData_ReturnsCorrectUIModel()
         {
+            // Arrange
             var data = new TaskDataModel(
                 Guid.NewGuid(),
                 "Тестове завдання",
@@ -23,7 +24,10 @@ namespace KMA.TaskManager.Tests.Mappers
                 false
             );
 
+            //Act
             var uiModel = TaskMapper.MapToUI(data);
+            
+            //Assert
             Assert.NotNull(uiModel);
             Assert.NotEqual(Guid.Empty, uiModel.Id);
             Assert.Equal(data.ProjectId, uiModel.ProjectId);
