@@ -26,6 +26,8 @@ public class TaskUIModel
 
     public bool IsCompleted { get; set; }
 
+    // Обчислювана властивість: логіка враховує, що виконане завдання не може вважатися простроченим, 
+    // навіть якщо термін виконання минув.
     public bool IsOverdue => !IsCompleted && DueDate < DateTimeOffset.Now;
 
 
@@ -49,6 +51,8 @@ public class TaskUIModel
         IsCompleted = isCompleted;
     }
 
+    // Форматування для консольного виводу. Перевизначення ToString дозволяє 
+    // відокремити логіку представлення від бізнес-логіку програми.
     public override string ToString()
     {
         string statusIcon = IsCompleted ? "✅" : (IsOverdue ? "❌" : "⏳");

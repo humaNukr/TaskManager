@@ -9,9 +9,11 @@ namespace KMA.TaskManager.DataModels
 {
     public class TaskDataModel
     {
-        // id is read-only
+        // Ідентифікатор є read-only, щоб гарантувати незмінність об'єкта в базі даних після його створення.
         public Guid Id { get; }
 
+        // Зв'язок реалізовано через Guid замість посилання на об'єкт Project. 
+        // Це забезпечує ізоляцію моделей та запобігає завантаженню зайвих даних
         public Guid ProjectId { get; set; }
 
         public string Name { get; set; }
