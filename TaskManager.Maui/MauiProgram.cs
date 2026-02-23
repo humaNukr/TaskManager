@@ -2,7 +2,7 @@
 using KMA.TaskManager.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace TaskManager.Maui
+namespace KMA.TaskManager.Maui
 {
     public static class MauiProgram
     {

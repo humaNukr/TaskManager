@@ -1,2 +1,2 @@
-[assembly: XmlnsDefinition("http://schemas.microsoft.com/dotnet/maui/global", "TaskManager.Maui")]
-[assembly: XmlnsDefinition("http://schemas.microsoft.com/dotnet/maui/global", "TaskManager.Maui.Pages")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/dotnet/maui/global", "KMA.TaskManager.Maui")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/dotnet/maui/global", "KMA.TaskManager.Maui.Pages")]

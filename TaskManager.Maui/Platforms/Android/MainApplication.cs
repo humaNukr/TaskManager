@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace TaskManager.Maui
+namespace KMA.TaskManager.Maui
 {
     [Application]
     public class MainApplication : MauiApplication

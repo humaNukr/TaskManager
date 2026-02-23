@@ -1,4 +1,4 @@
-﻿namespace TaskManager.Maui
+﻿namespace KMA.TaskManager.Maui
 {
     public partial class App : Application
     {

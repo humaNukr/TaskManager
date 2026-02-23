@@ -1,29 +1,34 @@
-﻿using KMA.TaskManager.Services;
-using KMA.TaskManager.Services.Interfaces;
+﻿using KMA.TaskManager.Services.Interfaces;
+using KMA.TaskManager.UIModels;
 
-namespace TaskManager.Maui
+namespace KMA.TaskManager.Maui;
+
+public partial class MainPage : ContentPage
 {
-    public partial class MainPage : ContentPage
+    private readonly IProjectService _projectService;
+
+    public MainPage(IProjectService projectService)
     {
-        int count = 0;
-        private readonly IProjectService _projectService;
+        InitializeComponent();
+        _projectService = projectService;
+    }
 
-        public MainPage(IProjectService projectService)
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        var projects = _projectService.GetAllProjects();
+
+        BindingContext = projects;
+    }
+
+    private async void OnProjectSelected(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.FirstOrDefault() is ProjectUIModel selectedProject)
         {
-            InitializeComponent();
-            _projectService = projectService;
+
         }
 
-        private void OnCounterClicked(object? sender, EventArgs e)
-        {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
-        }
+        ((CollectionView)sender).SelectedItem = null;
     }
 }
