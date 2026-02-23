@@ -1,11 +1,12 @@
 ﻿using System;
 using KMA.TaskManager.DataModels;
+using KMA.TaskManager.Services.Interfaces;
 using KMA.TaskManager.Services.Mappers;
 using KMA.TaskManager.UIModels;
 
 namespace KMA.TaskManager.Services
 {
-    public class TaskService
+    public class TaskService : ITaskService
     {
         //Отримання завдань за ідентифікатором проекту
         public List<TaskUIModel> GetTasksByProjectId(Guid projectId)
