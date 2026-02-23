@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KMA.TaskManager.DataModels;
+using KMA.TaskManager.Services.Interfaces;
 using KMA.TaskManager.Services.Mappers;
 using KMA.TaskManager.UIModels;
 
 namespace KMA.TaskManager.Services
 {
-    public class ProjectService
+    public class ProjectService : IProjectService
     {
         public List<ProjectUIModel> GetAllProjects()
         {

@@ -1,12 +1,17 @@
-﻿namespace TaskManager.Maui
+﻿using KMA.TaskManager.Services;
+using KMA.TaskManager.Services.Interfaces;
+
+namespace TaskManager.Maui
 {
     public partial class MainPage : ContentPage
     {
         int count = 0;
+        private readonly IProjectService _projectService;
 
-        public MainPage()
+        public MainPage(IProjectService projectService)
         {
             InitializeComponent();
+            _projectService = projectService;
         }
 
         private void OnCounterClicked(object? sender, EventArgs e)
