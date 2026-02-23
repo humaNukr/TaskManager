@@ -1,7 +1,7 @@
 ﻿using KMA.TaskManager.Services.Interfaces;
 using KMA.TaskManager.UIModels;
 
-namespace KMA.TaskManager.Maui;
+namespace KMA.TaskManager.Maui.Pages;
 
 public partial class MainPage : ContentPage
 {

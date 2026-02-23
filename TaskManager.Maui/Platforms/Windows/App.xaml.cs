@@ -19,7 +19,7 @@ namespace KMA.TaskManager.Maui.Platforms.Windows
             this.InitializeComponent();
         }
 
-        protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+        protected override MauiApp CreateMauiApp() => KMA.TaskManager.Maui.MauiProgram.CreateMauiApp();
     }
 
 }

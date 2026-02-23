@@ -1,6 +1,6 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="KMA.TaskManager.Maui.MainPage"
+             x:Class="KMA.TaskManager.Maui.Pages.MainPage"
              Title="Мої Проєкти">
 
     <Grid RowDefinitions="Auto, *">

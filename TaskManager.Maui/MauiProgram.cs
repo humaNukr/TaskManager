@@ -1,4 +1,5 @@
-﻿using KMA.TaskManager.Services;
+﻿using KMA.TaskManager.Maui.Pages;
+using KMA.TaskManager.Services;
 using KMA.TaskManager.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -17,13 +18,14 @@ namespace KMA.TaskManager.Maui
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddSingleton<IProjectService, ProjectService>();
-
-            builder.Services.AddTransient<MainPage>();
-
 #if DEBUG
-            builder.Logging.AddDebug();
+    		builder.Logging.AddDebug();
 #endif
+            builder.Services.AddSingleton<IProjectService, ProjectService>();
+            builder.Services.AddSingleton<ITaskService, TaskService>();
+            builder.Services.AddTransient<MainPage>();
+            //builder.Services.AddTransient<ProjectDetailsPage>();
+            //builder.Services.AddTransient<TaskDetailsPage>();
 
             return builder.Build();
         }

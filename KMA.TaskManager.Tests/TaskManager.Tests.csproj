@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <RootNamespace>KMA.TaskManager.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
