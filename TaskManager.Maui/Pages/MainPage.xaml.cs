@@ -26,7 +26,7 @@ public partial class MainPage : ContentPage
     {
         if (e.CurrentSelection.FirstOrDefault() is ProjectUIModel selectedProject)
         {
-
+            await Navigation.PushAsync(new ProjectDetails(selectedProject));
         }
 
         ((CollectionView)sender).SelectedItem = null;

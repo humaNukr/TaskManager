@@ -24,7 +24,7 @@ namespace KMA.TaskManager.Maui
             builder.Services.AddSingleton<IProjectService, ProjectService>();
             builder.Services.AddSingleton<ITaskService, TaskService>();
             builder.Services.AddTransient<MainPage>();
-            //builder.Services.AddTransient<ProjectDetailsPage>();
+            builder.Services.AddTransient<ProjectDetails>();
             //builder.Services.AddTransient<TaskDetailsPage>();
 
             return builder.Build();

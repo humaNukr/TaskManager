@@ -17,11 +17,16 @@
                         SelectionChanged="OnProjectSelected">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Margin="10,5" Padding="15" CornerRadius="8" HasShadow="True">
+                    <Frame Margin="10,5" Padding="15" CornerRadius="8">
                         <VerticalStackLayout>
-                            <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" />
-                            <Label Text="{Binding Description}" FontSize="14" TextColor="Gray" />
-                            <Label Text="{Binding ProgressText}" FontSize="12" Margin="0,5,0,0"/>
+                            <Label Text="{Binding .}" 
+                                   FontSize="20" 
+                                   FontAttributes="Bold" />
+
+                            <Label Text="{Binding Progress, StringFormat='Прогрес: {0}%'}" 
+                                   FontSize="14" 
+                                   TextColor="Gray" 
+                                   Margin="0,5,0,0" />
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>

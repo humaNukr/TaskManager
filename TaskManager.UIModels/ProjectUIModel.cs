@@ -53,7 +53,7 @@ namespace KMA.TaskManager.UIModels
                 _ => "📁"
             };
 
-            return $"{categoryIcon} {Name} ({Progress:F1}% виконано)";
+            return $"{categoryIcon} {Name}";
         }
     }
 }
