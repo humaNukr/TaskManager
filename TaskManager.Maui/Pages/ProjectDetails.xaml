@@ -61,7 +61,45 @@
 					<BoxView HeightRequest="2" Color="DarkGoldenrod" VerticalOptions="End"/>
 				</VerticalStackLayout>
 			</Frame>
+            <Label Text="ЗАВДАННЯ ПРОЄКТУ" 
+                   FontSize="18" 
+                   FontAttributes="Bold" 
+                   TextColor="DarkGoldenrod"
+                   Margin="0,10,0,5" />
 
-		</VerticalStackLayout>
+            <CollectionView x:Name="TasksListView" SelectionMode="None" HeightRequest="400">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="0,5" Padding="12" CornerRadius="5" BorderColor="LightGray">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnTaskTapped" />
+                            </Frame.GestureRecognizers>
+
+                            <Grid ColumnDefinitions="Auto, *">
+                                <Label Grid.Column="0" FontSize="20" VerticalOptions="Center" Margin="0,0,15,0">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsCompleted}" Value="True">
+                                            <Setter Property="Text" Value="✅" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsCompleted}" Value="False">
+                                            <Setter Property="Text" Value="⏳" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="16" 
+                                           FontAttributes="Bold" />
+                                    <Label Text="{Binding DueDate, StringFormat='Дедлайн: {0:dd.MM.yyyy}'}" 
+                                           FontSize="12" 
+                                           TextColor="Gray" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
 	</ScrollView>
 </ContentPage>

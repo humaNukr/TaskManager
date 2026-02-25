@@ -37,14 +37,14 @@ namespace KMA.TaskManager.Services
 
             _tasks = new List<TaskDataModel>
             {
-                new TaskDataModel(bakeryWebsite.Id, "Аналіз вимог", "Зустріч з власником для ТЗ", TaskPriority.High, DateTimeOffset.Now.AddDays(2), true),
+                new TaskDataModel(bakeryWebsite.Id, "Аналіз вимог", "Зустріч з власником для ТЗ", TaskPriority.High, DateTimeOffset.Now.AddDays(1), true),
                 new TaskDataModel(bakeryWebsite.Id, "Макет дизайну", "Розробка стилю в Figma", TaskPriority.Medium, DateTimeOffset.Now.AddDays(5), false),
                 new TaskDataModel(bakeryWebsite.Id, "Верстка головної", "HTML/CSS адаптивна верстка", TaskPriority.High, DateTimeOffset.Now.AddDays(7), false),
                 new TaskDataModel(bakeryWebsite.Id, "Каталог товарів", "Розробка сторінки з випічкою", TaskPriority.Medium, DateTimeOffset.Now.AddDays(10), false),
                 new TaskDataModel(bakeryWebsite.Id, "Форма замовлення", "Логіка відправки запитів на email", TaskPriority.High, DateTimeOffset.Now.AddDays(12), false),
                 new TaskDataModel(bakeryWebsite.Id, "Налаштування SEO", "Оптимізація мета-тегів", TaskPriority.Low, DateTimeOffset.Now.AddDays(15), false),
                 new TaskDataModel(bakeryWebsite.Id, "Тестування", "Перевірка кросбраузерності", TaskPriority.High, DateTimeOffset.Now.AddDays(16), false),
-                new TaskDataModel(bakeryWebsite.Id, "Наповнення текстами", "Копірайтинг для розділу про нас", TaskPriority.Low, DateTimeOffset.Now.AddDays(18), false),
+                new TaskDataModel(bakeryWebsite.Id, "Наповнення текстами", "Копірайтинг для розділу про нас", TaskPriority.Low, DateTimeOffset.Now.AddDays(-2), false),
                 new TaskDataModel(bakeryWebsite.Id, "Фотосесія", "Зйомка десертів для каталогу", TaskPriority.Medium, DateTimeOffset.Now.AddDays(20), false),
                 new TaskDataModel(bakeryWebsite.Id, "Деплой", "Перенесення сайту на хостинг", TaskPriority.Critical, DateTimeOffset.Now.AddDays(21), false),
 

@@ -8,6 +8,7 @@ namespace KMA.TaskManager.Maui
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(ProjectDetails), typeof(ProjectDetails));
+            Routing.RegisterRoute(nameof(TaskDetails), typeof(TaskDetails));
         }
     }
 }
