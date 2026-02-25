@@ -26,9 +26,26 @@ public partial class MainPage : ContentPage
     {
         if (e.CurrentSelection.FirstOrDefault() is ProjectUIModel selectedProject)
         {
-            await Navigation.PushAsync(new ProjectDetails(selectedProject));
-        }
+            await DisplayAlert("Тест", "Клік спрацював!", "ОК");
+            var navigationParameter = new Dictionary<string, object>
+            {
+                { "SelectedProject", selectedProject }
+            };
 
-        ((CollectionView)sender).SelectedItem = null;
+            await Shell.Current.GoToAsync(nameof(ProjectDetails), navigationParameter);
+            ((CollectionView)sender).SelectedItem = null;
+        }
+    }
+
+    private async void OnProjectTapped(object sender, TappedEventArgs e)
+    {
+        if (sender is Frame frame && frame.BindingContext is ProjectUIModel selectedProject)
+        {
+            var navigationParameter = new Dictionary<string, object>
+            {
+                { "SelectedProject", selectedProject }
+            };
+            await Shell.Current.GoToAsync(nameof(ProjectDetails), navigationParameter);
+        }
     }
 }

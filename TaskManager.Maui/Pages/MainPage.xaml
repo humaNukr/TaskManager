@@ -13,11 +13,13 @@
 
         <CollectionView Grid.Row="1" 
                         ItemsSource="{Binding .}" 
-                        SelectionMode="Single"
-                        SelectionChanged="OnProjectSelected">
+                        SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Margin="10,5" Padding="15" CornerRadius="8">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnProjectTapped" NumberOfTapsRequired="1"/>
+                        </Frame.GestureRecognizers>
                         <VerticalStackLayout>
                             <Label Text="{Binding .}" 
                                    FontSize="20" 
