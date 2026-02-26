@@ -26,5 +26,20 @@ namespace KMA.TaskManager.Services.Mappers
                 data.IsCompleted
             );
         }
+
+        public static TaskDataModel MapToData(TaskCreateModel model)
+        {
+            if (model == null) return null;
+
+            // при створенні таска завжди IsCompleted = false
+            return new TaskDataModel(
+                model.ProjectId,
+                model.Name,
+                model.Description,
+                model.Priority,
+                model.DueDate,
+                false
+            );
+        }
     }
 }

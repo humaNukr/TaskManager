@@ -25,5 +25,17 @@ namespace KMA.TaskManager.Services.Mappers
                 completed
             );
         }
+
+        public static ProjectDataModel MapToData(ProjectCreateModel model)
+        {
+            if (model == null) return null;
+
+            // створюємо нову модель даних (Id згенерується автоматично в конструкторі DataModel)
+            return new ProjectDataModel(
+                model.Name,
+                model.Description,
+                model.ProjectType
+            );
+        }
     }
 }
