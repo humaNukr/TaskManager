@@ -7,6 +7,18 @@ public partial class MainPage : ContentPage
 {
     private readonly IProjectService _projectService;
 
+    private List<ProjectUIModel> _projects;
+
+    public List<ProjectUIModel> Projects
+    {
+        get => _projects;
+        set
+        {
+            _projects = value;
+            BindingContext = _projects;
+        }
+    }
+
     public MainPage(IProjectService projectService)
     {
         InitializeComponent();
@@ -17,24 +29,7 @@ public partial class MainPage : ContentPage
     {
         base.OnAppearing();
 
-        var projects = _projectService.GetAllProjects();
-
-        BindingContext = projects;
-    }
-
-    private async void OnProjectSelected(object sender, SelectionChangedEventArgs e)
-    {
-        if (e.CurrentSelection.FirstOrDefault() is ProjectUIModel selectedProject)
-        {
-            await DisplayAlert("Тест", "Клік спрацював!", "ОК");
-            var navigationParameter = new Dictionary<string, object>
-            {
-                { "SelectedProject", selectedProject }
-            };
-
-            await Shell.Current.GoToAsync(nameof(ProjectDetails), navigationParameter);
-            ((CollectionView)sender).SelectedItem = null;
-        }
+        Projects = _projectService.GetAllProjects();
     }
 
     private async void OnProjectTapped(object sender, TappedEventArgs e)

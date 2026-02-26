@@ -14,10 +14,8 @@ public partial class ProjectDetails : ContentPage
         set
         {
             _project = value;
-            OnPropertyChanged();
-            UpdateBindingContext();
-
             LoadTasks();
+            BindingContext = _project;
         }
     }
 
@@ -25,13 +23,6 @@ public partial class ProjectDetails : ContentPage
     {
         InitializeComponent();
         _taskService = taskService;
-    }
-
-    private void UpdateBindingContext()
-    {
-        if (Project == null) return;
-
-        BindingContext = Project;
     }
 
     private void LoadTasks()
