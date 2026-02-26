@@ -23,11 +23,5 @@ namespace KMA.TaskManager.Services
             var task = MockStorage.Tasks.FirstOrDefault(t => t.Id == taskId);
             return task != null ? TaskMapper.MapToUI(task) : null;
         }
-
-
-
-
-
-
     }
 }

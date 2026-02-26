@@ -14,7 +14,7 @@ namespace KMA.TaskManager.DataModels
 
         // Зв'язок реалізовано через Guid замість посилання на об'єкт Project. 
         // Це забезпечує ізоляцію моделей та запобігає завантаженню зайвих даних
-        public Guid ProjectId { get; set; }
+        public Guid ProjectId { get; }
 
         public string Name { get; set; }
 

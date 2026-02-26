@@ -14,7 +14,7 @@ public class TaskUIModel
     // id is read-only
     public Guid Id { get; }
 
-    public Guid ProjectId { get; set; }
+    public Guid ProjectId { get; }
 
     public string Name { get; set; }
 
