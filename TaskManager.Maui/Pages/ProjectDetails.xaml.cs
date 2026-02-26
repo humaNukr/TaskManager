@@ -31,15 +31,7 @@ public partial class ProjectDetails : ContentPage
     {
         if (Project == null) return;
 
-        BindingContext = new
-        {
-            Project.Name,
-            Project.ProjectType,
-            Project.Description,
-            Project.Progress,
-            ProgressFraction = Project.Progress / 100.0,
-            ProgressStats = $"({Project.CompletedTasksCount} з {Project.TotalTasksCount} завершено)"
-        };
+        BindingContext = Project;
     }
 
     private void LoadTasks()
@@ -47,7 +39,8 @@ public partial class ProjectDetails : ContentPage
         if (Project == null) return;
 
         var tasks = _taskService.GetTasksByProjectId(Project.Id);
-        TasksListView.ItemsSource = tasks;
+
+        Project.Tasks = tasks;
     }
 
     private async void OnTaskTapped(object sender, TappedEventArgs e)

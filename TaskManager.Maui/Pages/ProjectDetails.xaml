@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:KMA.TaskManager.UIModels"
              xmlns:uiModels="clr-namespace:KMA.TaskManager.UIModels;assembly=TaskManager.UIModels"
              x:Class="KMA.TaskManager.Maui.Pages.ProjectDetails"
+             x:DataType="uiModels:ProjectUIModel"
              BackgroundColor="{StaticResource PageBackground}"
              Title="Деталі проєкту">
 
@@ -18,9 +18,12 @@
                    IsClippedToBounds="True">
 
                 <VerticalStackLayout Spacing="0">
-                    <BoxView HeightRequest="4" Color="{StaticResource ThemeGoldenrod}" VerticalOptions="Start"/>
+                    <BoxView HeightRequest="4" 
+                             Color="{StaticResource ThemeGoldenrod}" 
+                             VerticalOptions="Start"/>
 
-                    <VerticalStackLayout Padding="20,15,20,15" Spacing="5">
+                    <VerticalStackLayout Padding="20,15,20,15" 
+                                         Spacing="5">
                         <Label Text="{Binding Name, StringFormat='ПРОЄКТ: {0}'}"
                                FontSize="22"
                                FontAttributes="Bold"
@@ -35,7 +38,10 @@
 
                     <VerticalStackLayout Padding="20,15,20,15" Spacing="8">
                         <HorizontalStackLayout Spacing="10">
-                            <Label Text="Прогрес:" FontAttributes="Bold" VerticalOptions="Center" TextColor="{StaticResource TextPrimary}"/>
+                            <Label Text="Прогрес:" 
+                                   FontAttributes="Bold" 
+                                   VerticalOptions="Center" 
+                                   TextColor="{StaticResource TextPrimary}"/>
                             <Label Text="{Binding Progress, StringFormat='{0:F1}%'}"
                                    TextColor="{StaticResource ThemeCyan}"
                                    FontAttributes="Bold"
@@ -53,7 +59,8 @@
 
                     <BoxView HeightRequest="1" Color="{StaticResource BorderColor}" />
 
-                    <VerticalStackLayout Padding="20,15,20,20" Spacing="8">
+                    <VerticalStackLayout Padding="20,15,20,20" 
+                                         Spacing="8">
                         <Label Text="ОПИС"
                                TextColor="{StaticResource ThemeGoldenrod}"
                                FontSize="12"
@@ -73,27 +80,45 @@
                    TextColor="{StaticResource ThemeGoldenrod}"
                    Margin="0,10,0,0" />
 
-            <CollectionView x:Name="TasksListView" SelectionMode="None" HeightRequest="400">
+            <CollectionView ItemsSource="{Binding Tasks}" 
+                            SelectionMode="None" 
+                            HeightRequest="400">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="uiModels:TaskUIModel">
-                        <Frame Margin="0,6" Padding="15" CornerRadius="10" BorderColor="{StaticResource BorderColor}" BackgroundColor="{StaticResource CardBackground}" HasShadow="False">
+                        <Frame Margin="0,6" 
+                               Padding="15" 
+                               CornerRadius="10" 
+                               BorderColor="{StaticResource BorderColor}" 
+                               BackgroundColor="{StaticResource CardBackground}" 
+                               HasShadow="False">
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="OnTaskTapped" />
                             </Frame.GestureRecognizers>
 
                             <Grid ColumnDefinitions="Auto, *">
-                                <Label Grid.Column="0" FontSize="22" VerticalOptions="Center" Margin="0,0,15,0">
+                                <Label Grid.Column="0" 
+                                       FontSize="22" 
+                                       VerticalOptions="Center" 
+                                       Margin="0,0,15,0">
                                     <Label.Triggers>
-                                        <DataTrigger TargetType="Label" Binding="{Binding IsCompleted}" Value="True">
-                                            <Setter Property="Text" Value="✅" />
+                                        <DataTrigger TargetType="Label" 
+                                                     Binding="{Binding IsCompleted}" 
+                                                     Value="True">
+                                            <Setter Property="Text" 
+                                                    Value="✅" />
                                         </DataTrigger>
-                                        <DataTrigger TargetType="Label" Binding="{Binding IsCompleted}" Value="False">
-                                            <Setter Property="Text" Value="⏳" />
+                                        <DataTrigger TargetType="Label" 
+                                                     Binding="{Binding IsCompleted}"
+                                                     Value="False">
+                                            <Setter Property="Text" 
+                                                    Value="⏳" />
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
 
-                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                <VerticalStackLayout Grid.Column="1" 
+                                                     VerticalOptions="Center" 
+                                                     Spacing="2">
                                     <Label Text="{Binding Name}" 
                                            FontSize="16" 
                                            FontAttributes="Bold" 

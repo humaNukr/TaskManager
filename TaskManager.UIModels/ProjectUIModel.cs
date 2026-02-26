@@ -15,6 +15,9 @@ namespace KMA.TaskManager.UIModels
         public ProjectType ProjectType { get; set; }
         public int TotalTasksCount { get; set; }
         public int CompletedTasksCount { get; set; }
+        public double ProgressFraction => Progress / 100.0; // для ProgressBar (значення 0-1)
+        public string ProgressStats => $"({CompletedTasksCount} з {TotalTasksCount} завершено)"; // для текстового опису
+        public List<TaskUIModel> Tasks { get; set; } = new();
 
         // обчислюється динамічно — не зберігається в полі,
         // щоб завжди відповідати актуальним TotalTasksCount / CompletedTasksCount
