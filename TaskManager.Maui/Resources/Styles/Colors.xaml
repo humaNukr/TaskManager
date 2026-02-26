@@ -42,4 +42,15 @@
     <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}"/>
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
+    <Color x:Key="ThemeGoldenrod">#B8860B</Color>
+    <Color x:Key="ThemeCyan">#008B8B</Color>
+    <Color x:Key="PageBackground">#F4F6F8</Color>
+    <Color x:Key="CardBackground">#FFFFFF</Color>
+    <Color x:Key="TextPrimary">#1C1C1E</Color>
+    <Color x:Key="TextSecondary">#8E8E93</Color>
+    <Color x:Key="SuccessColor">#34C759</Color>
+    <Color x:Key="WarningColor">#FF9500</Color>
+    <Color x:Key="DangerColor">#FF3B30</Color>
+    <Color x:Key="BorderColor">#E5E5EA</Color>
+    <Color x:Key="ThemeDarkPink">#611118</Color>
 </ResourceDictionary>
