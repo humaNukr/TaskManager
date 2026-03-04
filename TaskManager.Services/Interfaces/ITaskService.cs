@@ -14,6 +14,6 @@ namespace KMA.TaskManager.Services.Interfaces
         List<TaskUIModel> GetTasksByProjectId(Guid projectId);
 
         //Детальна Інформація про завдання
-        TaskUIModel GetTaskById(Guid taskId);
+        TaskUIModel? GetTaskById(Guid taskId);
     }
 }
