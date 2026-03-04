@@ -9,6 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\TaskManager.Storage\TaskManager.Storage.csproj" />
 		<ProjectReference Include="..\TaskManager.UIModels\TaskManager.UIModels.csproj" />
 		<ProjectReference Include="..\TaskManager.DataModels\TaskManager.DataModels.csproj" />
 	</ItemGroup>

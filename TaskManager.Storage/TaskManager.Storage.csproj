@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TaskManager.DataModels\TaskManager.DataModels.csproj" />
+    <ProjectReference Include="..\TaskManager.UIModels\TaskManager.UIModels.csproj" />
+  </ItemGroup>
+
+</Project>

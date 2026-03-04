@@ -12,27 +12,43 @@ namespace KMA.TaskManager.Services
 {
     public class ProjectService : IProjectService
     {
-        public List<ProjectUIModel> GetAllProjects()
+        private readonly IStorageContext _storageContext;
+
+        // Впровадження залежності через конструктор(Constructor Injection)
+        public ProjectService(IStorageContext storageContext)
         {
-            return MockStorage.Projects
-                .Select(p =>
-                {
-                    // для кожного проєкту рахуємо завдання прямо тут,
-                    // бо ProjectDataModel їх не зберігає
-                    var total = MockStorage.Tasks.Count(t => t.ProjectId == p.Id);
-                    var completed = MockStorage.Tasks.Count(t => t.ProjectId == p.Id && t.IsCompleted);
-                    return ProjectMapper.MapToUI(p, total, completed);
-                })
-                .ToList();
+            _storageContext = storageContext;
         }
 
-        public ProjectUIModel? GetProjectById(Guid projectId)
+        public List<ProjectUIModel> GetAllProjects()
         {
-            var project = MockStorage.Projects.FirstOrDefault(p => p.Id == projectId);
-            if (project == null) return null;
-            var total = MockStorage.Tasks.Count(t => t.ProjectId == project.Id);
-            var completed = MockStorage.Tasks.Count(t => t.ProjectId == project.Id && t.IsCompleted);
-            return ProjectMapper.MapToUI(project, total, completed);
+            var projectDataModels = _storageContext.GetProjects();
+
+            // Для кожного проєкту рахуємо статистику та перетворюємо в UI-модель
+            return projectDataModels.Select(project =>
+            {
+                // Рахуємо загальну кількість завдань для цього проєкту
+                var totalTasks = _storageContext.GetTasksCountByProjectId(project.Id);
+
+                // Рахуємо кількість завершених завдань для розрахунку прогресу
+                var completedTasks = _storageContext.GetTasksByProjectId(project.Id)
+                    .Count(t => t.IsCompleted);
+
+                // Використовуємо мапер для створення UI-моделі
+                return ProjectMapper.MapToUI(project, totalTasks, completedTasks);
+            }).ToList();
+        }
+
+        public ProjectUIModel? GetProjectById(Guid id)
+        {
+            var projectData = _storageContext.GetProjectById(id);
+            if (projectData == null) return null;
+
+            var tasks = _storageContext.GetTasksByProjectId(id).ToList();
+            int total = tasks.Count;
+            int completed = tasks.Count(t => t.IsCompleted);
+
+            return ProjectMapper.MapToUI(projectData, total, completed);
         }
     }
 }
