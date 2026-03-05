@@ -4,15 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KMA.TaskManager.DataModels;
+using KMA.TaskManager.Services.Interfaces;
 using KMA.TaskManager.UIModels;
 
 namespace KMA.TaskManager.Services.Mappers
 {
-    internal static class ProjectMapper
+    public class ProjectMapper : IProjectMapper
     {
         // total і completed передаються ззовні, бо DataModel не знає про завдання —
         // це відповідальність сервісного шару
-        public static ProjectUIModel MapToUI(ProjectDataModel data, int total, int completed)
+        public ProjectUIModel MapToUI(ProjectDataModel data, int total, int completed)
         {
             if (data == null) return null;
 
@@ -26,7 +27,7 @@ namespace KMA.TaskManager.Services.Mappers
             );
         }
 
-        public static ProjectDataModel MapToData(ProjectCreateModel model)
+        public ProjectDataModel MapToData(ProjectCreateModel model)
         {
             if (model == null) return null;
 

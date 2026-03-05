@@ -9,11 +9,13 @@ namespace KMA.TaskManager.Services
     public class TaskService : ITaskService
     {
         private readonly IStorageContext _storageContext;
+        private readonly ITaskMapper _taskMapper;
 
         // Впровадження залежності через конструктор(Constructor Injection)
-        public TaskService(IStorageContext storageContext)
+        public TaskService(IStorageContext storageContext, ITaskMapper taskMapper)
         {
             _storageContext = storageContext;
+            _taskMapper = taskMapper;
         }
 
         //Отримання завдань за ідентифікатором проекту
@@ -23,14 +25,14 @@ namespace KMA.TaskManager.Services
             var tasksData = _storageContext.GetTasksByProjectId(projectId);
 
             // Мапимо кожну DataModel у UIModel для коректного відображення в списку
-            return tasksData.Select(TaskMapper.MapToUI).ToList();
+            return tasksData.Select(_taskMapper.MapToUI).ToList();
         }
 
         //Детальна Інформація про завдання
         public TaskUIModel? GetTaskById(Guid id)
         {
             var taskData = _storageContext.GetTaskById(id);
-            return taskData != null ? TaskMapper.MapToUI(taskData) : null;
+            return taskData != null ? _taskMapper.MapToUI(taskData) : null;
         }
     }
 }

@@ -13,11 +13,13 @@ namespace KMA.TaskManager.Services
     public class ProjectService : IProjectService
     {
         private readonly IStorageContext _storageContext;
+        private readonly IProjectMapper _projectMapper;
 
         // Впровадження залежності через конструктор(Constructor Injection)
-        public ProjectService(IStorageContext storageContext)
+        public ProjectService(IStorageContext storageContext, IProjectMapper projectMapper)
         {
             _storageContext = storageContext;
+            _projectMapper = projectMapper;
         }
 
         public List<ProjectUIModel> GetAllProjects()
@@ -35,7 +37,7 @@ namespace KMA.TaskManager.Services
                     .Count(t => t.IsCompleted);
 
                 // Використовуємо мапер для створення UI-моделі
-                return ProjectMapper.MapToUI(project, totalTasks, completedTasks);
+                return _projectMapper.MapToUI(project, totalTasks, completedTasks);
             }).ToList();
         }
 
@@ -48,7 +50,7 @@ namespace KMA.TaskManager.Services
             int total = tasks.Count;
             int completed = tasks.Count(t => t.IsCompleted);
 
-            return ProjectMapper.MapToUI(projectData, total, completed);
+            return _projectMapper.MapToUI(projectData, total, completed);
         }
     }
 }
