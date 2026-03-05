@@ -7,35 +7,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KMA.TaskManager.Tests.Mappers
-{
-    public class TaskMapperTest
-    {
-        [Fact]
-        public void MapToUI_ValidData_ReturnsCorrectUIModel()
-        {
-            // Arrange
-            var data = new TaskDataModel(
-                Guid.NewGuid(),
-                "Тестове завдання",
-                "Опис",
-                TaskPriority.High,
-                DateTimeOffset.Now.AddDays(1),
-                false
-            );
+namespace KMA.TaskManager.Tests.Mappers;
 
-            //Act
-            var uiModel = TaskMapper.MapToUI(data);
-            
-            //Assert
-            Assert.NotNull(uiModel);
-            Assert.NotEqual(Guid.Empty, uiModel.Id);
-            Assert.Equal(data.ProjectId, uiModel.ProjectId);
-            Assert.Equal(data.Name, uiModel.Name);
-            Assert.Equal(data.Description, uiModel.Description);
-            Assert.Equal(data.Priority, uiModel.Priority);
-            Assert.Equal(data.DueDate, uiModel.DueDate);
-            Assert.Equal(data.IsCompleted, uiModel.IsCompleted);
-        }
+public class TaskMapperTest
+{
+    private readonly TaskMapper _mapper;
+
+    public TaskMapperTest()
+    {
+        _mapper = new TaskMapper();
+    }
+
+    [Fact]
+    public void MapToUI_ValidData_ReturnsCorrectUIModel()
+    {
+        // Arrange
+        var data = new TaskDataModel(Guid.NewGuid(), "Task", "Desc", TaskPriority.Low, DateTimeOffset.Now, false);
+
+        // Act
+        var result = _mapper.MapToUI(data);
+
+        //Assert
+        Assert.NotNull(result);
+        Assert.NotEqual(Guid.Empty, result.Id);
+        Assert.Equal(data.ProjectId, result.ProjectId);
+        Assert.Equal(data.Name, result.Name);
+        Assert.Equal(data.Description, result.Description);
+        Assert.Equal(data.Priority, result.Priority);
+        Assert.Equal(data.DueDate, result.DueDate);
+        Assert.Equal(data.IsCompleted, result.IsCompleted);
     }
 }
