@@ -1,12 +1,7 @@
 ﻿using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.DataModels;
-using KMA.TaskManager.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using KMA.TaskManager.UIModels;
 
-namespace KMA.TaskManager.Services
+namespace KMA.TaskManager.Storage
 {
     public class InMemoryStorageContext : IStorageContext
     {

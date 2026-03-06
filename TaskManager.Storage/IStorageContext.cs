@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using KMA.TaskManager.DataModels;
+﻿using KMA.TaskManager.DataModels;
 
-namespace KMA.TaskManager.Services.Interfaces
+namespace KMA.TaskManager.Storage
 {
     public interface IStorageContext
     {
