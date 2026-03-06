@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using KMA.TaskManager.Common.Enums;
+﻿using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.DataModels;
 
-namespace KMA.TaskManager.Services
+namespace KMA.TaskManager.Storage
 {
-    internal static class MockStorage
+    public class InMemoryStorageContext : IStorageContext
     {
-        private static readonly List<TaskDataModel> _tasks;
-        private static readonly List<ProjectDataModel> _projects;
-
         // повертаємо копію списку, щоб зовнішній код не міг змінити внутрішній стан напряму
-        internal static IEnumerable<TaskDataModel> Tasks => _tasks.ToList();
-        internal static IEnumerable<ProjectDataModel> Projects => _projects.ToList();
+        private static readonly List<ProjectDataModel> _projects = new();
+        private static readonly List<TaskDataModel> _tasks = new();
 
-        static MockStorage()
+        #region MockStoragePopulation
+        static InMemoryStorageContext()
         {
             // проєкти створюються як змінні, щоб їх Id можна було прив'язати до завдань нижче
             var bakeryWebsite = new ProjectDataModel("Розробка вебсайту пекарні",
@@ -51,6 +47,32 @@ namespace KMA.TaskManager.Services
                 new TaskDataModel(csharpCourse.Id, "Лабораторна 1", "Реалізація моделей та сервісів", TaskPriority.High, DateTimeOffset.Now.AddDays(3), true),
                 new TaskDataModel(csharpCourse.Id, "Лабораторна 2", "Робота з GUI та подіями", TaskPriority.High, DateTimeOffset.Now.AddDays(14), false)
             };
+        }
+        #endregion
+
+        public IEnumerable<ProjectDataModel> GetProjects()
+        {
+            return _projects.ToList();
+        }
+
+        public ProjectDataModel? GetProjectById(Guid id)
+        {
+            return _projects.FirstOrDefault(p => p.Id == id);
+        }
+
+        public TaskDataModel? GetTaskById(Guid id)
+        {
+            return _tasks.FirstOrDefault(t => t.Id == id);
+        }
+
+        public IEnumerable<TaskDataModel> GetTasksByProjectId(Guid projectId)
+        {
+            return _tasks.Where(t => t.ProjectId == projectId).ToList();
+        }
+
+        public int GetTasksCountByProjectId(Guid projectId)
+        {
+            return _tasks.Count(t => t.ProjectId == projectId);
         }
     }
 }

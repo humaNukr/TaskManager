@@ -5,14 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KMA.TaskManager.CreateModels;
+using KMA.TaskManager.Services.Interfaces;
 
 namespace KMA.TaskManager.Services.Mappers
 {
-    internal static class TaskMapper
+    public class TaskMapper : ITaskMapper
     {
         // Метод забезпечує дотримання принципу Single Responsibility: 
         // він відповідає виключно за створення UI-проекції на основі даних із "бази".
-        public static TaskUIModel MapToUI(TaskDataModel data)
+        public TaskUIModel MapToUI(TaskDataModel data)
         {
             if (data == null) return null;
 
@@ -24,6 +26,21 @@ namespace KMA.TaskManager.Services.Mappers
                 data.Priority,
                 data.DueDate,
                 data.IsCompleted
+            );
+        }
+
+        public TaskDataModel MapToData(TaskCreateModel model)
+        {
+            if (model == null) return null;
+
+            // при створенні таска завжди IsCompleted = false
+            return new TaskDataModel(
+                model.ProjectId,
+                model.Name,
+                model.Description,
+                model.Priority,
+                model.DueDate,
+                false
             );
         }
     }

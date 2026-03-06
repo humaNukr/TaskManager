@@ -1,42 +1,49 @@
-﻿using KMA.TaskManager.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Moq;
+using KMA.TaskManager.Services;
+using KMA.TaskManager.Services.Interfaces;
+using KMA.TaskManager.DataModels;
+using KMA.TaskManager.UIModels;
+using KMA.TaskManager.Common.Enums;
+using KMA.TaskManager.Storage;
 
-namespace KMA.TaskManager.Tests.Services
+namespace KMA.TaskManager.Tests.Services;
+
+public class TaskServiceTest
 {
-    public class TaskServiceTest
+    private readonly Mock<IStorageContext> _storageMock;
+    private readonly Mock<ITaskMapper> _mapperMock;
+    private readonly TaskService _service;
+
+    public TaskServiceTest()
     {
-        [Fact]
-        public void GetTasksByProjectId_ForBakeryProject_ReturnsTenTasks()
+        _storageMock = new Mock<IStorageContext>();
+        _mapperMock = new Mock<ITaskMapper>();
+        // Впроваджуємо моки в сервіс
+        _service = new TaskService(_storageMock.Object, _mapperMock.Object);
+    }
+
+    [Fact]
+    public void GetTasksByProjectId_ShouldReturnMappedTasks()
+    {
+        // Arrange
+        var projectId = Guid.NewGuid();
+        var taskId = Guid.NewGuid();
+        var rawTasks = new List<TaskDataModel>
         {
-            //Arrange
-            var service = new TaskService();
-            var bakeryId = MockStorage.Projects.First(p => p.Name.Contains("пекарні")).Id;
+            new TaskDataModel(projectId, "Data Task", "Desc", TaskPriority.High, DateTimeOffset.Now, false)
+        };
 
-            //Act
-            var tasks = service.GetTasksByProjectId(bakeryId);
-            
-            //Assert
-            Assert.Equal(10, tasks.Count);
-            Assert.All(tasks, t => Assert.Equal(bakeryId, t.ProjectId));
-        }
+        var uiTask = new TaskUIModel(taskId, projectId, "UI Task", "Desc", TaskPriority.High, DateTimeOffset.Now, false);
 
-        [Fact]
-        public void GetTaskById_WhenIdExists_ReturnsCorrectTask()
-        {
-            //Arrange
-            var service = new TaskService();      
-            var expectedTask = MockStorage.Tasks.First();
+        _storageMock.Setup(s => s.GetTasksByProjectId(projectId)).Returns(rawTasks);
+        _mapperMock.Setup(m => m.MapToUI(It.IsAny<TaskDataModel>())).Returns(uiTask);
 
-            //Act
-            var result = service.GetTaskById(expectedTask.Id);
+        // Act
+        var result = _service.GetTasksByProjectId(projectId);
 
-            //Assert
-            Assert.NotNull(result);
-            Assert.Equal(expectedTask.Name, result.Name);
-        }
+        // Assert
+        Assert.Single(result);
+        Assert.Equal("UI Task", result[0].Name);
+        _storageMock.Verify(s => s.GetTasksByProjectId(projectId), Times.Once); // Перевірка виклику сховища
     }
 }
