@@ -19,9 +19,11 @@ namespace KMA.TaskManager.Maui
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+            //Реєстрація залежностей в IoC-контейнері для забезпечення слабкої зв'язності
+            //між компонентами застосунку
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
             // сторінки реєструємо як Transient — новий екземпляр при кожному переході
             builder.Services.AddTransient<MainPage>();

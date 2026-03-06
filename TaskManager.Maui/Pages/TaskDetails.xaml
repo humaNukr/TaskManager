@@ -78,6 +78,7 @@
                            Text="{Binding Priority}"
                            FontAttributes="Bold" FontSize="16"
                            HorizontalOptions="End">
+                        <!-- Візуальна індикація статусу та пріоритету завдання за допомогою DataTriggers для уникнення використання конвертерів у Code-Behind -->
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Priority}"
