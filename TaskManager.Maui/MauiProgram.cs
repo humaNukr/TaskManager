@@ -23,10 +23,12 @@ namespace KMA.TaskManager.Maui
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+            // сторінки реєструємо як Transient — новий екземпляр при кожному переході
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<ProjectDetails>();
             builder.Services.AddTransient<TaskDetails>();
 
+            // сервіси — Singleton, бо сховище спільне для всього застосунку
             builder.Services.AddSingleton<IProjectMapper, ProjectMapper>();
             builder.Services.AddSingleton<ITaskMapper, TaskMapper>();
 

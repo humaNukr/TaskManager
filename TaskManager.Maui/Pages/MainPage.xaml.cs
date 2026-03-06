@@ -28,7 +28,7 @@ public partial class MainPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-
+        // оновлюємо список при кожному поверненні на сторінку, а не лише при першому завантаженні
         Projects = _projectService.GetAllProjects();
     }
 

@@ -14,7 +14,7 @@ public partial class ProjectDetails : ContentPage
         set
         {
             _project = value;
-            LoadTasks();
+            LoadTasks(); // завдання завантажуємо тут, бо QueryProperty встановлює значення до OnAppearing
             BindingContext = _project;
         }
     }

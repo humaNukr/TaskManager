@@ -5,6 +5,7 @@ namespace KMA.TaskManager.Storage
 {
     public class InMemoryStorageContext : IStorageContext
     {
+        // повертаємо копію списку, щоб зовнішній код не міг змінити внутрішній стан напряму
         private static readonly List<ProjectDataModel> _projects = new();
         private static readonly List<TaskDataModel> _tasks = new();
 
