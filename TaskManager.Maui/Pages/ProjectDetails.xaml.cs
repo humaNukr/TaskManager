@@ -42,7 +42,7 @@ public partial class ProjectDetails : ContentPage
             {
                 { "SelectedTask", selectedTask }
             };
-            await Shell.Current.GoToAsync(nameof(TaskDetails), navigationParameter);
+            await Shell.Current.GoToAsync("TaskDetails", navigationParameter);
         }
     }
 }

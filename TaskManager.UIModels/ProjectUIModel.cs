@@ -12,9 +12,9 @@ namespace KMA.TaskManager.UIModels
         public Guid Id { get; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ProjectType ProjectType { get; set; }
-        public int TotalTasksCount { get; set; }
-        public int CompletedTasksCount { get; set; }
+        public ProjectType ProjectType { get; }
+        public int TotalTasksCount { get; }
+        public int CompletedTasksCount { get; }
         public double ProgressFraction => Progress / 100.0; // для ProgressBar (значення 0-1)
         public string ProgressStats => $"({CompletedTasksCount} з {TotalTasksCount} завершено)"; // для текстового опису
         public List<TaskUIModel> Tasks { get; set; } = new();

@@ -7,8 +7,12 @@ namespace KMA.TaskManager.Maui
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(ProjectDetails), typeof(ProjectDetails));
-            Routing.RegisterRoute(nameof(TaskDetails), typeof(TaskDetails));
+
+            // ProjectDetails реєструємо як прямий нащадок головної сторінки
+            Routing.RegisterRoute("ProjectDetails", typeof(ProjectDetails));
+
+            // TaskDetails реєструємо як вкладений маршрут відносно деталей проєкту
+            Routing.RegisterRoute("ProjectDetails/TaskDetails", typeof(TaskDetails));
         }
     }
 }

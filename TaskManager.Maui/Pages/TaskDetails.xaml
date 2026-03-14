@@ -89,21 +89,21 @@
 
                             <DataTrigger TargetType="Label" 
                                          Binding="{Binding Priority}"
-                                         Value="High">
+                                         Value="Високий">
                                 <Setter Property="TextColor"
                                         Value="{StaticResource ThemeDarkPink}" />
                             </DataTrigger>
 
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Priority}"
-                                         Value="Medium">
+                                         Value="Середній">
                                 <Setter Property="TextColor"
                                         Value="{StaticResource ThemeCyan}" />
                             </DataTrigger>
 
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Priority}" 
-                                         Value="Low">
+                                         Value="Низький">
                                 <Setter Property="TextColor" 
                                         Value="{StaticResource TextSecondary}" />
                             </DataTrigger>

@@ -40,7 +40,7 @@ public partial class MainPage : ContentPage
             {
                 { "SelectedProject", selectedProject }
             };
-            await Shell.Current.GoToAsync(nameof(ProjectDetails), navigationParameter);
+            await Shell.Current.GoToAsync("ProjectDetails", navigationParameter);
         }
     }
 }

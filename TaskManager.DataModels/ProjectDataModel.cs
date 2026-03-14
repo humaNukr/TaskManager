@@ -13,7 +13,7 @@ namespace KMA.TaskManager.DataModels
 
         public string Name { get; set; }
         public string Description { get; set; }
-        public ProjectType ProjectType { get; set; }
+        public ProjectType ProjectType { get; }
 
         public ProjectDataModel(string name, string description, ProjectType projectType)
         {
