@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Storage", "Task
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.CreateModels", "TaskManager.CreateModels\TaskManager.CreateModels.csproj", "{4D031DE5-822A-4A2C-A78D-69ECCA15D093}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskMangager.Repositories", "TaskMangager.Repositories\TaskMangager.Repositories.csproj", "{2AFAC0E9-CC47-4E25-8C51-7D2B0542DF12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.DTOModels", "TaskManager.DTOModels\TaskManager.DTOModels.csproj", "{18E577F3-9595-45E2-85D7-CFB1EC178DF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +66,14 @@ Global
 		{4D031DE5-822A-4A2C-A78D-69ECCA15D093}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D031DE5-822A-4A2C-A78D-69ECCA15D093}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D031DE5-822A-4A2C-A78D-69ECCA15D093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AFAC0E9-CC47-4E25-8C51-7D2B0542DF12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AFAC0E9-CC47-4E25-8C51-7D2B0542DF12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AFAC0E9-CC47-4E25-8C51-7D2B0542DF12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AFAC0E9-CC47-4E25-8C51-7D2B0542DF12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18E577F3-9595-45E2-85D7-CFB1EC178DF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18E577F3-9595-45E2-85D7-CFB1EC178DF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18E577F3-9595-45E2-85D7-CFB1EC178DF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18E577F3-9595-45E2-85D7-CFB1EC178DF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +87,8 @@ Global
 		{1343C8CB-4B36-42C9-BC4B-D3C720EF3BB0} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{0379E507-A213-4F2F-AEC0-F27A2607F328} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{4D031DE5-822A-4A2C-A78D-69ECCA15D093} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{2AFAC0E9-CC47-4E25-8C51-7D2B0542DF12} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{18E577F3-9595-45E2-85D7-CFB1EC178DF1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8A0364CF-494D-4A2F-9586-F1BBAA89B6AA}

@@ -1,39 +1,46 @@
-﻿using System;
-using KMA.TaskManager.DataModels;
+﻿using KMA.TaskManager.DataModels;
+using KMA.TaskManager.Repositories.Interfaces;
+using KMA.TaskManager.Services.DTOModels.Tasks;
 using KMA.TaskManager.Services.Interfaces;
 using KMA.TaskManager.Services.Mappers;
 using KMA.TaskManager.Storage;
 using KMA.TaskManager.UIModels;
+using System;
+using System.Threading.Tasks;
 
 namespace KMA.TaskManager.Services
 {
     public class TaskService : ITaskService
     {
-        private readonly IStorageContext _storageContext;
+        private readonly ITaskRepository _taskRepository;
         private readonly ITaskMapper _taskMapper;
 
         // Впровадження залежності через конструктор(Constructor Injection)
-        public TaskService(IStorageContext storageContext, ITaskMapper taskMapper)
+        public TaskService(ITaskRepository taskRepository, ITaskMapper taskMapper)
         {
-            _storageContext = storageContext;
+            _taskRepository = taskRepository;
             _taskMapper = taskMapper;
         }
 
         //Отримання завдань за ідентифікатором проекту
-        public List<TaskUIModel> GetTasksByProjectId(Guid projectId)
+        public IEnumerable<TaskListDto> GetTasksByProjectId(Guid projectId)
         {
             // Отримуємо тільки ті завдання, що належать конкретному проєкту
-            var tasksData = _storageContext.GetTasksByProjectId(projectId);
+            var tasks = _taskRepository.GetTasksByProjectId(projectId);
 
-            // Мапимо кожну DataModel у UIModel для коректного відображення в списку
-            return tasksData.Select(_taskMapper.MapToUI).ToList();
+            // Мапимо кожну DataModel у DTO для передачі даних у UI
+            foreach (var task in tasks)
+            {
+                yield return _taskMapper.MapToListDTO(task);
+            }
         }
 
         //Детальна Інформація про завдання
-        public TaskUIModel? GetTaskById(Guid id)
+        public TaskDetailsDto? GetTaskById(Guid taskId)
         {
-            var taskData = _storageContext.GetTaskById(id);
-            return taskData != null ? _taskMapper.MapToUI(taskData) : null;
+            var task = _taskRepository.GetTaskById(taskId);
+            //Мапимо DataModel у DTO для передачі даних у UI
+            return _taskMapper.MapToDetailsDTO(task);
         }
     }
 }
