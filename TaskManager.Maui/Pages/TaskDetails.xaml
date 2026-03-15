@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:KMA.TaskManager.Maui.ViewModels"
              x:Class="KMA.TaskManager.Maui.Pages.TaskDetails"
+             x:DataType="vm:TaskDetailsViewModel"
              BackgroundColor="{StaticResource PageBackground}"
              Title="Деталі завдання">
 
@@ -15,7 +17,7 @@
                    Padding="20">
                 <VerticalStackLayout Spacing="15">
 
-                    <Label Text="{Binding Name}" 
+                    <Label Text="{Binding CurrentTask.Name}" 
                            FontSize="24" 
                            FontAttributes="Bold" 
                            TextColor="{StaticResource TextPrimary}" />
@@ -36,20 +38,16 @@
                                    FontAttributes="Bold">
                                 <Label.Triggers>
                                     <DataTrigger TargetType="Label" 
-                                                 Binding="{Binding IsCompleted}"
+                                                 Binding="{Binding CurrentTask.IsCompleted}"
                                                  Value="True">
-                                        <Setter Property="Text"
-                                                Value="Завершено ✅" />
-                                        <Setter Property="TextColor"
-                                                Value="{StaticResource SuccessColor}" />
+                                        <Setter Property="Text" Value="Завершено ✅" />
+                                        <Setter Property="TextColor" Value="{StaticResource SuccessColor}" />
                                     </DataTrigger>
                                     <DataTrigger TargetType="Label" 
-                                                 Binding="{Binding IsCompleted}"
+                                                 Binding="{Binding CurrentTask.IsCompleted}"
                                                  Value="False">
-                                        <Setter Property="Text"
-                                                Value="В процесі ⏳" />
-                                        <Setter Property="TextColor"
-                                                Value="{StaticResource ThemeGoldenrod}" />
+                                        <Setter Property="Text" Value="В процесі ⏳" />
+                                        <Setter Property="TextColor" Value="{StaticResource ThemeGoldenrod}" />
                                     </DataTrigger>
                                 </Label.Triggers>
                             </Label>
@@ -67,89 +65,62 @@
                       ColumnDefinitions="*, *"
                       RowSpacing="15">
 
-                    <Label Grid.Row="0"
-                           Grid.Column="0"
+                    <Label Grid.Row="0" Grid.Column="0"
                            Text="Пріоритет:"
                            TextColor="{StaticResource TextSecondary}"
                            FontAttributes="Bold"
                            VerticalOptions="Center"/>
-                    <Label Grid.Row="0"
-                           Grid.Column="1"
-                           Text="{Binding Priority}"
+
+                    <Label Grid.Row="0" Grid.Column="1"
+                           Text="{Binding CurrentTask.Priority}"
                            FontAttributes="Bold" FontSize="16"
                            HorizontalOptions="End">
-                        <!-- Візуальна індикація статусу та пріоритету завдання за допомогою DataTriggers для уникнення використання конвертерів у Code-Behind -->
                         <Label.Triggers>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding Priority}"
-                                         Value="Critical">
-                                <Setter Property="TextColor"
-                                        Value="{StaticResource DangerColor}" />
+                            <DataTrigger TargetType="Label" Binding="{Binding CurrentTask.Priority}" Value="Critical">
+                                <Setter Property="TextColor" Value="{StaticResource DangerColor}" />
                             </DataTrigger>
-
-                            <DataTrigger TargetType="Label" 
-                                         Binding="{Binding Priority}"
-                                         Value="Високий">
-                                <Setter Property="TextColor"
-                                        Value="{StaticResource ThemeDarkPink}" />
+                            <DataTrigger TargetType="Label" Binding="{Binding CurrentTask.Priority}" Value="High">
+                                <Setter Property="TextColor" Value="{StaticResource ThemeDarkPink}" />
                             </DataTrigger>
-
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding Priority}"
-                                         Value="Середній">
-                                <Setter Property="TextColor"
-                                        Value="{StaticResource ThemeCyan}" />
+                            <DataTrigger TargetType="Label" Binding="{Binding CurrentTask.Priority}" Value="Medium">
+                                <Setter Property="TextColor" Value="{StaticResource ThemeCyan}" />
                             </DataTrigger>
-
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding Priority}" 
-                                         Value="Низький">
-                                <Setter Property="TextColor" 
-                                        Value="{StaticResource TextSecondary}" />
+                            <DataTrigger TargetType="Label" Binding="{Binding CurrentTask.Priority}" Value="Low">
+                                <Setter Property="TextColor" Value="{StaticResource TextSecondary}" />
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
 
-                    <Label Grid.Row="1"
-                           Grid.Column="0"
+                    <Label Grid.Row="1" Grid.Column="0"
                            Text="Виконати до:"
                            TextColor="{StaticResource TextSecondary}" 
                            FontAttributes="Bold"
                            VerticalOptions="Center"/>
-                    <Label Grid.Row="1" 
-                           Grid.Column="1" 
-                           Text="{Binding DueDate, StringFormat='{0:dd MMMM yyyy}'}"
+
+                    <Label Grid.Row="1" Grid.Column="1" 
+                           Text="{Binding CurrentTask.DueDate, StringFormat='{0:dd MMMM yyyy}'}"
                            TextColor="{StaticResource TextPrimary}"
                            FontAttributes="Bold" 
                            HorizontalOptions="End"/>
 
-                    <Label Grid.Row="2" 
-                           Grid.Column="0"
+                    <Label Grid.Row="2" Grid.Column="0"
                            Text="Ліміт часу:"
                            TextColor="{StaticResource TextSecondary}" 
                            FontAttributes="Bold" 
                            VerticalOptions="Center"/>
-                    <Label Grid.Row="2"
-                           Grid.Column="1"
+
+                    <Label Grid.Row="2" Grid.Column="1"
                            FontSize="14" 
                            FontAttributes="Bold"
                            HorizontalOptions="End">
                         <Label.Triggers>
-                            <DataTrigger TargetType="Label" 
-                                         Binding="{Binding IsOverdue}" 
-                                         Value="True">
-                                <Setter Property="Text" 
-                                        Value="Прострочено ⚠️" />
-                                <Setter Property="TextColor"
-                                        Value="{StaticResource DangerColor}" />
+                            <DataTrigger TargetType="Label" Binding="{Binding CurrentTask.IsOverdue}" Value="True">
+                                <Setter Property="Text" Value="Прострочено ⚠️" />
+                                <Setter Property="TextColor" Value="{StaticResource DangerColor}" />
                             </DataTrigger>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding IsOverdue}"
-                                         Value="False">
-                                <Setter Property="Text"
-                                        Value="В межах норми 🟢" />
-                                <Setter Property="TextColor"
-                                        Value="{StaticResource SuccessColor}" />
+                            <DataTrigger TargetType="Label" Binding="{Binding CurrentTask.IsOverdue}" Value="False">
+                                <Setter Property="Text" Value="В межах норми 🟢" />
+                                <Setter Property="TextColor" Value="{StaticResource SuccessColor}" />
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
@@ -166,7 +137,7 @@
                            FontSize="12" 
                            FontAttributes="Bold" 
                            TextColor="{StaticResource ThemeGoldenrod}" />
-                    <Label Text="{Binding Description}" 
+                    <Label Text="{Binding CurrentTask.Description}" 
                            FontSize="16" 
                            TextColor="{StaticResource TextPrimary}"
                            LineBreakMode="WordWrap" />
