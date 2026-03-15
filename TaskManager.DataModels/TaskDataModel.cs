@@ -28,8 +28,14 @@ namespace KMA.TaskManager.DataModels
 
         public TaskDataModel(Guid projectId, string name, string description, TaskPriority priority,
             DateTimeOffset dueDate, bool isCompleted)
+            : this(Guid.NewGuid(), projectId, name, description, priority, dueDate, isCompleted)
         {
-            Id = Guid.NewGuid();
+        }
+
+        public TaskDataModel(Guid id, Guid projectId, string name, string description,
+            TaskPriority priority, DateTimeOffset dueDate, bool isCompleted)
+        {
+            Id = id;
             ProjectId = projectId;
             Name = name;
             Description = description;
