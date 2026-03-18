@@ -7,8 +7,6 @@ using KMA.TaskManager.Maui.ViewModels;
 using KMA.TaskManager.UIModels;
 
 namespace KMA.TaskManager.Maui.Pages;
-
-[QueryProperty(nameof(Task), "SelectedTask")]
 public partial class TaskDetails : ContentPage
 {
     public TaskDetails(TaskDetailsViewModel vm)
