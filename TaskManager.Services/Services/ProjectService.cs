@@ -1,57 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using KMA.TaskManager.DataModels;
+using KMA.TaskManager.Repositories.Interfaces;
+using KMA.TaskManager.Services.DTOModels.Projects;
 using KMA.TaskManager.Services.Interfaces;
-using KMA.TaskManager.Services.Mappers;
-using KMA.TaskManager.Storage;
-using KMA.TaskManager.UIModels;
 
 namespace KMA.TaskManager.Services
 {
     public class ProjectService : IProjectService
     {
-        private readonly IStorageContext _storageContext;
+        private readonly IProjectRepository _projectRepository;
+        private readonly ITaskRepository _taskRepository;
         private readonly IProjectMapper _projectMapper;
+        private readonly ITaskMapper _taskMapper;
 
         // Впровадження залежності через конструктор(Constructor Injection)
-        public ProjectService(IStorageContext storageContext, IProjectMapper projectMapper)
+        public ProjectService(
+            IProjectRepository projectRepository,
+            ITaskRepository taskRepository,
+            IProjectMapper projectMapper,
+            ITaskMapper taskMapper)
         {
-            _storageContext = storageContext;
+            _projectRepository = projectRepository;
+            _taskRepository = taskRepository;
             _projectMapper = projectMapper;
+            _taskMapper = taskMapper;
         }
 
-        public List<ProjectUIModel> GetAllProjects()
+        public IEnumerable<ProjectListDTO> GetAllProjects()
         {
-            var projectDataModels = _storageContext.GetProjects();
+            var projectDataModels = _projectRepository.GetProjects();
 
-            // Для кожного проєкту рахуємо статистику та перетворюємо в UI-модель
-            return projectDataModels.Select(project =>
+            // Для кожного проєкту рахуємо статистику та перетворюємо в DTO
+            foreach (var project in projectDataModels)
             {
-                // Рахуємо загальну кількість завдань для цього проєкту
-                var totalTasks = _storageContext.GetTasksCountByProjectId(project.Id);
+                var tasks = _taskRepository.GetTasksByProjectId(project.Id).ToList();
 
-                // Рахуємо кількість завершених завдань для розрахунку прогресу
-                var completedTasks = _storageContext.GetTasksByProjectId(project.Id)
-                    .Count(t => t.IsCompleted);
+                var totalTasks = tasks.Count;
+                var completedTasks = tasks.Count(t => t.IsCompleted);
 
-                // Використовуємо мапер для створення UI-моделі
-                return _projectMapper.MapToUI(project, totalTasks, completedTasks);
-            }).ToList();
+                yield return _projectMapper.MapToListDTO(project, totalTasks, completedTasks);
+            }
         }
 
-        public ProjectUIModel? GetProjectById(Guid id)
+        public ProjectDetailsDTO? GetProjectById(Guid id)
         {
-            var projectData = _storageContext.GetProjectById(id);
+            var projectData = _projectRepository.GetProjectById(id);
             if (projectData == null) return null;
 
-            var tasks = _storageContext.GetTasksByProjectId(id).ToList();
-            int total = tasks.Count;
-            int completed = tasks.Count(t => t.IsCompleted);
+            // Отримуємо DataModel тасок через репозиторій і відразу конвертуємо їх у DTO
+            var tasksData = _taskRepository.GetTasksByProjectId(id);
+            var tasksDto = tasksData.Select(t => _taskMapper.MapToListDTO(t)).ToList();
 
-            return _projectMapper.MapToUI(projectData, total, completed);
+            return _projectMapper.MapToDetailsDTO(projectData, tasksDto);
         }
     }
 }
