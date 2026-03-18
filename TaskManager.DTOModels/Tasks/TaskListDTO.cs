@@ -2,7 +2,7 @@
 
 namespace KMA.TaskManager.Services.DTOModels.Tasks;
 
-public record TaskListDto(
+public record TaskListDTO(
     Guid Id,
     string Name,
     TaskPriority Priority,

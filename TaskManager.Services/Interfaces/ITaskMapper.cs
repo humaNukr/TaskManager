@@ -9,7 +9,7 @@ namespace KMA.TaskManager.Services.Interfaces
     {
         TaskUIModel MapToUI(TaskDataModel data);
         TaskDataModel MapToData(TaskCreateModel model);
-        TaskListDto MapToListDTO(TaskDataModel data);
+        TaskListDTO MapToListDTO(TaskDataModel data);
         TaskDetailsDto MapToDetailsDTO(TaskDataModel data);
     }
 }

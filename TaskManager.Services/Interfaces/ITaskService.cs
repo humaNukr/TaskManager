@@ -12,7 +12,7 @@ namespace KMA.TaskManager.Services.Interfaces
     public interface ITaskService
     {
         //Отримання завдань за ідентифікатором проекту
-        IEnumerable<TaskListDto> GetTasksByProjectId(Guid projectId);
+        IEnumerable<TaskListDTO> GetTasksByProjectId(Guid projectId);
 
         //Детальна Інформація про завдання
         TaskDetailsDto? GetTaskById(Guid taskId);

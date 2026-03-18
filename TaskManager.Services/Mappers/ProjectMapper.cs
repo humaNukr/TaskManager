@@ -23,7 +23,7 @@ namespace KMA.TaskManager.Services.Mappers
             );
         }
 
-        public ProjectDetailsDTO MapToDetailsDTO(ProjectDataModel data, IEnumerable<TaskListDto> tasks)
+        public ProjectDetailsDTO MapToDetailsDTO(ProjectDataModel data, IEnumerable<TaskListDTO> tasks)
         {
             if (data == null) return null;
 

@@ -23,7 +23,7 @@ namespace KMA.TaskManager.Services
         }
 
         //Отримання завдань за ідентифікатором проекту
-        public IEnumerable<TaskListDto> GetTasksByProjectId(Guid projectId)
+        public IEnumerable<TaskListDTO> GetTasksByProjectId(Guid projectId)
         {
             // Отримуємо тільки ті завдання, що належать конкретному проєкту
             var tasks = _taskRepository.GetTasksByProjectId(projectId);

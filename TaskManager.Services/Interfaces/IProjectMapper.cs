@@ -9,7 +9,7 @@ namespace KMA.TaskManager.Services.Interfaces
     public interface IProjectMapper
     {
         ProjectListDTO MapToListDTO(ProjectDataModel data, int total, int completed);
-        ProjectDetailsDTO MapToDetailsDTO(ProjectDataModel data, IEnumerable<TaskListDto> tasks);
+        ProjectDetailsDTO MapToDetailsDTO(ProjectDataModel data, IEnumerable<TaskListDTO> tasks);
         ProjectDataModel MapToData(ProjectCreateModel model);
     }
 }

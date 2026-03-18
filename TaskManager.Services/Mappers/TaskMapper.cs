@@ -45,7 +45,7 @@ namespace KMA.TaskManager.Services.Mappers
             );
         }
 
-        public TaskListDto MapToListDTO(TaskDataModel data)
+        public TaskListDTO MapToListDTO(TaskDataModel data)
         {
             if (data == null) return null;
 

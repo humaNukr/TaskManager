@@ -10,5 +10,5 @@ public record ProjectDetailsDTO(
     string Name,
     string Description,
     ProjectType ProjectType,
-    IEnumerable<TaskListDto> Tasks
+    IEnumerable<TaskListDTO> Tasks
 );

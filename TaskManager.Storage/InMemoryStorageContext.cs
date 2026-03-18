@@ -1,6 +1,5 @@
 ﻿using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.DataModels;
-using KMA.TaskManager.Storage.Interfaces;
 
 namespace KMA.TaskManager.Storage
 {
