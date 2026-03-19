@@ -13,23 +13,6 @@ namespace KMA.TaskManager.Services.Mappers
 {
     public class TaskMapper : ITaskMapper
     {
-        // Метод забезпечує дотримання принципу Single Responsibility: 
-        // він відповідає виключно за створення UI-проекції на основі даних із "бази".
-        public TaskUIModel MapToUI(TaskDataModel data)
-        {
-            if (data == null) return null;
-
-            return new TaskUIModel(
-                data.Id,
-                data.ProjectId,
-                data.Name,
-                data.Description,
-                data.Priority,
-                data.DueDate,
-                data.IsCompleted
-            );
-        }
-
         public TaskDataModel MapToData(TaskCreateModel model)
         {
             if (model == null) return null;

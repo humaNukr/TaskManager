@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskManager.DataModels\TaskManager.DataModels.csproj" />
-    <ProjectReference Include="..\TaskManager.UIModels\TaskManager.UIModels.csproj" />
+    <ProjectReference Include="..\TaskManager.UIModels\TaskManager.EditModels.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,6 @@ namespace KMA.TaskManager.Services.Interfaces
 {
     public interface ITaskMapper
     {
-        TaskUIModel MapToUI(TaskDataModel data);
         TaskDataModel MapToData(TaskCreateModel model);
         TaskListDTO MapToListDTO(TaskDataModel data);
         TaskDetailsDto MapToDetailsDTO(TaskDataModel data);

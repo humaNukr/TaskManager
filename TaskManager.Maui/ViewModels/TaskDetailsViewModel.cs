@@ -24,7 +24,7 @@ namespace KMA.TaskManager.Maui.ViewModels
         {
             if (query.ContainsKey("TaskId") && query["TaskId"] is Guid taskId)
             {
-                // Отримуємо деталі таски через сервіс без використання await
+                // Отримуємо деталі таски через сервіс
                 CurrentTask = _taskService.GetTaskById(taskId);
             }
         }

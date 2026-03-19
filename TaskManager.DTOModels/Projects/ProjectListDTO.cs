@@ -6,4 +6,7 @@ public record ProjectListDTO(
     string Name,
     int TotalTasks,
     int CompletedTasks
-);
+)
+{
+    public double Progress => TotalTasks == 0 ? 0 : (double)CompletedTasks / TotalTasks * 100;
+}

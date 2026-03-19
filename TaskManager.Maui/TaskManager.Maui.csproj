@@ -69,7 +69,7 @@
 	  <ProjectReference Include="..\TaskManager.DataModels\TaskManager.DataModels.csproj" />
 	  <ProjectReference Include="..\TaskManager.Services\TaskManager.Services.csproj" />
 	  <ProjectReference Include="..\TaskManager.Storage\TaskManager.Storage.csproj" />
-	  <ProjectReference Include="..\TaskManager.UIModels\TaskManager.UIModels.csproj" />
+	  <ProjectReference Include="..\TaskManager.UIModels\TaskManager.EditModels.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
