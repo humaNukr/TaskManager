@@ -29,14 +29,14 @@ namespace KMA.TaskManager.Maui.ViewModels
         }
 
         [RelayCommand]
-        private async Task OpenProjectDetails(Guid projectId)
+        private void OpenProjectDetails(Guid projectId)
         {
             var navigationParameter = new Dictionary<string, object>
             {
                 { "ProjectId", projectId }
             };
 
-            await Shell.Current.GoToAsync("ProjectDetails", navigationParameter);
+            Shell.Current.GoToAsync("ProjectDetails", navigationParameter);
         }
     }
 }
