@@ -1,6 +1,6 @@
 ﻿using KMA.TaskManager.Common.Enums;
 
-namespace KMA.TaskManager.UIModels;
+namespace KMA.TaskManager.EditModels;
 
 public class TaskEditModel
 {

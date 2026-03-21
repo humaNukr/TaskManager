@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36915.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.EditModels", "TaskManager.UIModels\TaskManager.EditModels.csproj", "{6912E074-92E6-4949-A485-FEAFF6AA5095}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.EditModels", "TaskManager.EditModels\TaskManager.EditModels.csproj", "{6912E074-92E6-4949-A485-FEAFF6AA5095}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.DataModels", "TaskManager.DataModels\TaskManager.DataModels.csproj", "{BEB5465B-4899-4F9E-9750-BA62A90EB063}"
 EndProject
