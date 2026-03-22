@@ -13,11 +13,16 @@ namespace KMA.TaskManager.DataModels
 
         public string Name { get; set; }
         public string Description { get; set; }
-        public ProjectType ProjectType { get; set; }
+        public ProjectType ProjectType { get; }
 
         public ProjectDataModel(string name, string description, ProjectType projectType)
+            : this(Guid.NewGuid(), name, description, projectType)
         {
-            Id = Guid.NewGuid(); // генеруємо унікальний Id один раз при створенні
+        }
+
+        public ProjectDataModel(Guid id, string name, string description, ProjectType projectType)
+        {
+            Id = id;
             Name = name;
             Description = description;
             ProjectType = projectType;

@@ -1,5 +1,9 @@
-﻿using KMA.TaskManager.Common.Enums;
+﻿using System;
+using System.Collections.Generic;
+using KMA.TaskManager.Common.Enums;
+using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.DataModels;
+using KMA.TaskManager.Services.DTOModels.Tasks;
 using KMA.TaskManager.Services.Mappers;
 using Xunit;
 
@@ -15,7 +19,7 @@ public class ProjectMapperTest
     }
 
     [Fact]
-    public void MapToUI_ValidDataModel_ReturnsCorrectUIModel()
+    public void MapToListDTO_ValidDataModel_ReturnsCorrectDTO()
     {
         // Arrange
         var data = new ProjectDataModel("Test Project", "Description", ProjectType.Personal);
@@ -23,7 +27,28 @@ public class ProjectMapperTest
         int completed = 5;
 
         // Act
-        var result = _mapper.MapToUI(data, total, completed);
+        var result = _mapper.MapToListDTO(data, total, completed);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(data.Id, result.Id);
+        Assert.Equal(data.Name, result.Name);
+        Assert.Equal(total, result.TotalTasks);
+        Assert.Equal(completed, result.CompletedTasks);
+    }
+
+    [Fact]
+    public void MapToDetailsDTO_ValidDataModel_ReturnsCorrectDTO()
+    {
+        // Arrange
+        var data = new ProjectDataModel("Test Project", "Description", ProjectType.Personal);
+        var tasks = new List<TaskListDTO>
+        {
+            new TaskListDTO(Guid.NewGuid(), "Task 1", TaskPriority.Medium, false, false)
+        };
+
+        // Act
+        var result = _mapper.MapToDetailsDTO(data, tasks);
 
         // Assert
         Assert.NotNull(result);
@@ -31,20 +56,32 @@ public class ProjectMapperTest
         Assert.Equal(data.Name, result.Name);
         Assert.Equal(data.Description, result.Description);
         Assert.Equal(data.ProjectType, result.ProjectType);
-        Assert.Equal(total, result.TotalTasksCount);
-        Assert.Equal(completed, result.CompletedTasksCount);
+        Assert.Single(result.Tasks);
     }
 
     [Fact]
-    public void MapToUI_NullDataModel_ReturnsNull()
+    public void MapToData_ValidCreateModel_ReturnsCorrectDataModel()
     {
         // Arrange
-        ProjectDataModel data = null;
+        var createModel = new ProjectCreateModel("New Project", "New Desc", ProjectType.Work);
 
         // Act
-        var result = _mapper.MapToUI(data, 0, 0);
+        var result = _mapper.MapToData(createModel);
 
         // Assert
-        Assert.Null(result);
+        Assert.NotNull(result);
+        Assert.Equal(createModel.Name, result.Name);
+        Assert.Equal(createModel.Description, result.Description);
+        Assert.Equal(createModel.ProjectType, result.ProjectType);
+        Assert.NotEqual(Guid.Empty, result.Id);
+    }
+
+    [Fact]
+    public void Mappers_NullInput_ReturnsNull()
+    {
+        // Assert
+        Assert.Null(_mapper.MapToListDTO(null, 0, 0));
+        Assert.Null(_mapper.MapToDetailsDTO(null, new List<TaskListDTO>()));
+        Assert.Null(_mapper.MapToData(null));
     }
 }

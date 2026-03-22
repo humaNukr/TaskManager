@@ -4,11 +4,11 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>KMA.TaskManager.Storage</RootNamespace>
+    <RootNamespace>KMA.TaskManager.Services.DTOModels</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TaskManager.DataModels\TaskManager.DataModels.csproj" />
+    <ProjectReference Include="..\TaskManager.Common\TaskManager.Common.csproj" />
   </ItemGroup>
 
 </Project>

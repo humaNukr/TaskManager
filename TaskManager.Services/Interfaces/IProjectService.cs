@@ -1,9 +1,11 @@
-﻿using KMA.TaskManager.UIModels;
+﻿using System;
+using System.Collections.Generic;
+using KMA.TaskManager.Services.DTOModels.Projects;
 
 namespace KMA.TaskManager.Services.Interfaces;
 
 public interface IProjectService
 {
-    List<ProjectUIModel> GetAllProjects();
-    ProjectUIModel? GetProjectById(Guid projectId);
+    IEnumerable<ProjectListDTO> GetAllProjects();
+    ProjectDetailsDTO? GetProjectById(Guid projectId);
 }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.DataModels;
+using KMA.TaskManager.Services.DTOModels.Projects;
+using KMA.TaskManager.Services.DTOModels.Tasks;
 using KMA.TaskManager.Services.Interfaces;
-using KMA.TaskManager.UIModels;
 
 namespace KMA.TaskManager.Services.Mappers
 {
@@ -14,17 +11,28 @@ namespace KMA.TaskManager.Services.Mappers
     {
         // total і completed передаються ззовні, бо DataModel не знає про завдання —
         // це відповідальність сервісного шару
-        public ProjectUIModel MapToUI(ProjectDataModel data, int total, int completed)
+        public ProjectListDTO MapToListDTO(ProjectDataModel data, int total, int completed)
         {
             if (data == null) return null;
 
-            return new ProjectUIModel(
+            return new ProjectListDTO(
+                data.Id,
+                data.Name,
+                total,
+                completed
+            );
+        }
+
+        public ProjectDetailsDTO MapToDetailsDTO(ProjectDataModel data, IEnumerable<TaskListDTO> tasks)
+        {
+            if (data == null) return null;
+
+            return new ProjectDetailsDTO(
                 data.Id,
                 data.Name,
                 data.Description,
                 data.ProjectType,
-                total,
-                completed
+                tasks
             );
         }
 

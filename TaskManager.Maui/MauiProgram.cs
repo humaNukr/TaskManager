@@ -1,4 +1,7 @@
 ﻿using KMA.TaskManager.Maui.Pages;
+using KMA.TaskManager.Maui.ViewModels;
+using KMA.TaskManager.Repositories;
+using KMA.TaskManager.Repositories.Interfaces;
 using KMA.TaskManager.Services;
 using KMA.TaskManager.Services.Interfaces;
 using KMA.TaskManager.Services.Mappers;
@@ -30,6 +33,10 @@ namespace KMA.TaskManager.Maui
             builder.Services.AddTransient<ProjectDetails>();
             builder.Services.AddTransient<TaskDetails>();
 
+            builder.Services.AddTransient<TaskDetailsViewModel>();
+            builder.Services.AddTransient<MainPageViewModel>();
+            builder.Services.AddTransient<ProjectDetailsViewModel>();
+
             // сервіси — Singleton, бо сховище спільне для всього застосунку
             builder.Services.AddSingleton<IProjectMapper, ProjectMapper>();
             builder.Services.AddSingleton<ITaskMapper, TaskMapper>();
@@ -38,6 +45,9 @@ namespace KMA.TaskManager.Maui
 
             builder.Services.AddSingleton<ITaskService, TaskService>();
             builder.Services.AddSingleton<IProjectService, ProjectService>();
+
+            builder.Services.AddSingleton<ITaskRepository, TaskRepository>();
+            builder.Services.AddSingleton<IProjectRepository, ProjectRepository>();
 
             return builder.Build();
         }
