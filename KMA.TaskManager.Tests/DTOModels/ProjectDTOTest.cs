@@ -15,7 +15,7 @@ public class ProjectDTOTest
         // Arrange
         var tasks = new List<TaskListDTO>
         {
-            new TaskListDTO(Guid.NewGuid(), "Task 1", TaskPriority.Medium, false, true),
+            new TaskListDTO(Guid.NewGuid(), "Task 1", TaskPriority.Medium, true, false),
             new TaskListDTO(Guid.NewGuid(), "Task 2", TaskPriority.Medium, false, false)
         };
         var project = new ProjectDetailsDTO(Guid.NewGuid(), "Test", "Desc", ProjectType.Work, tasks);

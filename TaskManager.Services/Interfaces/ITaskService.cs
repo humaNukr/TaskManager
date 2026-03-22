@@ -1,5 +1,4 @@
 ﻿using KMA.TaskManager.Services.Mappers;
-using KMA.TaskManager.UIModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

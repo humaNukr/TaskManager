@@ -1,6 +1,5 @@
 ﻿using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.DataModels;
-using KMA.TaskManager.UIModels;
 using KMA.TaskManager.Services.DTOModels.Tasks;
 
 namespace KMA.TaskManager.Services.Interfaces

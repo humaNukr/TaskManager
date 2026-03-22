@@ -2,7 +2,6 @@
 using KMA.TaskManager.DataModels;
 using KMA.TaskManager.Services.DTOModels.Tasks;
 using KMA.TaskManager.Services.Interfaces;
-using KMA.TaskManager.UIModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

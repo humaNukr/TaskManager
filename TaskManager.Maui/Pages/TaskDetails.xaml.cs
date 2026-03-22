@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KMA.TaskManager.Maui.ViewModels;
-using KMA.TaskManager.UIModels;
 
 namespace KMA.TaskManager.Maui.Pages;
 public partial class TaskDetails : ContentPage

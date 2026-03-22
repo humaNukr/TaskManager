@@ -4,7 +4,6 @@ using KMA.TaskManager.Services.DTOModels.Tasks;
 using KMA.TaskManager.Services.Interfaces;
 using KMA.TaskManager.Services.Mappers;
 using KMA.TaskManager.Storage;
-using KMA.TaskManager.UIModels;
 using System;
 using System.Threading.Tasks;
 
