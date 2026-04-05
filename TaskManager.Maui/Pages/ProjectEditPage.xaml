@@ -1,30 +1,37 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:KMA.TaskManager.Maui.Tools.Converters"
              x:Class="KMA.TaskManager.Maui.Pages.ProjectEditPage"
-             Title="Ðåäàãóâàòè ïðîºêò">
+             Title="Ð ÐµÐ´Ð°Ð³ÑƒÐ²Ð°Ð½Ð½Ñ Ð¿Ñ€Ð¾Ñ”ÐºÑ‚Ñƒ">
+
+    <ContentPage.Resources>
+        <converters:EnumToDisplayNameConverter x:Key="EnumConverter" />
+    </ContentPage.Resources>
 
     <Grid>
         <VerticalStackLayout Padding="20" Spacing="15" IsVisible="{Binding IsNotBusy}">
-            <Label Text="Íàçâà ïðîºêòó" FontAttributes="Bold" />
-            <Entry Text="{Binding Name}" Placeholder="Íàçâà..." />
+            <Label Text="ÐÐ°Ð·Ð²Ð° Ð¿Ñ€Ð¾Ñ”ÐºÑ‚Ñƒ" FontAttributes="Bold" />
+            <Entry Text="{Binding Name}" Placeholder="ÐÐ°Ð·Ð²Ð°..." />
 
-            <Label Text="Îïèñ" FontAttributes="Bold" />
-            <Editor Text="{Binding Description}" Placeholder="Îïèñ..." HeightRequest="100" />
+            <Label Text="ÐžÐ¿Ð¸Ñ" FontAttributes="Bold" />
+            <Editor Text="{Binding Description}" Placeholder="ÐžÐ¿Ð¸Ñ..." HeightRequest="100" />
 
-            <Label Text="Òèï ïðîºêòó" FontAttributes="Bold" />
-            <Picker ItemsSource="{Binding ProjectTypes}" SelectedItem="{Binding SelectedProjectType}" />
+            <Label Text="Ð¢Ð¸Ð¿ Ð¿Ñ€Ð¾Ñ”ÐºÑ‚Ñƒ" FontAttributes="Bold" />
+            <Picker ItemsSource="{Binding ProjectTypes}"
+                    SelectedItem="{Binding SelectedProjectType}"
+                    ItemDisplayBinding="{Binding ., Converter={StaticResource EnumConverter}}" />
 
             <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Margin="0,20">
-                <Button Text="Ñêàñóâàòè" Command="{Binding CancelCommand}" BackgroundColor="Gray" WidthRequest="120" />
-                <Button Text="Çáåðåãòè" Command="{Binding SaveCommand}" BackgroundColor="Green" WidthRequest="120" />
+                <Button Text="Ð¡ÐºÐ°ÑÑƒÐ²Ð°Ñ‚Ð¸" Command="{Binding CancelCommand}" BackgroundColor="Gray" WidthRequest="120" />
+                <Button Text="Ð—Ð±ÐµÑ€ÐµÐ³Ñ‚Ð¸" Command="{Binding SaveCommand}" BackgroundColor="Green" WidthRequest="120" />
             </HorizontalStackLayout>
         </VerticalStackLayout>
 
-        <ActivityIndicator IsRunning="{Binding IsBusy}" 
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
                            IsVisible="{Binding IsBusy}"
-                           VerticalOptions="Center" 
-                           HorizontalOptions="Center" 
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
                            Color="Blue" />
     </Grid>
 </ContentPage>

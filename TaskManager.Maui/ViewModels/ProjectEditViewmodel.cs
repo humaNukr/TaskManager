@@ -5,9 +5,6 @@ using CommunityToolkit.Mvvm.Input;
 using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.EditModels;
 using KMA.TaskManager.Services.Interfaces;
-using Microsoft.Maui.Controls;
-using static Android.Util.EventLogTags;
-using static Java.Util.Jar.Attributes;
 
 namespace KMA.TaskManager.Maui.ViewModels;
 

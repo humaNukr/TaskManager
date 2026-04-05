@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:KMA.TaskManager.Maui.ViewModels"
+    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
     x:Class="KMA.TaskManager.Maui.Pages.TaskCreatePage"
     x:DataType="vm:TaskCreateViewModel"
     Title="Нове завдання"
@@ -10,7 +11,6 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20">
-
             <Label Text="Створення завдання" 
                    FontSize="24" FontAttributes="Bold" 
                    TextColor="{StaticResource TextPrimary}"
@@ -20,7 +20,6 @@
                    BorderColor="{StaticResource BorderColor}" 
                    CornerRadius="12" Padding="20">
                 <VerticalStackLayout Spacing="15">
-
                     <Label Text="Назва завдання" FontAttributes="Bold" TextColor="{StaticResource TextSecondary}" />
                     <Entry Text="{Binding Name}" 
                            Placeholder="Введіть назву..." 
@@ -33,7 +32,6 @@
                             TextColor="{StaticResource TextPrimary}" />
 
                     <Label Text="Пріоритет" FontAttributes="Bold" TextColor="{StaticResource TextSecondary}" />
-
                     <Picker Title="Виберіть пріоритет"
                             ItemsSource="{Binding Priorities}"
                             SelectedItem="{Binding SelectedPriority}"
@@ -42,9 +40,8 @@
 
                     <Label Text="Виконати до" FontAttributes="Bold" TextColor="{StaticResource TextSecondary}" />
                     <DatePicker Date="{Binding DueDate}" 
-                                MinimumDate="{x:Static System:DateTime.Now}"
-                                TextColor="{StaticResource TextPrimary}"
-                                xmlns:System="clr-namespace:System;assembly=mscorlib" />
+                                MinimumDate="{x:Static sys:DateTime.Now}"
+                                TextColor="{StaticResource TextPrimary}" />
                 </VerticalStackLayout>
             </Frame>
 
@@ -64,7 +61,6 @@
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" 
                                Color="{StaticResource ThemeGoldenrod}" HorizontalOptions="Center" />
-
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

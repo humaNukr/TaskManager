@@ -4,10 +4,6 @@ using KMA.TaskManager.EditModels;
 using KMA.TaskManager.Services.DTOModels.Tasks;
 using KMA.TaskManager.Services.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KMA.TaskManager.Services.Mappers
 {
@@ -39,7 +35,8 @@ namespace KMA.TaskManager.Services.Mappers
                 data.Name,
                 data.Priority,
                 data.IsCompleted,
-                isOverdue
+                isOverdue,
+                data.DueDate.DateTime
             );
         }
 

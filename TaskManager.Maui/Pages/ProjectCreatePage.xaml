@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:KMA.TaskManager.Maui.Tools.Converters"
              x:Class="KMA.TaskManager.Maui.Pages.ProjectCreatePage"
-             Title="Ñòâîðåííÿ ïðîºêòó">
+             Title="Ð¡Ñ‚Ð²Ð¾Ñ€ÐµÐ½Ð½Ñ Ð¿Ñ€Ð¾Ñ”ÐºÑ‚Ñƒ">
+
+    <ContentPage.Resources>
+        <converters:EnumToDisplayNameConverter x:Key="EnumConverter" />
+    </ContentPage.Resources>
 
     <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Íàçâà ïðîºêòó *" FontAttributes="Bold" />
-        <Entry Text="{Binding Name}" Placeholder="Ââåä³òü íàçâó" />
+        <Label Text="ÐÐ°Ð·Ð²Ð° Ð¿Ñ€Ð¾Ñ”ÐºÑ‚Ñƒ *" FontAttributes="Bold" />
+        <Entry Text="{Binding Name}" Placeholder="Ð’Ð²ÐµÐ´Ñ–Ñ‚ÑŒ Ð½Ð°Ð·Ð²Ñƒ" />
 
-        <Label Text="Îïèñ" FontAttributes="Bold" />
-        <Editor Text="{Binding Description}" Placeholder="Ââåä³òü îïèñ" HeightRequest="100" />
+        <Label Text="ÐžÐ¿Ð¸Ñ" FontAttributes="Bold" />
+        <Editor Text="{Binding Description}" Placeholder="Ð’Ð²ÐµÐ´Ñ–Ñ‚ÑŒ Ð¾Ð¿Ð¸Ñ" HeightRequest="100" />
 
-        <Label Text="Òèï ïðîºêòó" FontAttributes="Bold" />
-        <Picker ItemsSource="{Binding ProjectTypes}" SelectedItem="{Binding SelectedProjectType}" />
+        <Label Text="Ð¢Ð¸Ð¿ Ð¿Ñ€Ð¾Ñ”ÐºÑ‚Ñƒ" FontAttributes="Bold" />
+        <Picker ItemsSource="{Binding ProjectTypes}"
+                SelectedItem="{Binding SelectedProjectType}"
+                ItemDisplayBinding="{Binding ., Converter={StaticResource EnumConverter}}" />
 
         <Grid ColumnDefinitions="*, *" ColumnSpacing="15" Margin="0,20,0,0">
-            <Button Grid.Column="0" Text="Ñêàñóâàòè" Command="{Binding CancelCommand}" BackgroundColor="Gray" />
-            <Button Grid.Column="1" Text="Çáåðåãòè" Command="{Binding SaveCommand}" BackgroundColor="Green" />
+            <Button Grid.Column="0" Text="Ð¡ÐºÐ°ÑÑƒÐ²Ð°Ñ‚Ð¸" Command="{Binding CancelCommand}" BackgroundColor="Gray" />
+            <Button Grid.Column="1" Text="Ð—Ð±ÐµÑ€ÐµÐ³Ñ‚Ð¸" Command="{Binding SaveCommand}" BackgroundColor="Green" />
         </Grid>
     </VerticalStackLayout>
 </ContentPage>
