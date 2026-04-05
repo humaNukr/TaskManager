@@ -1,4 +1,5 @@
-﻿using KMA.TaskManager.DataModels;
+﻿using KMA.TaskManager.Common.Enums; // Переконайся, що тут правильний namespace для твоїх Enum
+using KMA.TaskManager.DataModels;
 using Microsoft.Maui.Storage;
 using SQLite;
 using System;
@@ -43,6 +44,10 @@ namespace KMA.TaskManager.Storage
             }
         }
 
+        #endregion
+
+        #region MockStorage
+
         private async Task CreateMockStorage()
         {
             var dir = Path.GetDirectoryName(DatabasePath);
@@ -54,14 +59,124 @@ namespace KMA.TaskManager.Storage
             await _databaseConnection.CreateTableAsync<ProjectDataModel>();
             await _databaseConnection.CreateTableAsync<TaskDataModel>();
 
-            var inMemoryStorage = new InMemoryStorageContext();
-
-            foreach (var project in inMemoryStorage.GetProjects())
+            // 1. Створюємо проєкти із вказанням ProjectType
+            var bakeryWebsite = new ProjectDataModel
             {
-                await _databaseConnection.InsertAsync(project);
-                var tasks = inMemoryStorage.GetTasksByProjectId(project.Id);
-                await _databaseConnection.InsertAllAsync(tasks);
-            }
+                Id = Guid.NewGuid(),
+                Name = "Розробка вебсайту пекарні",
+                Description = "Створення сайту-візитки з каталогом продукції для місцевої кондитерської \"Зефір\"",
+                ProjectType = ProjectType.Work
+            };
+
+            var csharpCourse = new ProjectDataModel
+            {
+                Id = Guid.NewGuid(),
+                Name = "Курс програмування на C#",
+                Description = "Виконання лабораторних та практичних робіт у рамках першого семестру",
+                ProjectType = ProjectType.Educational
+            };
+
+            var homeRenovation = new ProjectDataModel
+            {
+                Id = Guid.NewGuid(),
+                Name = "Ремонт у вітальні",
+                Description = "Планування бюджету, вибір матеріалів та пошук майстрів для оновлення інтер'єру",
+                ProjectType = ProjectType.Personal
+            };
+
+            var aiMarketResearch = new ProjectDataModel
+            {
+                Id = Guid.NewGuid(),
+                Name = "Дослідження ринку ШІ",
+                Description = "Аналіз сучасних трендів у сфері штучного інтелекту для написання наукової статті",
+                ProjectType = ProjectType.Research
+            };
+
+            var projects = new List<ProjectDataModel> { bakeryWebsite, csharpCourse, homeRenovation, aiMarketResearch };
+
+            await _databaseConnection.InsertAllAsync(projects);
+
+            // 2. Створюємо завдання
+            var tasks = new List<TaskDataModel>
+            {
+                // Завдання для пекарні
+                new TaskDataModel
+                {
+                    Id = Guid.NewGuid(), ProjectId = bakeryWebsite.Id, Name = "Аналіз вимог",
+                    Description = "Зустріч з власником для ТЗ", Priority = TaskPriority.High,
+                    DueDate = DateTimeOffset.Now.AddDays(1), IsCompleted = true
+                },
+                new TaskDataModel
+                {
+                    Id = Guid.NewGuid(), ProjectId = bakeryWebsite.Id, Name = "Макет дизайну",
+                    Description = "Розробка стилю в Figma", Priority = TaskPriority.Medium,
+                    DueDate = DateTimeOffset.Now.AddDays(5), IsCompleted = false
+                },
+                new TaskDataModel
+                {
+                    Id = Guid.NewGuid(), ProjectId = bakeryWebsite.Id, Name = "Верстка головної",
+                    Description = "HTML/CSS адаптивна верстка", Priority = TaskPriority.High,
+                    DueDate = DateTimeOffset.Now.AddDays(7), IsCompleted = false
+                },
+                new TaskDataModel
+                {
+                    Id = Guid.NewGuid(), ProjectId = bakeryWebsite.Id, Name = "Каталог товарів",
+                    Description = "Розробка сторінки з випічкою", Priority = TaskPriority.Medium,
+                    DueDate = DateTimeOffset.Now.AddDays(10), IsCompleted = false
+                },
+                new TaskDataModel
+                {
+                    Id = Guid.NewGuid(), ProjectId = bakeryWebsite.Id, Name = "Форма замовлення",
+                    Description = "Логіка відправки запитів на email", Priority = TaskPriority.High,
+                    DueDate = DateTimeOffset.Now.AddDays(12), IsCompleted = false
+                },
+                new TaskDataModel
+                {
+                    Id = Guid.NewGuid(), ProjectId = bakeryWebsite.Id, Name = "Налаштування SEO",
+                    Description = "Оптимізація мета-тегів", Priority = TaskPriority.Low,
+                    DueDate = DateTimeOffset.Now.AddDays(15), IsCompleted = false
+                },
+                new TaskDataModel
+                {
+                    Id = Guid.NewGuid(), ProjectId = bakeryWebsite.Id, Name = "Тестування",
+                    Description = "Перевірка кросбраузерності", Priority = TaskPriority.High,
+                    DueDate = DateTimeOffset.Now.AddDays(16), IsCompleted = false
+                },
+                new TaskDataModel
+                {
+                    Id = Guid.NewGuid(), ProjectId = bakeryWebsite.Id, Name = "Наповнення текстами",
+                    Description = "Копірайтинг для розділу про нас", Priority = TaskPriority.Low,
+                    DueDate = DateTimeOffset.Now.AddDays(-2), IsCompleted = false
+                },
+                new TaskDataModel
+                {
+                    Id = Guid.NewGuid(), ProjectId = bakeryWebsite.Id, Name = "Фотосесія",
+                    Description = "Зйомка десертів для каталогу", Priority = TaskPriority.Medium,
+                    DueDate = DateTimeOffset.Now.AddDays(20), IsCompleted = false
+                },
+                new TaskDataModel
+                {
+                    Id = Guid.NewGuid(), ProjectId = bakeryWebsite.Id, Name = "Деплой",
+                    Description = "Перенесення сайту на хостинг", Priority = TaskPriority.Critical,
+                    DueDate = DateTimeOffset.Now.AddDays(21), IsCompleted = false
+                },
+
+                // Завдання для курсу C#
+                new TaskDataModel
+                {
+                    Id = Guid.NewGuid(), ProjectId = csharpCourse.Id, Name = "Лабораторна 1",
+                    Description = "Реалізація моделей та сервісів", Priority = TaskPriority.High,
+                    DueDate = DateTimeOffset.Now.AddDays(3), IsCompleted = true
+                },
+                new TaskDataModel
+                {
+                    Id = Guid.NewGuid(), ProjectId = csharpCourse.Id, Name = "Лабораторна 2",
+                    Description = "Робота з GUI та подіями", Priority = TaskPriority.High,
+                    DueDate = DateTimeOffset.Now.AddDays(14), IsCompleted = false
+                }
+            };
+
+            await _databaseConnection.InsertAllAsync(tasks);
         }
 
         #endregion
