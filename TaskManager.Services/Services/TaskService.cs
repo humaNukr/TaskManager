@@ -68,6 +68,13 @@ namespace KMA.TaskManager.Services
             return _taskMapper.MapToDetailsDTO(updatedTask);
         }
 
+        // Видалення завдань за ідентифікатором проєкту
+        public async Task<bool> DeleteTasksByProjectIdAsync(Guid projectId)
+        {
+            // Передаємо команду в репозиторій
+            return await _taskRepository.DeleteTasksByProjectIdAsync(projectId);
+        }
+
         // Видалення завдання
         public async Task<bool> DeleteTaskAsync(Guid taskId)
         {

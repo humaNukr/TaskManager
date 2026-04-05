@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:KMA.TaskManager.Maui.ViewModels"
+    x:Class="KMA.TaskManager.Maui.Pages.TaskCreatePage"
+    x:DataType="vm:TaskCreateViewModel"
+    Title="Нове завдання"
+    BackgroundColor="{StaticResource PageBackground}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Label Text="Створення завдання" 
+                   FontSize="24" FontAttributes="Bold" 
+                   TextColor="{StaticResource TextPrimary}"
+                   HorizontalOptions="Center" />
+
+            <Frame BackgroundColor="{StaticResource CardBackground}" 
+                   BorderColor="{StaticResource BorderColor}" 
+                   CornerRadius="12" Padding="20">
+                <VerticalStackLayout Spacing="15">
+
+                    <Label Text="Назва завдання" FontAttributes="Bold" TextColor="{StaticResource TextSecondary}" />
+                    <Entry Text="{Binding Name}" 
+                           Placeholder="Введіть назву..." 
+                           TextColor="{StaticResource TextPrimary}" />
+
+                    <Label Text="Опис" FontAttributes="Bold" TextColor="{StaticResource TextSecondary}" />
+                    <Editor Text="{Binding Description}" 
+                            Placeholder="Додайте деталі..." 
+                            HeightRequest="100" 
+                            TextColor="{StaticResource TextPrimary}" />
+
+                    <Label Text="Пріоритет" FontAttributes="Bold" TextColor="{StaticResource TextSecondary}" />
+
+                    <Picker Title="Виберіть пріоритет"
+                            ItemsSource="{Binding Priorities}"
+                            SelectedItem="{Binding SelectedPriority}"
+                            ItemDisplayBinding="{Binding DisplayName}"
+                            TextColor="{StaticResource TextPrimary}" />
+
+                    <Label Text="Виконати до" FontAttributes="Bold" TextColor="{StaticResource TextSecondary}" />
+                    <DatePicker Date="{Binding DueDate}" 
+                                MinimumDate="{x:Static System:DateTime.Now}"
+                                TextColor="{StaticResource TextPrimary}"
+                                xmlns:System="clr-namespace:System;assembly=mscorlib" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                <Button Grid.Column="0" Text="Зберегти" 
+                        Command="{Binding SaveTaskCommand}"
+                        IsEnabled="{Binding IsNotBusy}"
+                        BackgroundColor="{StaticResource SuccessColor}"
+                        TextColor="White" FontAttributes="Bold" CornerRadius="8" HeightRequest="50" />
+
+                <Button Grid.Column="1" Text="Скасувати" 
+                        Command="{Binding CancelCommand}"
+                        IsEnabled="{Binding IsNotBusy}"
+                        BackgroundColor="{StaticResource DangerColor}"
+                        TextColor="White" FontAttributes="Bold" CornerRadius="8" HeightRequest="50" />
+            </Grid>
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" 
+                               Color="{StaticResource ThemeGoldenrod}" HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

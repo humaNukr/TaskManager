@@ -41,7 +41,7 @@ namespace KMA.TaskManager.Maui
             builder.Services.AddSingleton<IProjectMapper, ProjectMapper>();
             builder.Services.AddSingleton<ITaskMapper, TaskMapper>();
 
-            builder.Services.AddSingleton<IStorageContext, InMemoryStorageContext>();
+            builder.Services.AddSingleton<IStorageContext, SQLLiteStorageContext>();
 
             builder.Services.AddSingleton<ITaskService, TaskService>();
             builder.Services.AddSingleton<IProjectService, ProjectService>();
