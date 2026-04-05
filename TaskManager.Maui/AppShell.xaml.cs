@@ -13,6 +13,9 @@ namespace KMA.TaskManager.Maui
 
             // TaskDetails реєструємо як вкладений маршрут відносно деталей проєкту
             Routing.RegisterRoute("ProjectDetails/TaskDetails", typeof(TaskDetails));
+
+            Routing.RegisterRoute("ProjectCreatePage", typeof(ProjectCreatePage));
+            Routing.RegisterRoute("ProjectEditPage", typeof(Pages.ProjectEditPage));
         }
     }
 }

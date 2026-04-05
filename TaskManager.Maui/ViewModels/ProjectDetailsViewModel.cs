@@ -5,39 +5,59 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KMA.TaskManager.Services.DTOModels.Projects;
 using KMA.TaskManager.Services.Interfaces;
+using Microsoft.Maui.Controls;
 
-namespace KMA.TaskManager.Maui.ViewModels
+namespace KMA.TaskManager.Maui.ViewModels;
+
+// Використовуємо QueryProperty для отримання ID проекту з параметрів навігації
+[QueryProperty(nameof(ProjectId), "ProjectId")]
+public partial class ProjectDetailsViewModel : BaseViewModel
 {
-    public partial class ProjectDetailsViewModel : ObservableObject, IQueryAttributable
+    private readonly IProjectService _projectService;
+
+    [ObservableProperty]
+    private Guid _projectId;
+
+    [ObservableProperty]
+    private ProjectDetailsDTO _currentProject;
+
+    public ProjectDetailsViewModel(IProjectService projectService)
     {
-        private readonly IProjectService _projectService;
+        _projectService = projectService;
+    }
 
-        [ObservableProperty]
-        private ProjectDetailsDTO _currentProject;
+    // Метод викликається автоматично при зміні ProjectId (після навігації)
+    async partial void OnProjectIdChanged(Guid value)
+    {
+        await LoadProjectDetailsAsync(value);
+    }
 
-        public ProjectDetailsViewModel(IProjectService projectService)
+    [RelayCommand]
+    private async Task LoadProjectDetailsAsync(Guid id)
+    {
+        IsBusy = true; // Використовуємо IsBusy з BaseViewModel для керування індикатором завантаження
+        try
         {
-            _projectService = projectService;
+            // Викликаємо оновлений асинхронний метод сервісу
+            CurrentProject = await _projectService.GetProjectDetailsAsync(id);
         }
-
-        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        finally
         {
-            if (query.ContainsKey("ProjectId") && query["ProjectId"] is Guid projectId)
-            {
-                // Отримуємо деталі проєкту разом з тасками через сервіс
-                CurrentProject = _projectService.GetProjectById(projectId);
-            }
+            IsBusy = false;
         }
+    }
 
-        [RelayCommand]
-        private void OpenTaskDetails(Guid taskId)
-        {
-            var navigationParameter = new Dictionary<string, object>
-            {
-                { "TaskId", taskId }
-            };
+    [RelayCommand]
+    private async Task OpenTaskDetailsAsync(Guid taskId)
+    {
+        // Асинхронна навігація до деталей завдання
+        await Shell.Current.GoToAsync($"TaskDetails?TaskId={taskId}");
+    }
 
-            Shell.Current.GoToAsync("TaskDetails", navigationParameter);
-        }
+    [RelayCommand]
+    private async Task CreateTaskAsync()
+    {
+        // Перехід на сторінку створення завдання для поточного проекту
+        await Shell.Current.GoToAsync($"TaskCreatePage?ProjectId={ProjectId}");
     }
 }

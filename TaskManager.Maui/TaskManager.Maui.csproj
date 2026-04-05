@@ -78,7 +78,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\ProjectCreatePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\ProjectDetails.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\ProjectEditPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\TaskDetails.xaml">
