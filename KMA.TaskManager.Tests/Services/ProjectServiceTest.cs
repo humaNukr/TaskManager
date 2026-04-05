@@ -8,6 +8,7 @@ using KMA.TaskManager.Services.DTOModels.Projects;
 using KMA.TaskManager.Services.DTOModels.Tasks;
 using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.Repositories.Interfaces;
+using KMA.TaskManager.Services.Services;
 using Xunit;
 
 namespace KMA.TaskManager.Tests.Services;

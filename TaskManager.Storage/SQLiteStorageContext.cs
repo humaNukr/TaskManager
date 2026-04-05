@@ -1,6 +1,5 @@
 ﻿using KMA.TaskManager.Common.Enums; // Переконайся, що тут правильний namespace для твоїх Enum
 using KMA.TaskManager.DataModels;
-using Microsoft.Maui.Storage;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -15,7 +14,7 @@ namespace KMA.TaskManager.Storage
         private const string DatabaseFileName = "task_manager.db3";
 
         private static readonly string DatabasePath =
-            Path.Combine(FileSystem.AppDataDirectory, "DB Storage", DatabaseFileName);
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DB Storage", DatabaseFileName);
 
         private SQLiteAsyncConnection _databaseConnection;
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);

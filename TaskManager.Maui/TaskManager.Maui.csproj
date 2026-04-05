@@ -59,9 +59,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -70,6 +69,7 @@
 	  <ProjectReference Include="..\TaskManager.EditModels\TaskManager.EditModels.csproj" />
 	  <ProjectReference Include="..\TaskManager.Services\TaskManager.Services.csproj" />
 	  <ProjectReference Include="..\TaskManager.Storage\TaskManager.Storage.csproj" />
+	  <ProjectReference Include="..\TaskMangager.Repositories\TaskMangager.Repositories.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
