@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskManager.DataModels\TaskManager.DataModels.csproj" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
   </ItemGroup>
 
 </Project>

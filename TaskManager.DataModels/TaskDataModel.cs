@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using KMA.TaskManager.Common.Enums;
+﻿using KMA.TaskManager.Common.Enums;
+using SQLite;
 
 namespace KMA.TaskManager.DataModels
 {
     public class TaskDataModel
     {
-        // Ідентифікатор є read-only, щоб гарантувати незмінність об'єкта в базі даних після його створення.
-        public Guid Id { get; }
+        // Додаємо атрибут PrimaryKey, щоб SQLite розумів, що це унікальний ідентифікатор
+        [PrimaryKey] public Guid Id { get; set; }
 
-        // Зв'язок реалізовано через Guid замість посилання на об'єкт Project. 
-        // Це забезпечує ізоляцію моделей та запобігає завантаженню зайвих даних
-        public Guid ProjectId { get; }
+        public Guid ProjectId { get; set; }
 
         public string Name { get; set; }
 
@@ -25,6 +19,10 @@ namespace KMA.TaskManager.DataModels
         public DateTimeOffset DueDate { get; set; }
 
         public bool IsCompleted { get; set; }
+
+        public TaskDataModel()
+        {
+        }
 
         public TaskDataModel(Guid projectId, string name, string description, TaskPriority priority,
             DateTimeOffset dueDate, bool isCompleted)
