@@ -9,16 +9,14 @@ using System.Threading.Tasks;
 
 namespace KMA.TaskManager.Storage
 {
-    // Обов'язково вказуємо реалізацію інтерфейсу IStorageContext
     public class SQLLiteStorageContext : IStorageContext
     {
         private const string DatabaseFileName = "task_manager.db3";
 
-        private static readonly string DatabasePath = Path.Combine(FileSystem.AppDataDirectory, "DB Storage", DatabaseFileName);
+        private static readonly string DatabasePath =
+            Path.Combine(FileSystem.AppDataDirectory, "DB Storage", DatabaseFileName);
 
         private SQLiteAsyncConnection _databaseConnection;
-
-        // SemaphoreSlim гарантує, що лише один потік може ініціалізувати або писати в БД одночасно
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         #region Initialization
@@ -61,7 +59,6 @@ namespace KMA.TaskManager.Storage
             foreach (var project in inMemoryStorage.GetProjects())
             {
                 await _databaseConnection.InsertAsync(project);
-
                 var tasks = inMemoryStorage.GetTasksByProjectId(project.Id);
                 await _databaseConnection.InsertAllAsync(tasks);
             }
@@ -71,10 +68,10 @@ namespace KMA.TaskManager.Storage
 
         #region Tasks
 
-        public async Task<TaskDataModel?> GetTaskByIdAsync(Guid id)
+        public async Task<IEnumerable<TaskDataModel>> GetTasksAsync()
         {
             await Init();
-            return await _databaseConnection.Table<TaskDataModel>().FirstOrDefaultAsync(t => t.Id == id);
+            return await _databaseConnection.Table<TaskDataModel>().ToListAsync();
         }
 
         public async Task<IEnumerable<TaskDataModel>> GetTasksByProjectIdAsync(Guid projectId)
@@ -83,13 +80,13 @@ namespace KMA.TaskManager.Storage
             return await _databaseConnection.Table<TaskDataModel>().Where(t => t.ProjectId == projectId).ToListAsync();
         }
 
-        public async Task<int> GetTasksCountByProjectIdAsync(Guid projectId)
+        public async Task<TaskDataModel> GetTaskByIdAsync(Guid id)
         {
             await Init();
-            return await _databaseConnection.Table<TaskDataModel>().CountAsync(t => t.ProjectId == projectId);
+            return await _databaseConnection.Table<TaskDataModel>().FirstOrDefaultAsync(t => t.Id == id);
         }
 
-        public async Task SaveTaskAsync(TaskDataModel task)
+        public async Task<TaskDataModel> SaveTaskAsync(TaskDataModel task)
         {
             await Init();
 
@@ -102,35 +99,48 @@ namespace KMA.TaskManager.Storage
             {
                 await _databaseConnection.InsertAsync(task);
             }
+
+            return task;
         }
 
-        public async Task DeleteTaskAsync(Guid taskId)
+        public async Task<bool> DeleteTaskAsync(Guid id)
         {
             await Init();
-            await _databaseConnection.DeleteAsync<TaskDataModel>(taskId);
+            var result = await _databaseConnection.DeleteAsync<TaskDataModel>(id);
+            return result > 0;
+        }
+
+        public async Task<bool> DeleteTasksByProjectIdAsync(Guid projectId)
+        {
+            await Init();
+            var tasks = await GetTasksByProjectIdAsync(projectId);
+
+            int deletedCount = 0;
+            foreach (var task in tasks)
+            {
+                deletedCount += await _databaseConnection.DeleteAsync<TaskDataModel>(task.Id);
+            }
+
+            return true;
         }
 
         #endregion
 
         #region Projects
 
-        public async Task<ProjectDataModel?> GetProjectByIdAsync(Guid id)
+        public async Task<IEnumerable<ProjectDataModel>> GetProjectsAsync()
+        {
+            await Init();
+            return await _databaseConnection.Table<ProjectDataModel>().ToListAsync();
+        }
+
+        public async Task<ProjectDataModel> GetProjectByIdAsync(Guid id)
         {
             await Init();
             return await _databaseConnection.Table<ProjectDataModel>().FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async IAsyncEnumerable<ProjectDataModel> GetProjectsAsync()
-        {
-            await Init();
-            var projects = await _databaseConnection.Table<ProjectDataModel>().ToListAsync();
-            foreach (var project in projects)
-            {
-                yield return project;
-            }
-        }
-
-        public async Task SaveProjectAsync(ProjectDataModel project)
+        public async Task<ProjectDataModel> SaveProjectAsync(ProjectDataModel project)
         {
             await Init();
 
@@ -143,20 +153,18 @@ namespace KMA.TaskManager.Storage
             {
                 await _databaseConnection.InsertAsync(project);
             }
+
+            return project;
         }
 
-        public async Task DeleteProjectAsync(Guid projectId)
+        public async Task<bool> DeleteProjectAsync(Guid id)
         {
             await Init();
 
-            // Каскадне видалення: спочатку видаляємо всі таски цього проєкту, потім сам проєкт
-            var tasks = await GetTasksByProjectIdAsync(projectId);
-            foreach (var task in tasks)
-            {
-                await DeleteTaskAsync(task.Id);
-            }
+            await DeleteTasksByProjectIdAsync(id);
 
-            await _databaseConnection.DeleteAsync<ProjectDataModel>(projectId);
+            var result = await _databaseConnection.DeleteAsync<ProjectDataModel>(id);
+            return result > 0;
         }
 
         #endregion
