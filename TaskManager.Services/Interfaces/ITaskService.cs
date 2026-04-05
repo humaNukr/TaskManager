@@ -1,19 +1,27 @@
-﻿using KMA.TaskManager.Services.Mappers;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using KMA.TaskManager.CreateModels;
+using KMA.TaskManager.EditModels;
 using KMA.TaskManager.Services.DTOModels.Tasks;
 
 namespace KMA.TaskManager.Services.Interfaces
 {
     public interface ITaskService
     {
-        //Отримання завдань за ідентифікатором проекту
-        IEnumerable<TaskListDTO> GetTasksByProjectId(Guid projectId);
+        // Отримання списку завдань для проєкту
+        Task<IEnumerable<TaskListDTO>> GetTasksByProjectIdAsync(Guid projectId);
 
-        //Детальна Інформація про завдання
-        TaskDetailsDto? GetTaskById(Guid taskId);
+        // Детальна інформація про завдання
+        Task<TaskDetailsDto?> GetTaskByIdAsync(Guid taskId);
+
+        // Створення нового завдання
+        Task<TaskDetailsDto> CreateTaskAsync(TaskCreateModel createModel);
+
+        // Редагування існуючого завдання
+        Task<TaskDetailsDto?> UpdateTaskAsync(TaskEditModel editModel);
+
+        // Видалення завдання
+        Task<bool> DeleteTaskAsync(Guid taskId);
     }
 }
