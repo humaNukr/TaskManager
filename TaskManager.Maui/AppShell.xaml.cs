@@ -11,11 +11,14 @@ namespace KMA.TaskManager.Maui
             // ProjectDetails реєструємо як прямий нащадок головної сторінки
             Routing.RegisterRoute("ProjectDetails", typeof(ProjectDetails));
 
-            // TaskDetails реєструємо як вкладений маршрут відносно деталей проєкту
+            Routing.RegisterRoute("ProjectDetails/TaskCreate", typeof(TaskCreatePage));
+
+            // Деталі таски та її редагування
             Routing.RegisterRoute("ProjectDetails/TaskDetails", typeof(TaskDetails));
 
             Routing.RegisterRoute("ProjectCreatePage", typeof(ProjectCreatePage));
             Routing.RegisterRoute("ProjectEditPage", typeof(Pages.ProjectEditPage));
+            Routing.RegisterRoute("ProjectDetails/TaskDetails/TaskEdit", typeof(TaskEditPage));
         }
     }
 }

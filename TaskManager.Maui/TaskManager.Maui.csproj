@@ -67,13 +67,20 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\TaskManager.Common\TaskManager.Common.csproj" />
 	  <ProjectReference Include="..\TaskManager.DataModels\TaskManager.DataModels.csproj" />
+	  <ProjectReference Include="..\TaskManager.EditModels\TaskManager.EditModels.csproj" />
 	  <ProjectReference Include="..\TaskManager.Services\TaskManager.Services.csproj" />
 	  <ProjectReference Include="..\TaskManager.Storage\TaskManager.Storage.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\TaskCreatePage.xaml.cs">
+	    <DependentUpon>TaskCreatePage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\TaskDetails.xaml.cs">
 	    <DependentUpon>TaskDetails.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\TaskEditPage.xaml.cs">
+	    <DependentUpon>TaskEditPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -88,6 +95,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\TaskDetails.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\TaskEditPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

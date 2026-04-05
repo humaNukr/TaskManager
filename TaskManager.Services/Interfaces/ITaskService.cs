@@ -21,6 +21,9 @@ namespace KMA.TaskManager.Services.Interfaces
         // Редагування існуючого завдання
         Task<TaskDetailsDto?> UpdateTaskAsync(TaskEditModel editModel);
 
+        // Видалення всіх завдань за ідентифікатором проєкту
+        Task<bool> DeleteTasksByProjectIdAsync(Guid projectId);
+
         // Видалення завдання
         Task<bool> DeleteTaskAsync(Guid taskId);
     }
