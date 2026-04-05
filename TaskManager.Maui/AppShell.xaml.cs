@@ -15,6 +15,9 @@ namespace KMA.TaskManager.Maui
 
             // Деталі таски та її редагування
             Routing.RegisterRoute("ProjectDetails/TaskDetails", typeof(TaskDetails));
+
+            Routing.RegisterRoute("ProjectCreatePage", typeof(ProjectCreatePage));
+            Routing.RegisterRoute("ProjectEditPage", typeof(Pages.ProjectEditPage));
             Routing.RegisterRoute("ProjectDetails/TaskDetails/TaskEdit", typeof(TaskEditPage));
         }
     }

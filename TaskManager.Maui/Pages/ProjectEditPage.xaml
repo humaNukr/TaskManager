@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KMA.TaskManager.Maui.Pages.ProjectEditPage"
+             Title="Редагувати проєкт">
+
+    <Grid>
+        <VerticalStackLayout Padding="20" Spacing="15" IsVisible="{Binding IsNotBusy}">
+            <Label Text="Назва проєкту" FontAttributes="Bold" />
+            <Entry Text="{Binding Name}" Placeholder="Назва..." />
+
+            <Label Text="Опис" FontAttributes="Bold" />
+            <Editor Text="{Binding Description}" Placeholder="Опис..." HeightRequest="100" />
+
+            <Label Text="Тип проєкту" FontAttributes="Bold" />
+            <Picker ItemsSource="{Binding ProjectTypes}" SelectedItem="{Binding SelectedProjectType}" />
+
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Margin="0,20">
+                <Button Text="Скасувати" Command="{Binding CancelCommand}" BackgroundColor="Gray" WidthRequest="120" />
+                <Button Text="Зберегти" Command="{Binding SaveCommand}" BackgroundColor="Green" WidthRequest="120" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                           IsVisible="{Binding IsBusy}"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center" 
+                           Color="Blue" />
+    </Grid>
+</ContentPage>

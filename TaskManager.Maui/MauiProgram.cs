@@ -23,6 +23,7 @@ namespace KMA.TaskManager.Maui
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
             //Реєстрація залежностей в IoC-контейнері для забезпечення слабкої зв'язності
             //між компонентами застосунку
 
@@ -33,10 +34,14 @@ namespace KMA.TaskManager.Maui
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<ProjectDetails>();
             builder.Services.AddTransient<TaskDetails>();
+            builder.Services.AddTransient<ProjectCreatePage>();
+            builder.Services.AddTransient<ProjectEditPage>();
 
             builder.Services.AddTransient<TaskDetailsViewModel>();
             builder.Services.AddTransient<MainPageViewModel>();
             builder.Services.AddTransient<ProjectDetailsViewModel>();
+            builder.Services.AddTransient<ProjectCreateViewModel>();
+            builder.Services.AddTransient<ProjectEditViewModel>();
 
             // сервіси — Singleton, бо сховище спільне для всього застосунку
             builder.Services.AddSingleton<IProjectMapper, ProjectMapper>();
