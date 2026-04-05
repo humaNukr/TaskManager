@@ -15,6 +15,10 @@ namespace KMA.TaskManager.DataModels
         public string Description { get; set; }
         public ProjectType ProjectType { get; }
 
+        public ProjectDataModel()
+        {
+        }
+
         public ProjectDataModel(string name, string description, ProjectType projectType)
             : this(Guid.NewGuid(), name, description, projectType)
         {
