@@ -1,5 +1,6 @@
 ﻿using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.DataModels;
+using KMA.TaskManager.EditModels;
 using KMA.TaskManager.Services.DTOModels.Tasks;
 using KMA.TaskManager.Services.Interfaces;
 using System;
@@ -58,6 +59,17 @@ namespace KMA.TaskManager.Services.Mappers
                 data.IsCompleted,
                 isOverdue
             );
+        }
+
+        public void MapUpdateToData(TaskEditModel source, TaskDataModel destination)
+        {
+            if (source == null || destination == null) return;
+
+            destination.Name = source.Name;
+            destination.Description = source.Description;
+            destination.Priority = source.Priority;
+            destination.DueDate = source.DueDate;
+            destination.IsCompleted = source.IsCompleted;
         }
     }
 }
