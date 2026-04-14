@@ -8,17 +8,15 @@ namespace KMA.TaskManager.Maui
         {
             InitializeComponent();
 
-            // ProjectDetails реєструємо як прямий нащадок головної сторінки
+            // Реєструємо маршрути проектів
             Routing.RegisterRoute("ProjectDetails", typeof(ProjectDetails));
-
-            Routing.RegisterRoute("ProjectDetails/TaskCreate", typeof(TaskCreatePage));
-
-            // Деталі таски та її редагування
-            Routing.RegisterRoute("ProjectDetails/TaskDetails", typeof(TaskDetails));
-
             Routing.RegisterRoute("ProjectCreatePage", typeof(ProjectCreatePage));
             Routing.RegisterRoute("ProjectEditPage", typeof(Pages.ProjectEditPage));
-            Routing.RegisterRoute("ProjectDetails/TaskDetails/TaskEdit", typeof(TaskEditPage));
+
+            // Реєструємо маршрути завдань
+            Routing.RegisterRoute("TaskCreatePage", typeof(TaskCreatePage));
+            Routing.RegisterRoute("TaskDetails", typeof(TaskDetails));
+            Routing.RegisterRoute("TaskEditPage", typeof(TaskEditPage));
         }
     }
 }

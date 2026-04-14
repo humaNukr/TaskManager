@@ -9,6 +9,11 @@
     BackgroundColor="{StaticResource PageBackground}"
     Title="Деталі проєкту">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Додати завдання" 
+                     Command="{Binding CreateTaskCommand}" />
+    </ContentPage.ToolbarItems>
+
     <ScrollView>
         <VerticalStackLayout
             Padding="20"

@@ -101,9 +101,21 @@ public partial class MainPageViewModel : BaseViewModel
 
     [RelayCommand]
     private async Task GoToEditAsync(Guid id)
-        => await Shell.Current.GoToAsync($"ProjectEditPage?ProjectId={id}");
+    {
+        var navParams = new Dictionary<string, object>
+        {
+            { "ProjectId", id }
+        };
+        await Shell.Current.GoToAsync("ProjectEditPage", navParams);
+    }
 
     [RelayCommand]
     private async Task GoToDetailsAsync(Guid id)
-        => await Shell.Current.GoToAsync($"ProjectDetails?ProjectId={id}");
+    {
+        var navParams = new Dictionary<string, object>
+        {
+            { "ProjectId", id }
+        };
+        await Shell.Current.GoToAsync("ProjectDetails", navParams);
+    }
 }

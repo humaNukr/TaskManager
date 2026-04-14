@@ -34,10 +34,14 @@ namespace KMA.TaskManager.Maui
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<ProjectDetails>();
             builder.Services.AddTransient<TaskDetails>();
+            builder.Services.AddTransient<TaskEditPage>();
+            builder.Services.AddTransient<TaskCreatePage>();
             builder.Services.AddTransient<ProjectCreatePage>();
             builder.Services.AddTransient<ProjectEditPage>();
 
             builder.Services.AddTransient<TaskDetailsViewModel>();
+            builder.Services.AddTransient<TaskEditViewModel>();
+            builder.Services.AddTransient<TaskCreateViewModel>();
             builder.Services.AddTransient<MainPageViewModel>();
             builder.Services.AddTransient<ProjectDetailsViewModel>();
             builder.Services.AddTransient<ProjectCreateViewModel>();

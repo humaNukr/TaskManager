@@ -8,4 +8,17 @@ public partial class ProjectDetails : ContentPage
         InitializeComponent();
         BindingContext = vm;
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is ProjectDetailsViewModel vm)
+        {
+            if (vm.ProjectId != Guid.Empty)
+            {
+                vm.LoadProjectDetailsCommand.Execute(vm.ProjectId);
+            }
+        }
+    }
 }

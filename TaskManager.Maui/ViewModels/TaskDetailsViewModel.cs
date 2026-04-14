@@ -20,9 +20,16 @@ namespace KMA.TaskManager.Maui.ViewModels
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            if (query.ContainsKey("TaskId") && query["TaskId"] is Guid taskId)
+            if (query.TryGetValue("TaskId", out var taskIdObj))
             {
-                _taskId = taskId;
+                if (taskIdObj is Guid guidId)
+                {
+                    _taskId = guidId;
+                }
+                else if (taskIdObj is string stringId && Guid.TryParse(stringId, out Guid parsedId))
+                {
+                    _taskId = parsedId;
+                }
             }
         }
 

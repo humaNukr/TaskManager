@@ -9,4 +9,14 @@ public partial class MainPage : ContentPage
         InitializeComponent();
         BindingContext = vm;
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is MainPageViewModel vm)
+        {
+            vm.LoadProjectsCommand.Execute(null);
+        }
+    }
 }
