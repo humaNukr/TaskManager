@@ -7,7 +7,7 @@ namespace KMA.TaskManager.DataModels;
 public class ProjectDataModel
 {
     [PrimaryKey]
-    public Guid Id { get; set; } // тільки get — Id не можна змінити після створення
+    public Guid Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public ProjectType ProjectType { get; set; }

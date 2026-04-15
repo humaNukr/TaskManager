@@ -15,7 +15,6 @@ public partial class MainPageViewModel : BaseViewModel
 {
     private readonly IProjectService _projectService;
 
-    // Повний список проектів для фільтрації в пам'яті
     private IEnumerable<ProjectListDTO> _allProjects;
 
     [ObservableProperty]
@@ -27,18 +26,45 @@ public partial class MainPageViewModel : BaseViewModel
     [ObservableProperty]
     private string _selectedSortOption = "За назвою (А-Я)";
 
-    public string[] SortOptions { get; } = { "За назвою (А-Я)", "За прогресом (спадання)" };
+    [ObservableProperty]
+    private string _selectedStatusFilter = "Усі проєкти";
+
+    public string[] SortOptions { get; } = { "За назвою (А-Я)", "За назвою (Я-А)", "За прогресом (спадання)", "За прогресом (зростання)" };
+
+    public string[] StatusFilters { get; } = { "Усі проєкти", "В процесі", "Завершені" };
 
     public MainPageViewModel(IProjectService projectService)
     {
         _projectService = projectService;
     }
 
-    // Автоматично викликається при зміні SearchText
     partial void OnSearchTextChanged(string value) => ApplyFiltersAndSorting();
-
-    // Автоматично викликається при зміні сортування
     partial void OnSelectedSortOptionChanged(string value) => ApplyFiltersAndSorting();
+
+    partial void OnSelectedStatusFilterChanged(string value) => ApplyFiltersAndSorting();
+
+    [RelayCommand]
+    private async Task InitializeAsync()
+    {
+        if (_allProjects != null && _allProjects.Any())
+        {
+            _allProjects = await _projectService.GetAllProjectsAsync();
+            ApplyFiltersAndSorting();
+            return;
+        }
+
+        IsBusy = true;
+        try
+        {
+            await Task.Delay(300);
+            _allProjects = await _projectService.GetAllProjectsAsync();
+            ApplyFiltersAndSorting();
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
 
     [RelayCommand]
     private async Task LoadProjectsAsync()
@@ -66,14 +92,22 @@ public partial class MainPageViewModel : BaseViewModel
             filtered = filtered.Where(p => p.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
         }
 
-        if (SelectedSortOption == "За прогресом (спадання)")
+        if (SelectedStatusFilter == "Завершені")
         {
-            filtered = filtered.OrderByDescending(p => p.Progress);
+            filtered = filtered.Where(p => p.Progress >= 100);
         }
-        else
+        else if (SelectedStatusFilter == "В процесі")
         {
-            filtered = filtered.OrderBy(p => p.Name);
+            filtered = filtered.Where(p => p.Progress < 100);
         }
+
+        filtered = SelectedSortOption switch
+        {
+            "За назвою (Я-А)" => filtered.OrderByDescending(p => p.Name),
+            "За прогресом (спадання)" => filtered.OrderByDescending(p => p.Progress),
+            "За прогресом (зростання)" => filtered.OrderBy(p => p.Progress),
+            _ => filtered.OrderBy(p => p.Name)
+        };
 
         Projects = new ObservableCollection<ProjectListDTO>(filtered);
     }
@@ -96,26 +130,19 @@ public partial class MainPageViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async Task GoToCreateAsync()
-        => await Shell.Current.GoToAsync("ProjectCreatePage");
+    private async Task GoToCreateAsync() => await Shell.Current.GoToAsync("ProjectCreatePage");
 
     [RelayCommand]
     private async Task GoToEditAsync(Guid id)
     {
-        var navParams = new Dictionary<string, object>
-        {
-            { "ProjectId", id }
-        };
+        var navParams = new Dictionary<string, object> { { "ProjectId", id } };
         await Shell.Current.GoToAsync("ProjectEditPage", navParams);
     }
 
     [RelayCommand]
     private async Task GoToDetailsAsync(Guid id)
     {
-        var navParams = new Dictionary<string, object>
-        {
-            { "ProjectId", id }
-        };
+        var navParams = new Dictionary<string, object> { { "ProjectId", id } };
         await Shell.Current.GoToAsync("ProjectDetails", navParams);
     }
 }

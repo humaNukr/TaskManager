@@ -9,17 +9,19 @@ using KMA.TaskManager.Repositories.Interfaces;
 using KMA.TaskManager.Services.DTOModels.Projects;
 using KMA.TaskManager.Services.Interfaces;
 
-namespace KMA.TaskManager.Services.Services;
+namespace KMA.TaskManager.Services;
 
 public class ProjectService : IProjectService
 {
     private readonly IProjectRepository _projectRepository;
     private readonly ITaskService _taskService;
+    private readonly IProjectMapper _projectMapper;
 
-    public ProjectService(IProjectRepository projectRepository, ITaskService taskService)
+    public ProjectService(IProjectRepository projectRepository, ITaskService taskService, IProjectMapper projectMapper)
     {
         _projectRepository = projectRepository;
         _taskService = taskService;
+        _projectMapper = projectMapper;
     }
 
     public async Task<IEnumerable<ProjectListDTO>> GetAllProjectsAsync()
@@ -29,12 +31,12 @@ public class ProjectService : IProjectService
 
         foreach (var p in projectsData)
         {
-            // беремо таски щоб порахувати прогрес проєкту для списку
             var tasks = await _taskService.GetTasksByProjectIdAsync(p.Id);
             int totalTasks = tasks.Count();
             int completedTasks = tasks.Count(t => t.IsCompleted);
 
-            resultList.Add(new ProjectListDTO(p.Id, p.Name, totalTasks, completedTasks));
+            var dto = _projectMapper.MapToListDTO(p, totalTasks, completedTasks);
+            resultList.Add(dto);
         }
 
         return resultList;
@@ -47,18 +49,13 @@ public class ProjectService : IProjectService
 
         var tasks = await _taskService.GetTasksByProjectIdAsync(id);
 
-        return new ProjectDetailsDTO(
-            projectData.Id,
-            projectData.Name,
-            projectData.Description,
-            projectData.ProjectType,
-            tasks
-        );
+        return _projectMapper.MapToDetailsDTO(projectData, tasks);
     }
 
     public async Task<ProjectDetailsDTO> CreateProjectAsync(ProjectCreateModel createModel)
     {
-        var dataModel = new ProjectDataModel(createModel.Name, createModel.Description, createModel.ProjectType);
+        var dataModel = _projectMapper.MapToData(createModel);
+
         var saved = await _projectRepository.SaveProjectAsync(dataModel);
 
         return await GetProjectDetailsAsync(saved.Id);
@@ -80,10 +77,8 @@ public class ProjectService : IProjectService
 
     public async Task<bool> DeleteProjectAsync(Guid id)
     {
-        // каскадне видалення тасок, які належать цьому проєкту
         await _taskService.DeleteTasksByProjectIdAsync(id);
 
-        // видалення самого проєкту
         return await _projectRepository.DeleteProjectAsync(id);
     }
 }

@@ -9,14 +9,15 @@ using System.Threading.Tasks;
 
 namespace KMA.TaskManager.Storage
 {
-    public class SQLLiteStorageContext : IStorageContext
+    public class SQLiteStorageContext : IStorageContext
     {
         private const string DatabaseFileName = "task_manager.db3";
 
         private static readonly string DatabasePath =
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DB Storage", DatabaseFileName);
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DB Storage",
+                DatabaseFileName);
 
-        private SQLiteAsyncConnection _databaseConnection;
+        private SQLiteAsyncConnection _databaseConnection = null!;
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         #region Initialization
@@ -32,10 +33,19 @@ namespace KMA.TaskManager.Storage
 
                 bool isFirstLaunch = !File.Exists(DatabasePath);
 
+                var dir = Path.GetDirectoryName(DatabasePath);
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+
+                _databaseConnection = new SQLiteAsyncConnection(DatabasePath);
+
+                await _databaseConnection.CreateTableAsync<ProjectDataModel>();
+                await _databaseConnection.CreateTableAsync<TaskDataModel>();
+
                 if (isFirstLaunch)
-                    await CreateMockStorage();
-                else
-                    _databaseConnection = new SQLiteAsyncConnection(DatabasePath);
+                {
+                    await SeedMockDataAsync();
+                }
             }
             finally
             {
@@ -47,17 +57,8 @@ namespace KMA.TaskManager.Storage
 
         #region MockStorage
 
-        private async Task CreateMockStorage()
+        private async Task SeedMockDataAsync()
         {
-            var dir = Path.GetDirectoryName(DatabasePath);
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-
-            _databaseConnection = new SQLiteAsyncConnection(DatabasePath);
-
-            await _databaseConnection.CreateTableAsync<ProjectDataModel>();
-            await _databaseConnection.CreateTableAsync<TaskDataModel>();
-
             // 1. Створюємо проєкти із вказанням ProjectType
             var bakeryWebsite = new ProjectDataModel
             {
@@ -274,8 +275,6 @@ namespace KMA.TaskManager.Storage
         public async Task<bool> DeleteProjectAsync(Guid id)
         {
             await Init();
-
-            await DeleteTasksByProjectIdAsync(id);
 
             var result = await _databaseConnection.DeleteAsync<ProjectDataModel>(id);
             return result > 0;

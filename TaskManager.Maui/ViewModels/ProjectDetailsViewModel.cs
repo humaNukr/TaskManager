@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel; // ДОДАНО
+using System.Linq; // ДОДАНО
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KMA.TaskManager.Services.DTOModels.Projects;
+using KMA.TaskManager.Services.DTOModels.Tasks; // ДОДАНО
 using KMA.TaskManager.Services.Interfaces;
 using Microsoft.Maui.Controls;
 
 namespace KMA.TaskManager.Maui.ViewModels;
 
-// Використовуємо QueryProperty для отримання ID проекту з параметрів навігації
 [QueryProperty(nameof(ProjectId), "ProjectId")]
 public partial class ProjectDetailsViewModel : BaseViewModel
 {
@@ -21,25 +23,50 @@ public partial class ProjectDetailsViewModel : BaseViewModel
     [ObservableProperty]
     private ProjectDetailsDTO _currentProject;
 
+    // --- НОВІ ПОЛЯ ДЛЯ ФІЛЬТРАЦІЇ ЗАВДАНЬ ---
+    [ObservableProperty]
+    private ObservableCollection<TaskListDTO> _displayedTasks = new();
+
+    [ObservableProperty]
+    private string _taskSearchText = string.Empty;
+
+    [ObservableProperty]
+    private string _selectedTaskFilter = "Усі завдання";
+
+    public string[] TaskFilters { get; } = {
+        "Усі завдання",
+        "Тільки активні",
+        "Тільки завершені",
+        "Критичні спочатку",
+        "Найближчий дедлайн"
+    };
+    // ----------------------------------------
+
     public ProjectDetailsViewModel(IProjectService projectService)
     {
         _projectService = projectService;
     }
 
-    // Метод викликається автоматично при зміні ProjectId (після навігації)
     async partial void OnProjectIdChanged(Guid value)
     {
         await LoadProjectDetailsAsync(value);
     }
 
+    // Тригери для автоматичного оновлення списку завдань при введенні тексту або зміні фільтра
+    partial void OnTaskSearchTextChanged(string value) => ApplyTaskFilters();
+    partial void OnSelectedTaskFilterChanged(string value) => ApplyTaskFilters();
+
     [RelayCommand]
     private async Task LoadProjectDetailsAsync(Guid id)
     {
-        IsBusy = true; // Використовуємо IsBusy з BaseViewModel для керування індикатором завантаження
+        IsBusy = true;
         try
         {
-            // Викликаємо оновлений асинхронний метод сервісу
+            await Task.Delay(300);
             CurrentProject = await _projectService.GetProjectDetailsAsync(id);
+
+            // Після завантаження проєкту одразу застосовуємо фільтри до його тасок
+            ApplyTaskFilters();
         }
         finally
         {
@@ -47,17 +74,41 @@ public partial class ProjectDetailsViewModel : BaseViewModel
         }
     }
 
+    // --- ЛОГІКА ФІЛЬТРАЦІЇ ТА СОРТУВАННЯ ЗАВДАНЬ ---
+    private void ApplyTaskFilters()
+    {
+        if (CurrentProject?.Tasks == null) return;
+
+        var filtered = CurrentProject.Tasks.AsEnumerable();
+
+        // 1. Пошук за назвою
+        if (!string.IsNullOrWhiteSpace(TaskSearchText))
+        {
+            filtered = filtered.Where(t => t.Name.Contains(TaskSearchText, StringComparison.OrdinalIgnoreCase));
+        }
+
+        // 2. Фільтрація та Сортування
+        filtered = SelectedTaskFilter switch
+        {
+            "Тільки активні" => filtered.Where(t => !t.IsCompleted),
+            "Тільки завершені" => filtered.Where(t => t.IsCompleted),
+            "Критичні спочатку" => filtered.OrderByDescending(t => t.Priority),
+            "Найближчий дедлайн" => filtered.Where(t => !t.IsCompleted).OrderBy(t => t.DueDate),
+            _ => filtered // "Усі завдання" (без змін)
+        };
+
+        DisplayedTasks = new ObservableCollection<TaskListDTO>(filtered);
+    }
+
     [RelayCommand]
     private async Task OpenTaskDetailsAsync(Guid taskId)
     {
-        // Асинхронна навігація до деталей завдання
         await Shell.Current.GoToAsync($"TaskDetails?TaskId={taskId}");
     }
 
     [RelayCommand]
     private async Task CreateTaskAsync()
     {
-        // Перехід на сторінку створення завдання для поточного проекту
         await Shell.Current.GoToAsync($"TaskCreatePage?ProjectId={ProjectId}");
     }
 }

@@ -14,7 +14,7 @@
 		<ProjectReference Include="..\TaskManager.EditModels\TaskManager.EditModels.csproj" />
 		<ProjectReference Include="..\TaskManager.Storage\TaskManager.Storage.csproj" />
 		<ProjectReference Include="..\TaskManager.DataModels\TaskManager.DataModels.csproj" />
-		<ProjectReference Include="..\TaskMangager.Repositories\TaskMangager.Repositories.csproj" />
+		<ProjectReference Include="..\TaskManager.Repositories\TaskManager.Repositories.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
