@@ -19,13 +19,29 @@
                    Placeholder="Пошук за назвою..." 
                    Margin="10,5"/>
 
-        <HorizontalStackLayout Grid.Row="1" Spacing="10" Margin="15,0,15,10">
-            <Label Text="Сортувати за:" VerticalOptions="Center" FontAttributes="Bold"/>
-            <Picker ItemsSource="{Binding SortOptions}" 
-                    SelectedItem="{Binding SelectedSortOption}" 
-                    VerticalOptions="Center"
-                    WidthRequest="200"/>
-        </HorizontalStackLayout>
+        <Grid Grid.Row="1" ColumnDefinitions="*, *" ColumnSpacing="15" Margin="15,5,15,10">
+
+            <VerticalStackLayout Grid.Column="0">
+                <Label Text="Фільтр статусу:" FontSize="12" FontAttributes="Bold" TextColor="Gray" Margin="5,0,0,0"/>
+                <Frame Padding="10,0" BorderColor="LightGray" CornerRadius="8" BackgroundColor="#F9F9F9" HasShadow="False">
+                    <Picker ItemsSource="{Binding StatusFilters}" 
+                            SelectedItem="{Binding SelectedStatusFilter}" 
+                            BackgroundColor="Transparent"
+                            TextColor="Black" />
+                </Frame>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="1">
+                <Label Text="Сортування:" FontSize="12" FontAttributes="Bold" TextColor="Gray" Margin="5,0,0,0"/>
+                <Frame Padding="10,0" BorderColor="LightGray" CornerRadius="8" BackgroundColor="#F9F9F9" HasShadow="False">
+                    <Picker ItemsSource="{Binding SortOptions}" 
+                            SelectedItem="{Binding SelectedSortOption}" 
+                            BackgroundColor="Transparent"
+                            TextColor="Black" />
+                </Frame>
+            </VerticalStackLayout>
+
+        </Grid>
 
         <CollectionView Grid.Row="2" 
                         ItemsSource="{Binding Projects}" 
@@ -34,7 +50,8 @@
                 <DataTemplate x:DataType="projects:ProjectListDTO">
                     <Frame Margin="10,5" 
                            Padding="15" 
-                           CornerRadius="8"
+                           CornerRadius="12"
+                           BorderColor="LightGray"
                            HasShadow="True">
 
                         <Grid ColumnDefinitions="*, Auto">
@@ -56,11 +73,13 @@
                             <HorizontalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
                                 <Button Text="Редаг." 
                                         FontSize="12"
+                                        CornerRadius="8"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=GoToEditCommand}"
                                         CommandParameter="{Binding Id}" />
 
                                 <Button Text="Видалити" 
                                         FontSize="12"
+                                        CornerRadius="8"
                                         BackgroundColor="Crimson"
                                         TextColor="White"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=DeleteProjectCommand}"
