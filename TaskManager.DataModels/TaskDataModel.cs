@@ -5,7 +5,6 @@ namespace KMA.TaskManager.DataModels
 {
     public class TaskDataModel
     {
-        // Додаємо атрибут PrimaryKey, щоб SQLite розумів, що це унікальний ідентифікатор
         [PrimaryKey] public Guid Id { get; set; }
 
         public Guid ProjectId { get; set; }

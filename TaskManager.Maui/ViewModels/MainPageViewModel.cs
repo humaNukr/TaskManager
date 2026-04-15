@@ -15,7 +15,7 @@ public partial class MainPageViewModel : BaseViewModel
 {
     private readonly IProjectService _projectService;
 
-    private IEnumerable<ProjectListDTO> _allProjects;
+    private IEnumerable<ProjectListDTO> _allProjects = Enumerable.Empty<ProjectListDTO>();
 
     [ObservableProperty]
     private ObservableCollection<ProjectListDTO> _projects = new();
@@ -36,6 +36,7 @@ public partial class MainPageViewModel : BaseViewModel
     public MainPageViewModel(IProjectService projectService)
     {
         _projectService = projectService;
+        _ = InitializeAsync();
     }
 
     partial void OnSearchTextChanged(string value) => ApplyFiltersAndSorting();
@@ -115,7 +116,7 @@ public partial class MainPageViewModel : BaseViewModel
     [RelayCommand]
     private async Task DeleteProjectAsync(Guid id)
     {
-        bool confirm = await Application.Current.MainPage.DisplayAlert(
+        bool confirm = await Shell.Current.DisplayAlert(
             "Видалення",
             "Ви впевнені? Усі пов'язані завдання також будуть видалені.",
             "Так", "Ні");

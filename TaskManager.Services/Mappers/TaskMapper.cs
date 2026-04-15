@@ -13,7 +13,6 @@ namespace KMA.TaskManager.Services.Mappers
         {
             if (model == null) return null;
 
-            // при створенні таска завжди IsCompleted = false
             return new TaskDataModel(
                 model.ProjectId,
                 model.Name,
@@ -28,6 +27,7 @@ namespace KMA.TaskManager.Services.Mappers
         {
             if (data == null) return null;
 
+            // Overdue is derived at read time, not persisted as a separate field.
             bool isOverdue = !data.IsCompleted && data.DueDate < DateTimeOffset.Now;
 
             return new TaskListDTO(

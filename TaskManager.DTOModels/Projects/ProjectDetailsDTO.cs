@@ -31,7 +31,6 @@ public class ProjectDetailsDTO
     public int TotalTasks => Tasks?.Count() ?? 0;
     public int CompletedTasks => Tasks?.Count(t => t.IsCompleted) ?? 0;
     public double ProgressFraction => TotalTasks == 0 ? 0 : (double)CompletedTasks / TotalTasks;
-    public double Progress => ProgressFraction * 100;
 
     public string ProgressStats => $"{CompletedTasks} з {TotalTasks} завдань завершено";
 }

@@ -8,12 +8,10 @@ namespace KMA.TaskManager.Maui
         {
             InitializeComponent();
 
-            // Реєструємо маршрути проектів
             Routing.RegisterRoute("ProjectDetails", typeof(ProjectDetails));
             Routing.RegisterRoute("ProjectCreatePage", typeof(ProjectCreatePage));
             Routing.RegisterRoute("ProjectEditPage", typeof(Pages.ProjectEditPage));
 
-            // Реєструємо маршрути завдань
             Routing.RegisterRoute("TaskCreatePage", typeof(TaskCreatePage));
             Routing.RegisterRoute("TaskDetails", typeof(TaskDetails));
             Routing.RegisterRoute("TaskEditPage", typeof(TaskEditPage));

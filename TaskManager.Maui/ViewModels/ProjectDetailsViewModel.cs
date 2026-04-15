@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel; // ДОДАНО
-using System.Linq; // ДОДАНО
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KMA.TaskManager.Services.DTOModels.Projects;
-using KMA.TaskManager.Services.DTOModels.Tasks; // ДОДАНО
+using KMA.TaskManager.Services.DTOModels.Tasks;
 using KMA.TaskManager.Services.Interfaces;
 using Microsoft.Maui.Controls;
 
@@ -21,9 +21,8 @@ public partial class ProjectDetailsViewModel : BaseViewModel
     private Guid _projectId;
 
     [ObservableProperty]
-    private ProjectDetailsDTO _currentProject;
+    private ProjectDetailsDTO? _currentProject;
 
-    // --- НОВІ ПОЛЯ ДЛЯ ФІЛЬТРАЦІЇ ЗАВДАНЬ ---
     [ObservableProperty]
     private ObservableCollection<TaskListDTO> _displayedTasks = new();
 
@@ -40,7 +39,6 @@ public partial class ProjectDetailsViewModel : BaseViewModel
         "Критичні спочатку",
         "Найближчий дедлайн"
     };
-    // ----------------------------------------
 
     public ProjectDetailsViewModel(IProjectService projectService)
     {
@@ -52,7 +50,6 @@ public partial class ProjectDetailsViewModel : BaseViewModel
         await LoadProjectDetailsAsync(value);
     }
 
-    // Тригери для автоматичного оновлення списку завдань при введенні тексту або зміні фільтра
     partial void OnTaskSearchTextChanged(string value) => ApplyTaskFilters();
     partial void OnSelectedTaskFilterChanged(string value) => ApplyTaskFilters();
 
@@ -65,7 +62,6 @@ public partial class ProjectDetailsViewModel : BaseViewModel
             await Task.Delay(300);
             CurrentProject = await _projectService.GetProjectDetailsAsync(id);
 
-            // Після завантаження проєкту одразу застосовуємо фільтри до його тасок
             ApplyTaskFilters();
         }
         finally
@@ -74,27 +70,24 @@ public partial class ProjectDetailsViewModel : BaseViewModel
         }
     }
 
-    // --- ЛОГІКА ФІЛЬТРАЦІЇ ТА СОРТУВАННЯ ЗАВДАНЬ ---
     private void ApplyTaskFilters()
     {
         if (CurrentProject?.Tasks == null) return;
 
         var filtered = CurrentProject.Tasks.AsEnumerable();
 
-        // 1. Пошук за назвою
         if (!string.IsNullOrWhiteSpace(TaskSearchText))
         {
             filtered = filtered.Where(t => t.Name.Contains(TaskSearchText, StringComparison.OrdinalIgnoreCase));
         }
 
-        // 2. Фільтрація та Сортування
         filtered = SelectedTaskFilter switch
         {
             "Тільки активні" => filtered.Where(t => !t.IsCompleted),
             "Тільки завершені" => filtered.Where(t => t.IsCompleted),
             "Критичні спочатку" => filtered.OrderByDescending(t => t.Priority),
             "Найближчий дедлайн" => filtered.Where(t => !t.IsCompleted).OrderBy(t => t.DueDate),
-            _ => filtered // "Усі завдання" (без змін)
+            _ => filtered
         };
 
         DisplayedTasks = new ObservableCollection<TaskListDTO>(filtered);

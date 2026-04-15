@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using KMA.TaskManager.Common; // Для EnumExtensions та EnumWithName
+using KMA.TaskManager.Common;
 using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.Services.Interfaces;
@@ -14,20 +14,17 @@ namespace KMA.TaskManager.Maui.ViewModels
         private Guid _projectId;
 
         [ObservableProperty]
-        private string _name;
+        private string _name = string.Empty;
 
         [ObservableProperty]
-        private string _description;
+        private string _description = string.Empty;
 
-        // Список всіх варіантів пріоритету з красивими назвами для Picker
         [ObservableProperty]
-        private EnumWithName<TaskPriority>[] _priorities;
+        private EnumWithName<TaskPriority>[] _priorities = Array.Empty<EnumWithName<TaskPriority>>();
 
-        // Обраний користувачем пріоритет (об'єкт, що містить і Enum, і назву)
         [ObservableProperty]
-        private EnumWithName<TaskPriority> _selectedPriority;
+        private EnumWithName<TaskPriority> _selectedPriority = default!;
 
-        // Поле дати
         [ObservableProperty]
         private DateTime _dueDate = DateTime.Now.AddDays(1);
 
@@ -37,13 +34,14 @@ namespace KMA.TaskManager.Maui.ViewModels
 
             Priorities = EnumExtensions.GetValuesWithNames<TaskPriority>();
 
-            SelectedPriority = Priorities.FirstOrDefault(p => p.Value == TaskPriority.Medium);
+            SelectedPriority = Priorities.FirstOrDefault(p => p.Value == TaskPriority.Medium) ?? Priorities[0];
         }
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             if (query.TryGetValue("ProjectId", out var projectIdObj))
-            { if (projectIdObj is Guid guidId)
+            {
+                if (projectIdObj is Guid guidId)
                 {
                     _projectId = guidId;
                 }
@@ -66,7 +64,6 @@ namespace KMA.TaskManager.Maui.ViewModels
             IsBusy = true;
             try
             {
-                // Використовуємо SelectedPriority.Value, щоб дістати чистий Enum для моделі
                 var createModel = new TaskCreateModel(
                     _projectId,
                     Name,

@@ -2,10 +2,6 @@
 
 namespace KMA.TaskManager.CreateModels
 {
-    /// <summary>
-    /// Ця модель використовується коли користувач заповнює форму створення нової таски
-    /// Полів isOverdue та isCompleted тут немає, оскільки при створенні нової таски вона завжди буде невиконаною та не простроченою.
-    /// </summary>
     public class TaskCreateModel
     {
         public Guid ProjectId { get; }
@@ -14,7 +10,6 @@ namespace KMA.TaskManager.CreateModels
         public TaskPriority Priority { get; }
         public DateTimeOffset DueDate { get; }
 
-        // Конструктор вимагає всі необхідні поля
         public TaskCreateModel(
             Guid projectId,
             string name,

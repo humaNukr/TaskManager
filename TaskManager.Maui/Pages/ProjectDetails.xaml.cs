@@ -13,12 +13,9 @@ public partial class ProjectDetails : ContentPage
     {
         base.OnAppearing();
 
-        if (BindingContext is ProjectDetailsViewModel vm)
+        if (BindingContext is ProjectDetailsViewModel vm && vm.ProjectId != Guid.Empty)
         {
-            if (vm.ProjectId != Guid.Empty)
-            {
-                vm.LoadProjectDetailsCommand.Execute(vm.ProjectId);
-            }
+            vm.LoadProjectDetailsCommand.Execute(vm.ProjectId);
         }
     }
 }

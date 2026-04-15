@@ -33,7 +33,7 @@ public partial class ProjectCreateViewModel : BaseViewModel
     {
         if (string.IsNullOrWhiteSpace(Name))
         {
-            await Application.Current.MainPage.DisplayAlert("Помилка", "Назва проєкту не може бути порожньою", "ОК");
+            await Shell.Current.DisplayAlert("Помилка", "Назва проєкту не може бути порожньою", "ОК");
             return;
         }
 
@@ -42,8 +42,6 @@ public partial class ProjectCreateViewModel : BaseViewModel
         {
             var createModel = new ProjectCreateModel(Name, Description, SelectedProjectType);
             await _projectService.CreateProjectAsync(createModel);
-
-            // Повернення на попередню сторінку
             await Shell.Current.GoToAsync("..");
         }
         finally

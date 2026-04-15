@@ -32,7 +32,6 @@ public partial class ProjectEditViewModel : BaseViewModel
         _projectService = projectService;
     }
 
-    // Метод викликається автоматично, коли встановлюється ProjectId з URL
     async partial void OnProjectIdChanged(Guid value)
     {
         await LoadProjectAsync(value);

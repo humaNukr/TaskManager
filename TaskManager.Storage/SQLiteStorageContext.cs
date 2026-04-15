@@ -1,9 +1,10 @@
-﻿using KMA.TaskManager.Common.Enums; // Переконайся, що тут правильний namespace для твоїх Enum
+﻿using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.DataModels;
 using SQLite;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,6 +25,7 @@ namespace KMA.TaskManager.Storage
 
         private async Task Init()
         {
+            // Protects initialization against concurrent calls from multiple ViewModels.
             await _semaphore.WaitAsync();
 
             try
@@ -59,7 +61,6 @@ namespace KMA.TaskManager.Storage
 
         private async Task SeedMockDataAsync()
         {
-            // 1. Створюємо проєкти із вказанням ProjectType
             var bakeryWebsite = new ProjectDataModel
             {
                 Id = Guid.NewGuid(),
@@ -96,10 +97,8 @@ namespace KMA.TaskManager.Storage
 
             await _databaseConnection.InsertAllAsync(projects);
 
-            // 2. Створюємо завдання
             var tasks = new List<TaskDataModel>
             {
-                // Завдання для пекарні
                 new TaskDataModel
                 {
                     Id = Guid.NewGuid(), ProjectId = bakeryWebsite.Id, Name = "Аналіз вимог",
@@ -161,7 +160,6 @@ namespace KMA.TaskManager.Storage
                     DueDate = DateTimeOffset.Now.AddDays(21), IsCompleted = false
                 },
 
-                // Завдання для курсу C#
                 new TaskDataModel
                 {
                     Id = Guid.NewGuid(), ProjectId = csharpCourse.Id, Name = "Лабораторна 1",
@@ -228,7 +226,7 @@ namespace KMA.TaskManager.Storage
         public async Task<bool> DeleteTasksByProjectIdAsync(Guid projectId)
         {
             await Init();
-            var tasks = await GetTasksByProjectIdAsync(projectId);
+            var tasks = (await GetTasksByProjectIdAsync(projectId)).ToList();
 
             int deletedCount = 0;
             foreach (var task in tasks)
@@ -236,7 +234,7 @@ namespace KMA.TaskManager.Storage
                 deletedCount += await _databaseConnection.DeleteAsync<TaskDataModel>(task.Id);
             }
 
-            return true;
+            return deletedCount == tasks.Count;
         }
 
         #endregion

@@ -10,7 +10,7 @@ namespace KMA.TaskManager.Tests.DTOModels;
 public class ProjectDTOTest
 {
     [Fact]
-    public void ProjectDetailsDTO_Progress_HalfTasksCompleted_ReturnsFiftyPercent()
+    public void ProjectDetailsDTO_ProgressFraction_HalfTasksCompleted_ReturnsHalf()
     {
         // Arrange
         var tasks = new List<TaskListDTO>
@@ -22,20 +22,20 @@ public class ProjectDTOTest
         var project = new ProjectDetailsDTO(Guid.NewGuid(), "Test", "Desc", ProjectType.Work, tasks);
 
         // Act
-        var result = project.Progress;
+        var result = project.ProgressFraction;
 
         // Assert
-        Assert.Equal(50, result);
+        Assert.Equal(0.5, result);
     }
 
     [Fact]
-    public void ProjectDetailsDTO_Progress_NoTasks_ReturnsZero()
+    public void ProjectDetailsDTO_ProgressFraction_NoTasks_ReturnsZero()
     {
         // Arrange
         var project = new ProjectDetailsDTO(Guid.NewGuid(), "Empty", "Desc", ProjectType.Personal, new List<TaskListDTO>());
 
         // Act
-        var result = project.Progress;
+        var result = project.ProgressFraction;
 
         // Assert
         Assert.Equal(0, result);

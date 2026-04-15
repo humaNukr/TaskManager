@@ -16,7 +16,7 @@ public partial class MainPage : ContentPage
 
         if (BindingContext is MainPageViewModel vm)
         {
-            vm.InitializeCommand.Execute(null);
+            vm.LoadProjectsCommand.Execute(null);
         }
     }
 }

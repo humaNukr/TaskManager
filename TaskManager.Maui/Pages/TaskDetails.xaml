@@ -8,7 +8,7 @@
     BackgroundColor="{StaticResource PageBackground}"
     Title="Деталі завдання">
 
-    <ScrollView>
+    <ScrollView IsEnabled="{Binding IsNotBusy}">
         <VerticalStackLayout Padding="20" Spacing="20">
 
             <Frame BackgroundColor="{StaticResource CardBackground}" 
@@ -104,16 +104,11 @@
 
             <Grid ColumnDefinitions="*, *" ColumnSpacing="15" Margin="0, 10, 0, 20">
                 <Button Grid.Column="0" Text="Редагувати" Command="{Binding EditTaskCommand}" 
+                        IsEnabled="{Binding IsNotBusy}"
                         BackgroundColor="{StaticResource ThemeCyan}" TextColor="White" FontAttributes="Bold" CornerRadius="12" HeightRequest="50"/>
 
                 <Button Grid.Column="1" Text="Видалити" Command="{Binding DeleteTaskCommand}" 
-                        BackgroundColor="{StaticResource DangerColor}" TextColor="White" FontAttributes="Bold" CornerRadius="12" HeightRequest="50"/>
-            </Grid>
-            <Grid ColumnDefinitions="*, *" ColumnSpacing="15" Margin="0, 10, 0, 20">
-                <Button Grid.Column="0" Text="Редагувати" Command="{Binding EditTaskCommand}" 
-                        BackgroundColor="{StaticResource ThemeCyan}" TextColor="White" FontAttributes="Bold" CornerRadius="12" HeightRequest="50"/>
-
-                <Button Grid.Column="1" Text="Видалити" Command="{Binding DeleteTaskCommand}" 
+                        IsEnabled="{Binding IsNotBusy}"
                         BackgroundColor="{StaticResource DangerColor}" TextColor="White" FontAttributes="Bold" CornerRadius="12" HeightRequest="50"/>
             </Grid>
 

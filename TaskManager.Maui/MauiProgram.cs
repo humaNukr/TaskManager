@@ -23,13 +23,10 @@ namespace KMA.TaskManager.Maui
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            //Реєстрація залежностей в IoC-контейнері для забезпечення слабкої зв'язності
-            //між компонентами застосунку
-
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-            // сторінки реєструємо як Transient — новий екземпляр при кожному переході
+            // Pages and ViewModels are transient because they are navigation-scoped.
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<ProjectDetails>();
             builder.Services.AddTransient<TaskDetails>();
@@ -46,7 +43,7 @@ namespace KMA.TaskManager.Maui
             builder.Services.AddTransient<ProjectCreateViewModel>();
             builder.Services.AddTransient<ProjectEditViewModel>();
 
-            // сервіси — Singleton, бо сховище спільне для всього застосунку
+            // Services and repositories use shared storage state for the app lifetime.
             builder.Services.AddSingleton<IProjectMapper, ProjectMapper>();
             builder.Services.AddSingleton<ITaskMapper, TaskMapper>();
 

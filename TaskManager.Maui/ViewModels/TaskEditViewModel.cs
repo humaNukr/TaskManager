@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using KMA.TaskManager.Common; // Обов'язково для EnumExtensions
+using KMA.TaskManager.Common;
 using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.EditModels;
 using KMA.TaskManager.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq; // Для FirstOrDefault
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace KMA.TaskManager.Maui.ViewModels
@@ -17,18 +17,16 @@ namespace KMA.TaskManager.Maui.ViewModels
         private Guid _taskId;
 
         [ObservableProperty]
-        private string _name;
+        private string _name = string.Empty;
 
         [ObservableProperty]
-        private string _description;
+        private string _description = string.Empty;
 
-        // Масив для Picker
         [ObservableProperty]
-        private EnumWithName<TaskPriority>[] _priorities;
+        private EnumWithName<TaskPriority>[] _priorities = Array.Empty<EnumWithName<TaskPriority>>();
 
-        // Вибране значення для Picker
         [ObservableProperty]
-        private EnumWithName<TaskPriority> _selectedPriority;
+        private EnumWithName<TaskPriority> _selectedPriority = default!;
 
         [ObservableProperty]
         private DateTime _dueDate;
@@ -40,7 +38,6 @@ namespace KMA.TaskManager.Maui.ViewModels
         {
             _taskService = taskService;
 
-            // Завантажуємо всі можливі варіанти при створенні ViewModel
             Priorities = EnumExtensions.GetValuesWithNames<TaskPriority>();
         }
 
@@ -49,6 +46,7 @@ namespace KMA.TaskManager.Maui.ViewModels
             if (query.ContainsKey("TaskId") && query["TaskId"] is Guid taskId)
             {
                 _taskId = taskId;
+                _ = RefreshData();
             }
         }
 
@@ -63,7 +61,7 @@ namespace KMA.TaskManager.Maui.ViewModels
                 Name = task.Name;
                 Description = task.Description;
 
-                SelectedPriority = Priorities.FirstOrDefault(p => p.Value == task.Priority);
+                SelectedPriority = Priorities.FirstOrDefault(p => p.Value == task.Priority) ?? Priorities[0];
 
                 DueDate = task.DueDate.DateTime;
                 IsCompleted = task.IsCompleted;

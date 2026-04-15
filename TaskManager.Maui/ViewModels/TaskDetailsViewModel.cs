@@ -11,7 +11,7 @@ namespace KMA.TaskManager.Maui.ViewModels
         private Guid _taskId;
 
         [ObservableProperty]
-        private TaskDetailsDto _currentTask;
+        private TaskDetailsDto? _currentTask;
 
         public TaskDetailsViewModel(ITaskService taskService)
         {
@@ -30,6 +30,11 @@ namespace KMA.TaskManager.Maui.ViewModels
                 {
                     _taskId = parsedId;
                 }
+            }
+
+            if (_taskId != Guid.Empty)
+            {
+                _ = RefreshData();
             }
         }
 

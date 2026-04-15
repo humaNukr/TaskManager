@@ -10,10 +10,12 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Додати"
+                     IsEnabled="{Binding IsNotBusy}"
                      Command="{Binding GoToCreateCommand}" />
     </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="Auto, Auto, *">
+    <Grid RowDefinitions="Auto, Auto, *"
+          IsEnabled="{Binding IsNotBusy}">
 
         <SearchBar Grid.Row="0"
                    Text="{Binding SearchText}"

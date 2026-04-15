@@ -11,12 +11,16 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Додати завдання" 
+                     IsEnabled="{Binding IsNotBusy}"
                      Command="{Binding CreateTaskCommand}" />
     </ContentPage.ToolbarItems>
 
     <Grid Padding="20,20,20,20">
 
-        <CollectionView ItemsSource="{Binding DisplayedTasks}" SelectionMode="None" VerticalScrollBarVisibility="Never">
+        <CollectionView ItemsSource="{Binding DisplayedTasks}"
+                        IsEnabled="{Binding IsNotBusy}"
+                        SelectionMode="None"
+                        VerticalScrollBarVisibility="Never">
 
             <CollectionView.Header>
                 <VerticalStackLayout Spacing="15" Padding="0,0,0,10">
@@ -40,7 +44,7 @@
                             <VerticalStackLayout Padding="20,15,20,15" Spacing="8">
                                 <HorizontalStackLayout Spacing="10">
                                     <Label Text="Прогрес:" FontAttributes="Bold" VerticalOptions="Center" TextColor="{StaticResource TextPrimary}"/>
-                                    <Label Text="{Binding CurrentProject.Progress, StringFormat='{0:F1}%'}"
+                                    <Label Text="{Binding CurrentProject.ProgressFraction, StringFormat='{0:P1}'}"
                                            TextColor="{StaticResource ThemeCyan}" FontAttributes="Bold" VerticalOptions="Center"/>
                                 </HorizontalStackLayout>
 
