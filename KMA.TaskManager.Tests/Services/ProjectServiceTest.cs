@@ -1,12 +1,17 @@
-﻿using Moq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.DataModels;
 using KMA.TaskManager.EditModels;
 using KMA.TaskManager.Repositories.Interfaces;
+using KMA.TaskManager.Services;
+using KMA.TaskManager.Services.DTOModels.Projects;
 using KMA.TaskManager.Services.DTOModels.Tasks;
 using KMA.TaskManager.Services.Interfaces;
-using KMA.TaskManager.Services.Services;
-using KMA.TaskManager.Common.Enums;
+using Moq;
 
 namespace KMA.TaskManager.Tests.Services;
 
@@ -14,14 +19,16 @@ public class ProjectServiceTest
 {
     private readonly Mock<IProjectRepository> _projectRepoMock;
     private readonly Mock<ITaskService> _taskServiceMock;
+    private readonly Mock<IProjectMapper> _projectMapperMock;
     private readonly ProjectService _service;
 
     public ProjectServiceTest()
     {
         _projectRepoMock = new Mock<IProjectRepository>();
         _taskServiceMock = new Mock<ITaskService>();
+        _projectMapperMock = new Mock<IProjectMapper>();
 
-        _service = new ProjectService(_projectRepoMock.Object, _taskServiceMock.Object);
+        _service = new ProjectService(_projectRepoMock.Object, _taskServiceMock.Object, _projectMapperMock.Object);
     }
 
     [Fact]
@@ -33,11 +40,15 @@ public class ProjectServiceTest
 
         var tasks = new List<TaskListDTO>
         {
-            new TaskListDTO(Guid.NewGuid(), "T1", TaskPriority.Low, false, true, DateTime.Now)
+            new TaskListDTO(Guid.NewGuid(), "T1", TaskPriority.Low, false, false, DateTime.Now)
         };
+
+        var expectedDto = new ProjectDetailsDTO(projectId, "Project", "Desc", ProjectType.Work, tasks);
 
         _projectRepoMock.Setup(r => r.GetProjectByIdAsync(projectId)).ReturnsAsync(dataModel);
         _taskServiceMock.Setup(s => s.GetTasksByProjectIdAsync(projectId)).ReturnsAsync(tasks);
+
+        _projectMapperMock.Setup(m => m.MapToDetailsDTO(dataModel, It.IsAny<List<TaskListDTO>>())).Returns(expectedDto);
 
         // Act
         var result = await _service.GetProjectDetailsAsync(projectId);
@@ -46,10 +57,10 @@ public class ProjectServiceTest
         Assert.NotNull(result);
         Assert.Equal(projectId, result.Id);
         Assert.Equal("Project", result.Name);
-        Assert.Single(result.Tasks);
 
         _projectRepoMock.Verify(r => r.GetProjectByIdAsync(projectId), Times.Once);
         _taskServiceMock.Verify(s => s.GetTasksByProjectIdAsync(projectId), Times.Once);
+        _projectMapperMock.Verify(m => m.MapToDetailsDTO(dataModel, It.IsAny<List<TaskListDTO>>()), Times.Once);
     }
 
     [Fact]
@@ -81,9 +92,15 @@ public class ProjectServiceTest
         };
         var p2Tasks = new List<TaskListDTO>();
 
+        var expectedDto1 = new ProjectListDTO(project1.Id, "P1", 2, 1);
+        var expectedDto2 = new ProjectListDTO(project2.Id, "P2", 0, 0);
+
         _projectRepoMock.Setup(r => r.GetAllProjectsAsync()).ReturnsAsync(projectsData);
         _taskServiceMock.Setup(s => s.GetTasksByProjectIdAsync(project1.Id)).ReturnsAsync(p1Tasks);
         _taskServiceMock.Setup(s => s.GetTasksByProjectIdAsync(project2.Id)).ReturnsAsync(p2Tasks);
+
+        _projectMapperMock.Setup(m => m.MapToListDTO(project1, 2, 1)).Returns(expectedDto1);
+        _projectMapperMock.Setup(m => m.MapToListDTO(project2, 0, 0)).Returns(expectedDto2);
 
         // Act
         var result = (await _service.GetAllProjectsAsync()).ToList();
@@ -92,16 +109,12 @@ public class ProjectServiceTest
         Assert.NotNull(result);
         Assert.Equal(2, result.Count);
 
-        var resultP1 = result.First(p => p.Id == project1.Id);
-        Assert.Equal("P1", resultP1.Name);
-        Assert.Equal(2, resultP1.TotalTasks);
-        Assert.Equal(1, resultP1.CompletedTasks);
-
-        var resultP2 = result.First(p => p.Id == project2.Id);
-        Assert.Equal(0, resultP2.TotalTasks);
+        Assert.Contains(expectedDto1, result);
+        Assert.Contains(expectedDto2, result);
 
         _projectRepoMock.Verify(r => r.GetAllProjectsAsync(), Times.Once);
         _taskServiceMock.Verify(s => s.GetTasksByProjectIdAsync(It.IsAny<Guid>()), Times.Exactly(2));
+        _projectMapperMock.Verify(m => m.MapToListDTO(It.IsAny<ProjectDataModel>(), It.IsAny<int>(), It.IsAny<int>()), Times.Exactly(2));
     }
 
     [Fact]
@@ -111,10 +124,16 @@ public class ProjectServiceTest
         var createModel = new ProjectCreateModel("New", "Desc", ProjectType.Work);
         var savedDataModel = new ProjectDataModel(createModel.Name, createModel.Description, createModel.ProjectType) { Id = Guid.NewGuid() };
 
-        _projectRepoMock.Setup(r => r.SaveProjectAsync(It.IsAny<ProjectDataModel>())).ReturnsAsync(savedDataModel);
+        var emptyTasks = new List<TaskListDTO>();
+        var expectedDto = new ProjectDetailsDTO(savedDataModel.Id, "New", "Desc", ProjectType.Work, emptyTasks);
+
+        _projectMapperMock.Setup(m => m.MapToData(createModel)).Returns(savedDataModel);
+        _projectRepoMock.Setup(r => r.SaveProjectAsync(savedDataModel)).ReturnsAsync(savedDataModel);
 
         _projectRepoMock.Setup(r => r.GetProjectByIdAsync(savedDataModel.Id)).ReturnsAsync(savedDataModel);
-        _taskServiceMock.Setup(s => s.GetTasksByProjectIdAsync(savedDataModel.Id)).ReturnsAsync(new List<TaskListDTO>());
+        _taskServiceMock.Setup(s => s.GetTasksByProjectIdAsync(savedDataModel.Id)).ReturnsAsync(emptyTasks);
+
+        _projectMapperMock.Setup(m => m.MapToDetailsDTO(savedDataModel, emptyTasks)).Returns(expectedDto);
 
         // Act
         var result = await _service.CreateProjectAsync(createModel);
@@ -122,7 +141,9 @@ public class ProjectServiceTest
         // Assert
         Assert.NotNull(result);
         Assert.Equal("New", result.Name);
-        _projectRepoMock.Verify(r => r.SaveProjectAsync(It.IsAny<ProjectDataModel>()), Times.Once);
+
+        _projectRepoMock.Verify(r => r.SaveProjectAsync(savedDataModel), Times.Once);
+        _projectMapperMock.Verify(m => m.MapToData(createModel), Times.Once);
     }
 
     [Fact]
@@ -130,14 +151,18 @@ public class ProjectServiceTest
     {
         // Arrange
         var projectId = Guid.NewGuid();
-
         var editModel = new ProjectEditModel(projectId, "Updated", "Desc", ProjectType.Work);
 
         var existingData = new ProjectDataModel("Old", "Old", ProjectType.Personal) { Id = projectId };
 
+        var emptyTasks = new List<TaskListDTO>();
+        var expectedDto = new ProjectDetailsDTO(projectId, "Updated", "Desc", ProjectType.Work, emptyTasks);
+
         _projectRepoMock.Setup(r => r.GetProjectByIdAsync(projectId)).ReturnsAsync(existingData);
-        _projectRepoMock.Setup(r => r.SaveProjectAsync(It.IsAny<ProjectDataModel>())).ReturnsAsync(existingData);
-        _taskServiceMock.Setup(s => s.GetTasksByProjectIdAsync(projectId)).ReturnsAsync(new List<TaskListDTO>());
+        _projectRepoMock.Setup(r => r.SaveProjectAsync(existingData)).ReturnsAsync(existingData);
+        _taskServiceMock.Setup(s => s.GetTasksByProjectIdAsync(projectId)).ReturnsAsync(emptyTasks);
+
+        _projectMapperMock.Setup(m => m.MapToDetailsDTO(existingData, emptyTasks)).Returns(expectedDto);
 
         // Act
         var result = await _service.UpdateProjectAsync(editModel);
@@ -153,7 +178,6 @@ public class ProjectServiceTest
     {
         // Arrange
         var editModel = new ProjectEditModel(Guid.NewGuid(), "Updated", "Desc", ProjectType.Work);
-
         _projectRepoMock.Setup(r => r.GetProjectByIdAsync(editModel.Id)).ReturnsAsync((ProjectDataModel)null);
 
         // Act & Assert
