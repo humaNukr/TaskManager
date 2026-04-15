@@ -38,6 +38,7 @@ public partial class ProjectDetailsViewModel : BaseViewModel
         IsBusy = true; // Використовуємо IsBusy з BaseViewModel для керування індикатором завантаження
         try
         {
+            await Task.Delay(300);
             // Викликаємо оновлений асинхронний метод сервісу
             CurrentProject = await _projectService.GetProjectDetailsAsync(id);
         }

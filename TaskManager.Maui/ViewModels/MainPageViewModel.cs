@@ -15,7 +15,6 @@ public partial class MainPageViewModel : BaseViewModel
 {
     private readonly IProjectService _projectService;
 
-    // Повний список проектів для фільтрації в пам'яті
     private IEnumerable<ProjectListDTO> _allProjects;
 
     [ObservableProperty]
@@ -34,11 +33,33 @@ public partial class MainPageViewModel : BaseViewModel
         _projectService = projectService;
     }
 
-    // Автоматично викликається при зміні SearchText
     partial void OnSearchTextChanged(string value) => ApplyFiltersAndSorting();
 
-    // Автоматично викликається при зміні сортування
     partial void OnSelectedSortOptionChanged(string value) => ApplyFiltersAndSorting();
+
+    [RelayCommand]
+    private async Task InitializeAsync()
+    {
+        if (_allProjects != null && _allProjects.Any())
+        {
+            _allProjects = await _projectService.GetAllProjectsAsync();
+            ApplyFiltersAndSorting();
+            return;
+        }
+
+        IsBusy = true;
+        try
+        {
+            await Task.Delay(300);
+
+            _allProjects = await _projectService.GetAllProjectsAsync();
+            ApplyFiltersAndSorting();
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
 
     [RelayCommand]
     private async Task LoadProjectsAsync()

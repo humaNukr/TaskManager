@@ -5,7 +5,6 @@ using KMA.TaskManager.Repositories.Interfaces;
 using KMA.TaskManager.Services;
 using KMA.TaskManager.Services.Interfaces;
 using KMA.TaskManager.Services.Mappers;
-using KMA.TaskManager.Services.Services;
 using KMA.TaskManager.Storage;
 using Microsoft.Extensions.Logging;
 
@@ -51,7 +50,7 @@ namespace KMA.TaskManager.Maui
             builder.Services.AddSingleton<IProjectMapper, ProjectMapper>();
             builder.Services.AddSingleton<ITaskMapper, TaskMapper>();
 
-            builder.Services.AddSingleton<IStorageContext, SQLLiteStorageContext>();
+            builder.Services.AddSingleton<IStorageContext, SQLiteStorageContext>();
 
             builder.Services.AddSingleton<ITaskService, TaskService>();
             builder.Services.AddSingleton<IProjectService, ProjectService>();
