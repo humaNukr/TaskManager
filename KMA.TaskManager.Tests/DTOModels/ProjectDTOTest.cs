@@ -15,8 +15,9 @@ public class ProjectDTOTest
         // Arrange
         var tasks = new List<TaskListDTO>
         {
-            new TaskListDTO(Guid.NewGuid(), "Task 1", TaskPriority.Medium, true, false),
-            new TaskListDTO(Guid.NewGuid(), "Task 2", TaskPriority.Medium, false, false)
+            // Одна таска виконана (true), інша ні (false)
+            new TaskListDTO(Guid.NewGuid(), "Task 1", TaskPriority.Medium, true, false, DateTime.Now),
+            new TaskListDTO(Guid.NewGuid(), "Task 2", TaskPriority.Medium, false, false, DateTime.Now)
         };
         var project = new ProjectDetailsDTO(Guid.NewGuid(), "Test", "Desc", ProjectType.Work, tasks);
 
@@ -44,6 +45,7 @@ public class ProjectDTOTest
     public void ProjectListDTO_Progress_AllTasksCompleted_ReturnsHundredPercent()
     {
         // Arrange
+        // У проєкті 4 таски, і всі 4 виконані
         var project = new ProjectListDTO(Guid.NewGuid(), "Full", 4, 4);
 
         // Act

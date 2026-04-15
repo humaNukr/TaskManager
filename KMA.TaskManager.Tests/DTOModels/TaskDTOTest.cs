@@ -1,8 +1,4 @@
-﻿using KMA.TaskManager.Services.DTOModels.Tasks;
-using KMA.TaskManager.Common.Enums;
-using Xunit;
-
-using System;
+﻿using System;
 using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.Services.DTOModels.Tasks;
 using Xunit;
@@ -12,32 +8,44 @@ namespace KMA.TaskManager.Tests.DTOModels;
 public class TaskDTOTest
 {
     [Fact]
-    public void TaskDTOs_Initialization_StoresCorrectValues()
+    public void TaskListDTO_Initialization_PropertiesAreSetCorrectly()
     {
         // Arrange
-        var taskId = Guid.NewGuid();
+        var id = Guid.NewGuid();
+        var dueDate = DateTime.Now.AddDays(1);
+
+        // Act
+        var dto = new TaskListDTO(id, "Test", TaskPriority.High, true, false, dueDate);
+
+        // Assert
+        Assert.Equal(id, dto.Id);
+        Assert.Equal("Test", dto.Name);
+        Assert.Equal(TaskPriority.High, dto.Priority);
+        Assert.True(dto.IsCompleted);
+        Assert.False(dto.IsOverdue);
+        Assert.Equal(dueDate, dto.DueDate);
+    }
+
+    [Fact]
+    public void TaskDetailsDto_Initialization_PropertiesAreSetCorrectly()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
         var projectId = Guid.NewGuid();
+
         var dueDate = DateTimeOffset.Now.AddDays(-1);
 
-        // Act - Створюємо обидві DTO
-        var detailsDto = new TaskDetailsDto(
-            taskId, projectId, "Деталі завдання", "Опис",
-            TaskPriority.High, dueDate, true, true);
+        // Act
+        var dto = new TaskDetailsDto(id, projectId, "Name", "Desc", TaskPriority.Low, dueDate, false, true);
 
-        var listDto = new TaskListDTO(
-            taskId, "Список завдання", TaskPriority.Medium, false, false);
-
-        // Assert - Перевіряємо TaskDetailsDto
-        Assert.Equal(taskId, detailsDto.Id);
-        Assert.Equal(projectId, detailsDto.ProjectId);
-        Assert.True(detailsDto.IsCompleted);
-        Assert.True(detailsDto.IsOverdue);
-        Assert.Equal(TaskPriority.High, detailsDto.Priority);
-
-        // Assert - Перевіряємо TaskListDTO
-        Assert.Equal(taskId, listDto.Id);
-        Assert.Equal("Список завдання", listDto.Name);
-        Assert.False(listDto.IsCompleted);
-        Assert.Equal(TaskPriority.Medium, listDto.Priority);
+        // Assert
+        Assert.Equal(id, dto.Id);
+        Assert.Equal(projectId, dto.ProjectId);
+        Assert.Equal("Name", dto.Name);
+        Assert.Equal("Desc", dto.Description);
+        Assert.Equal(TaskPriority.Low, dto.Priority);
+        Assert.False(dto.IsCompleted);
+        Assert.True(dto.IsOverdue);
+        Assert.Equal(dueDate, dto.DueDate);
     }
 }
