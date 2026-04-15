@@ -42,9 +42,15 @@ namespace KMA.TaskManager.Maui.ViewModels
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            if (query.ContainsKey("ProjectId") && query["ProjectId"] is Guid projectId)
-            {
-                _projectId = projectId;
+            if (query.TryGetValue("ProjectId", out var projectIdObj))
+            { if (projectIdObj is Guid guidId)
+                {
+                    _projectId = guidId;
+                }
+                else if (projectIdObj is string stringId && Guid.TryParse(stringId, out Guid parsedId))
+                {
+                    _projectId = parsedId;
+                }
             }
         }
 
