@@ -13,7 +13,6 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <tools:StringToBoolConverter x:Key="StringToBoolConverter" />
             <tools:EnumToDisplayNameConverter x:Key="EnumToDisplayNameConverter" />
 
         </ResourceDictionary>

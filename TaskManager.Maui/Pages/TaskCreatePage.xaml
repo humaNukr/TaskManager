@@ -46,17 +46,26 @@
             </Frame>
 
             <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
-                <Button Grid.Column="0" Text="Зберегти" 
-                        Command="{Binding SaveTaskCommand}"
-                        IsEnabled="{Binding IsNotBusy}"
-                        BackgroundColor="{StaticResource SuccessColor}"
-                        TextColor="White" FontAttributes="Bold" CornerRadius="8" HeightRequest="50" />
-
-                <Button Grid.Column="1" Text="Скасувати" 
+                <Button Grid.Column="0" Text="Скасувати" 
                         Command="{Binding CancelCommand}"
-                        IsEnabled="{Binding IsNotBusy}"
                         BackgroundColor="{StaticResource DangerColor}"
                         TextColor="White" FontAttributes="Bold" CornerRadius="8" HeightRequest="50" />
+
+                <Button Grid.Column="1" Text="Зберегти" 
+                        Command="{Binding SaveTaskCommand}"
+                        TextColor="White" FontAttributes="Bold" CornerRadius="8" HeightRequest="50">
+
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsEnabled, Source={RelativeSource Self}}" Value="True">
+                            <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}" />
+                        </DataTrigger>
+
+                        <DataTrigger TargetType="Button" Binding="{Binding IsEnabled, Source={RelativeSource Self}}" Value="False">
+                            <Setter Property="BackgroundColor" Value="LightGray" />
+                        </DataTrigger>
+                    </Button.Triggers>
+
+                </Button>
             </Grid>
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" 

@@ -20,7 +20,7 @@ public partial class ProjectCreateViewModel : BaseViewModel
     [ObservableProperty]
     private ProjectType _selectedProjectType;
 
-    public ProjectType[] ProjectTypes { get; } = (ProjectType[]) Enum.GetValues(typeof(ProjectType));
+    public ProjectType[] ProjectTypes { get; } = (ProjectType[])Enum.GetValues(typeof(ProjectType));
 
     public ProjectCreateViewModel(IProjectService projectService)
     {
@@ -28,15 +28,25 @@ public partial class ProjectCreateViewModel : BaseViewModel
         SelectedProjectType = ProjectType.Personal;
     }
 
-    [RelayCommand]
+    public bool CanSave => !string.IsNullOrWhiteSpace(Name) && !IsBusy;
+
+    partial void OnNameChanged(string value)
+    {
+        SaveCommand.NotifyCanExecuteChanged();
+    }
+
+    protected override void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+        if (e.PropertyName == nameof(IsBusy))
+        {
+            SaveCommand.NotifyCanExecuteChanged();
+        }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanSave))]
     private async Task SaveAsync()
     {
-        if (string.IsNullOrWhiteSpace(Name))
-        {
-            await Shell.Current.DisplayAlert("Помилка", "Назва проєкту не може бути порожньою", "ОК");
-            return;
-        }
-
         IsBusy = true;
         try
         {

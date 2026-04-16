@@ -52,15 +52,25 @@ namespace KMA.TaskManager.Maui.ViewModels
             }
         }
 
-        [RelayCommand]
+        public bool CanSave => !string.IsNullOrWhiteSpace(Name) && !IsBusy;
+
+        partial void OnNameChanged(string value)
+        {
+            SaveTaskCommand.NotifyCanExecuteChanged();
+        }
+
+        protected override void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            if (e.PropertyName == nameof(IsBusy))
+            {
+                SaveTaskCommand.NotifyCanExecuteChanged();
+            }
+        }
+
+        [RelayCommand(CanExecute = nameof(CanSave))]
         private async Task SaveTaskAsync()
         {
-            if (string.IsNullOrWhiteSpace(Name))
-            {
-                await Shell.Current.DisplayAlert("Валідація", "Назва завдання обов'язкова", "OK");
-                return;
-            }
-
             IsBusy = true;
             try
             {

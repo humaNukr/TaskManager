@@ -23,9 +23,27 @@
                 SelectedItem="{Binding SelectedProjectType}"
                 ItemDisplayBinding="{Binding ., Converter={StaticResource EnumConverter}}" />
 
-        <Grid ColumnDefinitions="*, *" ColumnSpacing="15" Margin="0,20,0,0">
-            <Button Grid.Column="0" Text="Скасувати" Command="{Binding CancelCommand}" IsEnabled="{Binding IsNotBusy}" BackgroundColor="Gray" />
-            <Button Grid.Column="1" Text="Зберегти" Command="{Binding SaveCommand}" IsEnabled="{Binding IsNotBusy}" BackgroundColor="Green" />
+        <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+            <Button Grid.Column="0" Text="Скасувати" 
+                    Command="{Binding CancelCommand}"
+                    BackgroundColor="{StaticResource DangerColor}"
+                    TextColor="White" FontAttributes="Bold" CornerRadius="8" HeightRequest="50" />
+
+            <Button Grid.Column="1" Text="Зберегти" 
+                    Command="{Binding SaveCommand}"
+                    TextColor="White" FontAttributes="Bold" CornerRadius="8" HeightRequest="50">
+
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding IsEnabled, Source={RelativeSource Self}}" Value="True">
+                        <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}" />
+                    </DataTrigger>
+
+                    <DataTrigger TargetType="Button" Binding="{Binding IsEnabled, Source={RelativeSource Self}}" Value="False">
+                        <Setter Property="BackgroundColor" Value="LightGray" />
+                    </DataTrigger>
+                </Button.Triggers>
+
+            </Button>
         </Grid>
 
         <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" 
