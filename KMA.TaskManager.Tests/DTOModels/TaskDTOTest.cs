@@ -1,6 +1,6 @@
 ﻿using System;
 using KMA.TaskManager.Common.Enums;
-using KMA.TaskManager.Services.DTOModels.Tasks;
+using KMA.TaskManager.DTOModels.Tasks;
 using Xunit;
 
 namespace KMA.TaskManager.Tests.DTOModels;

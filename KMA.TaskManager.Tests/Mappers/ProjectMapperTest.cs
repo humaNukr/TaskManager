@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.DataModels;
-using KMA.TaskManager.Services.DTOModels.Tasks;
+using KMA.TaskManager.DTOModels.Tasks;
 using KMA.TaskManager.Services.Mappers;
 using Xunit;
 

@@ -7,10 +7,10 @@ using Xunit;
 using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.DataModels;
+using KMA.TaskManager.DTOModels.Tasks;
 using KMA.TaskManager.EditModels;
 using KMA.TaskManager.Repositories.Interfaces;
 using KMA.TaskManager.Services;
-using KMA.TaskManager.Services.DTOModels.Tasks;
 using KMA.TaskManager.Services.Interfaces;
 
 namespace KMA.TaskManager.Tests.Services;
