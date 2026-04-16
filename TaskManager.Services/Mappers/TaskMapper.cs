@@ -1,12 +1,9 @@
 ﻿using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.DataModels;
-using KMA.TaskManager.Services.DTOModels.Tasks;
+using KMA.TaskManager.EditModels;
 using KMA.TaskManager.Services.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using KMA.TaskManager.DTOModels.Tasks;
 
 namespace KMA.TaskManager.Services.Mappers
 {
@@ -16,7 +13,6 @@ namespace KMA.TaskManager.Services.Mappers
         {
             if (model == null) return null;
 
-            // при створенні таска завжди IsCompleted = false
             return new TaskDataModel(
                 model.ProjectId,
                 model.Name,
@@ -31,6 +27,7 @@ namespace KMA.TaskManager.Services.Mappers
         {
             if (data == null) return null;
 
+            // Overdue is derived at read time, not persisted as a separate field.
             bool isOverdue = !data.IsCompleted && data.DueDate < DateTimeOffset.Now;
 
             return new TaskListDTO(
@@ -38,7 +35,8 @@ namespace KMA.TaskManager.Services.Mappers
                 data.Name,
                 data.Priority,
                 data.IsCompleted,
-                isOverdue
+                isOverdue,
+                data.DueDate.DateTime
             );
         }
 
@@ -58,6 +56,17 @@ namespace KMA.TaskManager.Services.Mappers
                 data.IsCompleted,
                 isOverdue
             );
+        }
+
+        public void MapUpdateToData(TaskEditModel source, TaskDataModel destination)
+        {
+            if (source == null || destination == null) return;
+
+            destination.Name = source.Name;
+            destination.Description = source.Description;
+            destination.Priority = source.Priority;
+            destination.DueDate = source.DueDate;
+            destination.IsCompleted = source.IsCompleted;
         }
     }
 }

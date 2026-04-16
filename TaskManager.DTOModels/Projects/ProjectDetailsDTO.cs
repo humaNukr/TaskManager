@@ -1,22 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using KMA.TaskManager.Common.Enums;
-using KMA.TaskManager.Services.DTOModels.Tasks;
+using KMA.TaskManager.DTOModels.Tasks;
 
-namespace KMA.TaskManager.Services.DTOModels.Projects;
+namespace KMA.TaskManager.DTOModels.Projects;
 
-public record ProjectDetailsDTO(
-    Guid Id,
-    string Name,
-    string Description,
-    ProjectType ProjectType,
-    IEnumerable<TaskListDTO> Tasks
-)
+public class ProjectDetailsDTO
 {
-    public int TotalTasks => Tasks?.Count() ?? 0;
-    public int CompletedTasks => Tasks?.Count(t => t.IsCompleted) ?? 0;
+    public Guid Id { get; }
+    public string Name { get; }
+    public string Description { get; }
+    public ProjectType ProjectType { get; }
+    public IReadOnlyCollection<TaskListDTO> Tasks { get; }
 
-    public double Progress => TotalTasks == 0 ? 0 : (double)CompletedTasks / TotalTasks * 100;
-    public double ProgressFraction => TotalTasks == 0 ? 0 : (double)CompletedTasks / TotalTasks;
-    public string ProgressStats => $"{CompletedTasks} з {TotalTasks} завдань завершено";
+    public int TotalTasks { get; }
+    public int CompletedTasks { get; }
+    public double ProgressFraction { get; }
+    public string ProgressStats { get; }
+
+    public ProjectDetailsDTO(
+        Guid id,
+        string name,
+        string description,
+        ProjectType projectType,
+        IEnumerable<TaskListDTO>? tasks,
+        int totalTasks,
+        int completedTasks,
+        double progressFraction,
+        string progressStats)
+    {
+        Id = id;
+        Name = name;
+        Description = description;
+        ProjectType = projectType;
+        Tasks = tasks?.ToList().AsReadOnly() ?? new ReadOnlyCollection<TaskListDTO>(new List<TaskListDTO>());
+        TotalTasks = totalTasks;
+        CompletedTasks = completedTasks;
+        ProgressFraction = progressFraction;
+        ProgressStats = progressStats;
+    }
 }

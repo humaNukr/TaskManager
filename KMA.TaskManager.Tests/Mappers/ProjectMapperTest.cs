@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.DataModels;
-using KMA.TaskManager.Services.DTOModels.Tasks;
+using KMA.TaskManager.DTOModels.Tasks;
 using KMA.TaskManager.Services.Mappers;
 using Xunit;
 
@@ -22,7 +22,7 @@ public class ProjectMapperTest
     public void MapToListDTO_ValidDataModel_ReturnsCorrectDTO()
     {
         // Arrange
-        var data = new ProjectDataModel("Test Project", "Description", ProjectType.Personal);
+        var data = new ProjectDataModel("Test Project", "Description", ProjectType.Personal) { Id = Guid.NewGuid() };
         int total = 10;
         int completed = 5;
 
@@ -41,10 +41,10 @@ public class ProjectMapperTest
     public void MapToDetailsDTO_ValidDataModel_ReturnsCorrectDTO()
     {
         // Arrange
-        var data = new ProjectDataModel("Test Project", "Description", ProjectType.Personal);
+        var data = new ProjectDataModel("Test Project", "Description", ProjectType.Personal) { Id = Guid.NewGuid() };
         var tasks = new List<TaskListDTO>
         {
-            new TaskListDTO(Guid.NewGuid(), "Task 1", TaskPriority.Medium, false, false)
+            new TaskListDTO(Guid.NewGuid(), "Task 1", TaskPriority.Medium, false, false, DateTime.Now)
         };
 
         // Act
@@ -74,14 +74,5 @@ public class ProjectMapperTest
         Assert.Equal(createModel.Description, result.Description);
         Assert.Equal(createModel.ProjectType, result.ProjectType);
         Assert.NotEqual(Guid.Empty, result.Id);
-    }
-
-    [Fact]
-    public void Mappers_NullInput_ReturnsNull()
-    {
-        // Assert
-        Assert.Null(_mapper.MapToListDTO(null, 0, 0));
-        Assert.Null(_mapper.MapToDetailsDTO(null, new List<TaskListDTO>()));
-        Assert.Null(_mapper.MapToData(null));
     }
 }

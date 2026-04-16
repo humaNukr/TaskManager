@@ -1,47 +1,117 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:KMA.TaskManager.Maui.ViewModels"
-             xmlns:projects="clr-namespace:KMA.TaskManager.Services.DTOModels.Projects;assembly=TaskManager.DTOModels"
+             xmlns:projects="clr-namespace:KMA.TaskManager.DTOModels.Projects;assembly=TaskManager.DTOModels"
              x:Class="KMA.TaskManager.Maui.Pages.MainPage"
              x:DataType="viewmodels:MainPageViewModel"
              Title="Мої Проєкти">
 
-    <Grid RowDefinitions="Auto, *">
-        <Label Grid.Row="0" 
-               Text="Список проєктів" 
-               FontSize="24" 
-               FontAttributes="Bold" 
-               HorizontalOptions="Center" 
-               Margin="10"/>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Додати"
+                     IsEnabled="{Binding IsNotBusy}"
+                     Command="{Binding GoToCreateCommand}" />
+    </ContentPage.ToolbarItems>
 
-        <CollectionView Grid.Row="1" 
-                        ItemsSource="{Binding Projects}" 
+    <Grid RowDefinitions="Auto, Auto, *"
+          IsEnabled="{Binding IsNotBusy}">
+
+        <SearchBar Grid.Row="0"
+                   Text="{Binding SearchText}"
+                   Placeholder="Пошук за назвою..."
+                   Margin="10,5" />
+
+        <Grid Grid.Row="1" ColumnDefinitions="*, *" ColumnSpacing="15" Margin="15,5,15,10">
+
+            <VerticalStackLayout Grid.Column="0">
+                <Label Text="Фільтр статусу:" FontSize="12" FontAttributes="Bold" TextColor="Gray" Margin="5,0,0,0" />
+                <Frame Padding="10,0" BorderColor="LightGray" CornerRadius="8" BackgroundColor="#F9F9F9"
+                       HasShadow="False">
+                    <Picker ItemsSource="{Binding StatusFilters}"
+                            SelectedItem="{Binding SelectedStatusFilter}"
+                            BackgroundColor="Transparent"
+                            TextColor="Black" />
+                </Frame>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="1">
+                <Label Text="Сортування:" FontSize="12" FontAttributes="Bold" TextColor="Gray" Margin="5,0,0,0" />
+                <Frame Padding="10,0" BorderColor="LightGray" CornerRadius="8" BackgroundColor="#F9F9F9"
+                       HasShadow="False">
+                    <Picker ItemsSource="{Binding SortOptions}"
+                            SelectedItem="{Binding SelectedSortOption}"
+                            BackgroundColor="Transparent"
+                            TextColor="Black" />
+                </Frame>
+            </VerticalStackLayout>
+
+        </Grid>
+
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding Projects}"
                         SelectionMode="None">
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10" Margin="0,50,0,0">
+                    <Label Text="🗂️" FontSize="64" HorizontalOptions="Center" />
+                    <Label Text="Проєктів не знайдено" FontSize="20" FontAttributes="Bold" TextColor="Gray" HorizontalOptions="Center" />
+                    <Label Text="Додайте новий проєкт або змініть критерії пошуку." FontSize="14" TextColor="LightGray" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="projects:ProjectListDTO">
-                    <Frame Margin="10,5" 
-                           Padding="15" 
-                           CornerRadius="8">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer 
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=OpenProjectDetailsCommand}"
-                                CommandParameter="{Binding Id}" />
-                        </Frame.GestureRecognizers>
+                    <Frame Margin="10,5"
+                           Padding="15"
+                           CornerRadius="12"
+                           BorderColor="LightGray"
+                           HasShadow="True">
 
-                        <VerticalStackLayout>
-                            <Label Text="{Binding Name}" 
-                                   FontSize="20" 
-                                   FontAttributes="Bold" />
+                        <Grid ColumnDefinitions="*, Auto">
+                            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                <VerticalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=GoToDetailsCommand}"
+                                        CommandParameter="{Binding Id}" />
+                                </VerticalStackLayout.GestureRecognizers>
 
-                            <Label Text="{Binding Progress, StringFormat='Прогрес: {0:F0}%'}" 
-                                   FontSize="14" 
-                                   TextColor="Gray" 
-                                   Margin="0,5,0,0" />
-                        </VerticalStackLayout>
+                                <Label Text="{Binding Name}"
+                                       FontSize="18"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding Progress, StringFormat='Прогрес: {0:F0}%'}"
+                                       FontSize="14"
+                                       TextColor="Gray" />
+                            </VerticalStackLayout>
+
+                            <HorizontalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
+                                <Button Text="Редаг."
+                                        FontSize="12"
+                                        CornerRadius="8"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=GoToEditCommand}"
+                                        CommandParameter="{Binding Id}" />
+
+                                <Button Text="Видалити"
+                                        FontSize="12"
+                                        CornerRadius="8"
+                                        BackgroundColor="Crimson"
+                                        TextColor="White"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=DeleteProjectCommand}"
+                                        CommandParameter="{Binding Id}" />
+                            </HorizontalStackLayout>
+                        </Grid>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
+        <ActivityIndicator Grid.RowSpan="3"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="{StaticResource ThemeGoldenrod}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           WidthRequest="50"
+                           HeightRequest="50" />
+
     </Grid>
 </ContentPage>

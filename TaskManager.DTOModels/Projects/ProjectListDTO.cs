@@ -1,12 +1,26 @@
 ﻿using System;
 
-namespace KMA.TaskManager.Services.DTOModels.Projects;
-public record ProjectListDTO(
-    Guid Id,
-    string Name,
-    int TotalTasks,
-    int CompletedTasks
-)
+namespace KMA.TaskManager.DTOModels.Projects;
+
+public class ProjectListDTO
 {
-    public double Progress => TotalTasks == 0 ? 0 : (double)CompletedTasks / TotalTasks * 100;
+    public Guid Id { get; }
+    public string Name { get; }
+    public int TotalTasks { get; }
+    public int CompletedTasks { get; }
+    public double Progress { get; }
+
+    public ProjectListDTO(
+        Guid id,
+        string name,
+        int totalTasks,
+        int completedTasks,
+        double progress)
+    {
+        Id = id;
+        Name = name;
+        TotalTasks = totalTasks;
+        CompletedTasks = completedTasks;
+        Progress = progress;
+    }
 }

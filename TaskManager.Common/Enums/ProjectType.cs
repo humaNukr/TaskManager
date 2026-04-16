@@ -1,19 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace KMA.TaskManager.Common.Enums
+namespace KMA.TaskManager.Common.Enums;
+
+public enum ProjectType
 {
-    public enum ProjectType
-    {
-        Educational,
-        Work,
-        Personal,
-        Research,
-        Hobby,
-        Volunteer,
-        Other
-    }
+    [Display(Name = "Навчальний")]
+    Educational,
+    [Display(Name = "Робочий")]
+    Work,
+    [Display(Name = "Особистий")]
+    Personal,
+    [Display(Name = "Дослідницький")]
+    Research,
+    [Display(Name = "Хобі")]
+    Hobby,
+    [Display(Name = "Волонтерський")]
+    Volunteer,
+    [Display(Name = "Інше")]
+    Other
 }

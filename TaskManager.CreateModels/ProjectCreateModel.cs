@@ -2,8 +2,6 @@
 
 namespace KMA.TaskManager.CreateModels
 {
-    // Модель для створення нового проєкту. 
-    // Містить лише необхідні вхідні дані від користувача.
     public class ProjectCreateModel
     {
         public string Name { get; }
