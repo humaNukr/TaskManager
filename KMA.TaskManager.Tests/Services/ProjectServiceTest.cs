@@ -43,7 +43,17 @@ public class ProjectServiceTest
             new TaskListDTO(Guid.NewGuid(), "T1", TaskPriority.Low, false, false, DateTime.Now)
         };
 
-        var expectedDto = new ProjectDetailsDTO(projectId, "Project", "Desc", ProjectType.Work, tasks);
+        var expectedDto = new ProjectDetailsDTO(
+            projectId,
+            "Project",
+            "Desc",
+            ProjectType.Work,
+            tasks,
+            1,
+            0,
+            0.0,
+            "0 з 1 завдань завершено"
+        );
 
         _projectRepoMock.Setup(r => r.GetProjectByIdAsync(projectId)).ReturnsAsync(dataModel);
         _taskServiceMock.Setup(s => s.GetTasksByProjectIdAsync(projectId)).ReturnsAsync(tasks);
@@ -92,8 +102,8 @@ public class ProjectServiceTest
         };
         var p2Tasks = new List<TaskListDTO>();
 
-        var expectedDto1 = new ProjectListDTO(project1.Id, "P1", 2, 1);
-        var expectedDto2 = new ProjectListDTO(project2.Id, "P2", 0, 0);
+        var expectedDto1 = new ProjectListDTO(project1.Id, "P1", 2, 1, 50.0);
+        var expectedDto2 = new ProjectListDTO(project2.Id, "P2", 0, 0, 0.0);
 
         _projectRepoMock.Setup(r => r.GetAllProjectsAsync()).ReturnsAsync(projectsData);
         _taskServiceMock.Setup(s => s.GetTasksByProjectIdAsync(project1.Id)).ReturnsAsync(p1Tasks);
@@ -125,7 +135,17 @@ public class ProjectServiceTest
         var savedDataModel = new ProjectDataModel(createModel.Name, createModel.Description, createModel.ProjectType) { Id = Guid.NewGuid() };
 
         var emptyTasks = new List<TaskListDTO>();
-        var expectedDto = new ProjectDetailsDTO(savedDataModel.Id, "New", "Desc", ProjectType.Work, emptyTasks);
+        var expectedDto = new ProjectDetailsDTO(
+            savedDataModel.Id,
+            "New",
+            "Desc",
+            ProjectType.Work,
+            emptyTasks,
+            0,
+            0,
+            0.0,
+            "0 з 0 завдань завершено"
+        );
 
         _projectMapperMock.Setup(m => m.MapToData(createModel)).Returns(savedDataModel);
         _projectRepoMock.Setup(r => r.SaveProjectAsync(savedDataModel)).ReturnsAsync(savedDataModel);
@@ -156,7 +176,17 @@ public class ProjectServiceTest
         var existingData = new ProjectDataModel("Old", "Old", ProjectType.Personal) { Id = projectId };
 
         var emptyTasks = new List<TaskListDTO>();
-        var expectedDto = new ProjectDetailsDTO(projectId, "Updated", "Desc", ProjectType.Work, emptyTasks);
+        var expectedDto = new ProjectDetailsDTO(
+            projectId,
+            "Updated",
+            "Desc",
+            ProjectType.Work,
+            emptyTasks,
+            0,
+            0,
+            0.0,
+            "0 з 0 завдань завершено"
+        );
 
         _projectRepoMock.Setup(r => r.GetProjectByIdAsync(projectId)).ReturnsAsync(existingData);
         _projectRepoMock.Setup(r => r.SaveProjectAsync(existingData)).ReturnsAsync(existingData);

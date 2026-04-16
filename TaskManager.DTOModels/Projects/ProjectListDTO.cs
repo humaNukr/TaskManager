@@ -8,18 +8,19 @@ public class ProjectListDTO
     public string Name { get; }
     public int TotalTasks { get; }
     public int CompletedTasks { get; }
+    public double Progress { get; }
 
     public ProjectListDTO(
         Guid id,
         string name,
         int totalTasks,
-        int completedTasks)
+        int completedTasks,
+        double progress)
     {
         Id = id;
         Name = name;
         TotalTasks = totalTasks;
         CompletedTasks = completedTasks;
+        Progress = progress;
     }
-
-    public double Progress => TotalTasks == 0 ? 0 : (double)CompletedTasks / TotalTasks * 100;
 }

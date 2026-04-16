@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.Services.DTOModels.Tasks;
@@ -12,25 +13,32 @@ public class ProjectDetailsDTO
     public string Name { get; }
     public string Description { get; }
     public ProjectType ProjectType { get; }
-    public IEnumerable<TaskListDTO> Tasks { get; }
+    public IReadOnlyCollection<TaskListDTO> Tasks { get; }
+
+    public int TotalTasks { get; }
+    public int CompletedTasks { get; }
+    public double ProgressFraction { get; }
+    public string ProgressStats { get; }
 
     public ProjectDetailsDTO(
         Guid id,
         string name,
         string description,
         ProjectType projectType,
-        IEnumerable<TaskListDTO> tasks)
+        IEnumerable<TaskListDTO>? tasks,
+        int totalTasks,
+        int completedTasks,
+        double progressFraction,
+        string progressStats)
     {
         Id = id;
         Name = name;
         Description = description;
         ProjectType = projectType;
-        Tasks = tasks;
+        Tasks = tasks?.ToList().AsReadOnly() ?? new ReadOnlyCollection<TaskListDTO>(new List<TaskListDTO>());
+        TotalTasks = totalTasks;
+        CompletedTasks = completedTasks;
+        ProgressFraction = progressFraction;
+        ProgressStats = progressStats;
     }
-
-    public int TotalTasks => Tasks?.Count() ?? 0;
-    public int CompletedTasks => Tasks?.Count(t => t.IsCompleted) ?? 0;
-    public double ProgressFraction => TotalTasks == 0 ? 0 : (double)CompletedTasks / TotalTasks;
-
-    public string ProgressStats => $"{CompletedTasks} з {TotalTasks} завдань завершено";
 }
