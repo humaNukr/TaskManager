@@ -25,6 +25,13 @@ namespace KMA.TaskManager.Services
         public async Task<IEnumerable<TaskListDTO>> GetTasksByProjectIdAsync(Guid projectId)
         {
             var tasks = await _taskRepository.GetTasksByProjectIdAsync(projectId);
+
+            // Захист: повертаємо порожню колекцію замість null, щоб уникнути NullReferenceException
+            if (tasks == null || !tasks.Any())
+            {
+                return Enumerable.Empty<TaskListDTO>();
+            }
+
             return tasks.Select(t => _taskMapper.MapToListDTO(t)).ToList();
         }
 
@@ -37,7 +44,7 @@ namespace KMA.TaskManager.Services
             return _taskMapper.MapToDetailsDTO(task);
         }
 
-        public async Task<TaskDetailsDto> CreateTaskAsync(TaskCreateModel createModel)
+        public async Task<TaskDetailsDto?> CreateTaskAsync(TaskCreateModel createModel)
         {
             var dataModel = _taskMapper.MapToData(createModel);
 
@@ -48,8 +55,10 @@ namespace KMA.TaskManager.Services
         public async Task<TaskDetailsDto?> UpdateTaskAsync(TaskEditModel editModel)
         {
             var existingTask = await _taskRepository.GetTaskByIdAsync(editModel.Id);
+
+            // Кидаємо виняток замість тихого повернення null
             if (existingTask == null)
-                return null;
+                throw new ArgumentException($"Завдання з ID {editModel.Id} не знайдено.");
 
             _taskMapper.MapUpdateToData(editModel, existingTask);
 

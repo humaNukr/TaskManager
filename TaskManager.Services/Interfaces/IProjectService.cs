@@ -10,8 +10,8 @@ namespace KMA.TaskManager.Services.Interfaces;
 public interface IProjectService
 {
     Task<IEnumerable<ProjectListDTO>> GetAllProjectsAsync();
-    Task<ProjectDetailsDTO> GetProjectDetailsAsync(Guid id);
-    Task<ProjectDetailsDTO> CreateProjectAsync(ProjectCreateModel createModel);
-    Task<ProjectDetailsDTO> UpdateProjectAsync(ProjectEditModel editModel);
+    Task<ProjectDetailsDTO?> GetProjectDetailsAsync(Guid id);
+    Task<ProjectDetailsDTO?> CreateProjectAsync(ProjectCreateModel createModel);
+    Task<ProjectDetailsDTO?> UpdateProjectAsync(ProjectEditModel editModel);
     Task<bool> DeleteProjectAsync(Guid id);
 }

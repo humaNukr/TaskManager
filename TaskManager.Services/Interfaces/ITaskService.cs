@@ -13,7 +13,7 @@ namespace KMA.TaskManager.Services.Interfaces
 
         Task<TaskDetailsDto?> GetTaskByIdAsync(Guid taskId);
 
-        Task<TaskDetailsDto> CreateTaskAsync(TaskCreateModel createModel);
+        Task<TaskDetailsDto?> CreateTaskAsync(TaskCreateModel createModel);
 
         Task<TaskDetailsDto?> UpdateTaskAsync(TaskEditModel editModel);
 

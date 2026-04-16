@@ -25,7 +25,6 @@ namespace KMA.TaskManager.Storage
 
         private async Task Init()
         {
-            // Protects initialization against concurrent calls from multiple ViewModels.
             await _semaphore.WaitAsync();
 
             try
