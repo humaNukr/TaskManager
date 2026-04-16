@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:KMA.TaskManager.Maui.ViewModels"
@@ -51,6 +50,15 @@
         <CollectionView Grid.Row="2"
                         ItemsSource="{Binding Projects}"
                         SelectionMode="None">
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10" Margin="0,50,0,0">
+                    <Label Text="🗂️" FontSize="64" HorizontalOptions="Center" />
+                    <Label Text="Проєктів не знайдено" FontSize="20" FontAttributes="Bold" TextColor="Gray" HorizontalOptions="Center" />
+                    <Label Text="Додайте новий проєкт або змініть критерії пошуку." FontSize="14" TextColor="LightGray" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="projects:ProjectListDTO">
                     <Frame Margin="10,5"
@@ -95,6 +103,7 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
         <ActivityIndicator Grid.RowSpan="3"
                            IsRunning="{Binding IsBusy}"
                            IsVisible="{Binding IsBusy}"

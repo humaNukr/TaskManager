@@ -92,8 +92,16 @@ public partial class ProjectDetailsViewModel : BaseViewModel
             _ => filtered
         };
 
-        // Заміна колекції цілком працює швидше і не викликає зайвих перемальовувань UI
-        DisplayedTasks = new ObservableCollection<TaskListDTO>(filtered);
+        var resultList = filtered.ToList();
+
+        Application.Current?.Dispatcher.Dispatch(() =>
+        {
+            DisplayedTasks.Clear();
+            foreach (var task in resultList)
+            {
+                DisplayedTasks.Add(task);
+            }
+        });
     }
 
     [RelayCommand]
