@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.EditModels;
 using KMA.TaskManager.Services.Interfaces;
+using Microsoft.Maui.Controls;
 
 namespace KMA.TaskManager.Maui.ViewModels;
 
@@ -32,6 +33,23 @@ public partial class ProjectEditViewModel : BaseViewModel
         _projectService = projectService;
     }
 
+    // Правило активації кнопки збереження
+    public bool CanSave => !string.IsNullOrWhiteSpace(Name) && !IsBusy;
+
+    partial void OnNameChanged(string value)
+    {
+        SaveCommand.NotifyCanExecuteChanged();
+    }
+
+    protected override void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+        if (e.PropertyName == nameof(IsBusy))
+        {
+            SaveCommand.NotifyCanExecuteChanged();
+        }
+    }
+
     async partial void OnProjectIdChanged(Guid value)
     {
         await LoadProjectAsync(value);
@@ -49,27 +67,15 @@ public partial class ProjectEditViewModel : BaseViewModel
                 Description = project.Description;
                 SelectedProjectType = project.ProjectType;
             }
+            else
+            {
+                await Shell.Current.DisplayAlert("Помилка", "Проєкт не знайдено.", "ОК");
+                await Shell.Current.GoToAsync("..");
+            }
         }
-        finally
+        catch (Exception ex)
         {
-            IsBusy = false;
-        }
-    }
-
-    [RelayCommand]
-    private async Task SaveAsync()
-    {
-        if (string.IsNullOrWhiteSpace(Name))
-        {
-            await Shell.Current.DisplayAlert("Помилка", "Назва не може бути порожньою", "ОК");
-            return;
-        }
-
-        IsBusy = true;
-        try
-        {
-            var editModel = new ProjectEditModel(ProjectId, Name, Description, SelectedProjectType);
-            await _projectService.UpdateProjectAsync(editModel);
+            await Shell.Current.DisplayAlert("Помилка", $"Не вдалося завантажити проєкт: {ex.Message}", "ОК");
             await Shell.Current.GoToAsync("..");
         }
         finally
@@ -78,6 +84,36 @@ public partial class ProjectEditViewModel : BaseViewModel
         }
     }
 
+    [RelayCommand(CanExecute = nameof(CanSave))]
+    private async Task SaveAsync()
+    {
+        IsBusy = true;
+        try
+        {
+            var editModel = new ProjectEditModel(ProjectId, Name, Description, SelectedProjectType);
+            await _projectService.UpdateProjectAsync(editModel);
+            await Shell.Current.GoToAsync("..");
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Помилка", $"Не вдалося оновити проєкт: {ex.Message}", "ОК");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
     [RelayCommand]
-    private async Task CancelAsync() => await Shell.Current.GoToAsync("..");
+    private async Task CancelAsync()
+    {
+        try
+        {
+            await Shell.Current.GoToAsync("..");
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Помилка навігації", ex.Message, "ОК");
+        }
+    }
 }

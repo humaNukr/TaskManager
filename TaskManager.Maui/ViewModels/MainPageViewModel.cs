@@ -41,7 +41,6 @@ public partial class MainPageViewModel : BaseViewModel
 
     partial void OnSearchTextChanged(string value) => ApplyFiltersAndSorting();
     partial void OnSelectedSortOptionChanged(string value) => ApplyFiltersAndSorting();
-
     partial void OnSelectedStatusFilterChanged(string value) => ApplyFiltersAndSorting();
 
     [RelayCommand]
@@ -49,8 +48,15 @@ public partial class MainPageViewModel : BaseViewModel
     {
         if (_allProjects != null && _allProjects.Any())
         {
-            _allProjects = await _projectService.GetAllProjectsAsync();
-            ApplyFiltersAndSorting();
+            try
+            {
+                _allProjects = await _projectService.GetAllProjectsAsync();
+                ApplyFiltersAndSorting();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Помилка", $"Не вдалося завантажити проєкти: {ex.Message}", "ОК");
+            }
             return;
         }
 
@@ -60,6 +66,10 @@ public partial class MainPageViewModel : BaseViewModel
             await Task.Delay(300);
             _allProjects = await _projectService.GetAllProjectsAsync();
             ApplyFiltersAndSorting();
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Помилка", $"Не вдалося завантажити проєкти: {ex.Message}", "ОК");
         }
         finally
         {
@@ -75,6 +85,10 @@ public partial class MainPageViewModel : BaseViewModel
         {
             _allProjects = await _projectService.GetAllProjectsAsync();
             ApplyFiltersAndSorting();
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Помилка", $"Не вдалося оновити список: {ex.Message}", "ОК");
         }
         finally
         {
@@ -116,34 +130,72 @@ public partial class MainPageViewModel : BaseViewModel
     [RelayCommand]
     private async Task DeleteProjectAsync(Guid id)
     {
-        bool confirm = await Shell.Current.DisplayAlert(
-            "Видалення",
-            "Ви впевнені? Усі пов'язані завдання також будуть видалені.",
-            "Так", "Ні");
-
-        if (!confirm) return;
-
-        bool result = await _projectService.DeleteProjectAsync(id);
-        if (result)
+        try
         {
-            await LoadProjectsAsync();
+            bool confirm = await Shell.Current.DisplayAlert(
+                "Видалення",
+                "Ви впевнені? Усі пов'язані завдання також будуть видалені.",
+                "Так", "Ні");
+
+            if (!confirm) return;
+
+            IsBusy = true;
+            bool result = await _projectService.DeleteProjectAsync(id);
+            if (result)
+            {
+                // Завантажуємо оновлений список безпосередньо тут
+                _allProjects = await _projectService.GetAllProjectsAsync();
+                ApplyFiltersAndSorting();
+            }
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Помилка", $"Не вдалося видалити проєкт: {ex.Message}", "ОК");
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
 
     [RelayCommand]
-    private async Task GoToCreateAsync() => await Shell.Current.GoToAsync("ProjectCreatePage");
+    private async Task GoToCreateAsync()
+    {
+        try
+        {
+            await Shell.Current.GoToAsync("ProjectCreatePage");
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Помилка навігації", ex.Message, "ОК");
+        }
+    }
 
     [RelayCommand]
     private async Task GoToEditAsync(Guid id)
     {
-        var navParams = new Dictionary<string, object> { { "ProjectId", id } };
-        await Shell.Current.GoToAsync("ProjectEditPage", navParams);
+        try
+        {
+            var navParams = new Dictionary<string, object> { { "ProjectId", id } };
+            await Shell.Current.GoToAsync("ProjectEditPage", navParams);
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Помилка навігації", ex.Message, "ОК");
+        }
     }
 
     [RelayCommand]
     private async Task GoToDetailsAsync(Guid id)
     {
-        var navParams = new Dictionary<string, object> { { "ProjectId", id } };
-        await Shell.Current.GoToAsync("ProjectDetails", navParams);
+        try
+        {
+            var navParams = new Dictionary<string, object> { { "ProjectId", id } };
+            await Shell.Current.GoToAsync("ProjectDetails", navParams);
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Помилка навігації", ex.Message, "ОК");
+        }
     }
 }

@@ -33,7 +33,6 @@ namespace KMA.TaskManager.Maui.ViewModels
             _taskService = taskService;
 
             Priorities = EnumExtensions.GetValuesWithNames<TaskPriority>();
-
             SelectedPriority = Priorities.FirstOrDefault(p => p.Value == TaskPriority.Medium) ?? Priorities[0];
         }
 
@@ -97,14 +96,14 @@ namespace KMA.TaskManager.Maui.ViewModels
         [RelayCommand]
         private async Task CancelAsync()
         {
+            IsBusy = true;
             try
             {
-                IsBusy = true;
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Помилка", $"Не вдалося повернутися назад: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert("Помилка навігації", ex.Message, "OK");
             }
             finally
             {

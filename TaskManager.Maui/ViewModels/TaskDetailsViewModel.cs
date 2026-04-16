@@ -61,18 +61,21 @@ namespace KMA.TaskManager.Maui.ViewModels
         [RelayCommand]
         private async Task DeleteTaskAsync()
         {
-            IsBusy = true;
             try
             {
                 bool confirm = await Shell.Current.DisplayAlert("Підтвердження", "Ви дійсно хочете видалити це завдання?", "Так", "Ні");
 
-                if (confirm)
+                if (!confirm) return;
+
+                IsBusy = true;
+                var result = await _taskService.DeleteTaskAsync(_taskId);
+                if (result)
                 {
-                    var result = await _taskService.DeleteTaskAsync(_taskId);
-                    if (result)
-                        await Shell.Current.GoToAsync("..");
-                    else
-                        throw new Exception("Не вдалося видалити завдання з бази даних.");
+                    await Shell.Current.GoToAsync("..");
+                }
+                else
+                {
+                    throw new Exception("Не вдалося видалити завдання з бази даних.");
                 }
             }
             catch (Exception ex)
@@ -88,10 +91,17 @@ namespace KMA.TaskManager.Maui.ViewModels
         [RelayCommand]
         private async Task EditTaskAsync()
         {
-            await Shell.Current.GoToAsync($"TaskEditPage", new Dictionary<string, object>
+            try
             {
-                { "TaskId", _taskId }
-            });
+                await Shell.Current.GoToAsync($"TaskEditPage", new Dictionary<string, object>
+                {
+                    { "TaskId", _taskId }
+                });
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Помилка навігації", ex.Message, "OK");
+            }
         }
     }
 }

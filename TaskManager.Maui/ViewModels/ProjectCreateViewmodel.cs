@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KMA.TaskManager.Common.Enums;
 using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.Services.Interfaces;
+using Microsoft.Maui.Controls;
 
 namespace KMA.TaskManager.Maui.ViewModels;
 
@@ -54,6 +56,10 @@ public partial class ProjectCreateViewModel : BaseViewModel
             await _projectService.CreateProjectAsync(createModel);
             await Shell.Current.GoToAsync("..");
         }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Помилка", $"Не вдалося створити проєкт: {ex.Message}", "ОК");
+        }
         finally
         {
             IsBusy = false;
@@ -63,6 +69,18 @@ public partial class ProjectCreateViewModel : BaseViewModel
     [RelayCommand]
     private async Task CancelAsync()
     {
-        await Shell.Current.GoToAsync("..");
+        IsBusy = true;
+        try
+        {
+            await Shell.Current.GoToAsync("..");
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Помилка навігації", ex.Message, "ОК");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 }

@@ -37,7 +37,6 @@ namespace KMA.TaskManager.Maui.ViewModels
         public TaskEditViewModel(ITaskService taskService)
         {
             _taskService = taskService;
-
             Priorities = EnumExtensions.GetValuesWithNames<TaskPriority>();
         }
 
@@ -47,6 +46,22 @@ namespace KMA.TaskManager.Maui.ViewModels
             {
                 _taskId = taskId;
                 _ = RefreshData();
+            }
+        }
+
+        public bool CanSave => !string.IsNullOrWhiteSpace(Name) && !IsBusy;
+
+        partial void OnNameChanged(string value)
+        {
+            UpdateTaskCommand.NotifyCanExecuteChanged();
+        }
+
+        protected override void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            if (e.PropertyName == nameof(IsBusy))
+            {
+                UpdateTaskCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -60,9 +75,7 @@ namespace KMA.TaskManager.Maui.ViewModels
 
                 Name = task.Name;
                 Description = task.Description;
-
                 SelectedPriority = Priorities.FirstOrDefault(p => p.Value == task.Priority) ?? Priorities[0];
-
                 DueDate = task.DueDate.DateTime;
                 IsCompleted = task.IsCompleted;
             }
@@ -77,15 +90,9 @@ namespace KMA.TaskManager.Maui.ViewModels
             }
         }
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanSave))]
         private async Task UpdateTaskAsync()
         {
-            if (string.IsNullOrWhiteSpace(Name))
-            {
-                await Shell.Current.DisplayAlert("Валідація", "Назва не може бути порожньою", "OK");
-                return;
-            }
-
             IsBusy = true;
             try
             {
@@ -98,7 +105,6 @@ namespace KMA.TaskManager.Maui.ViewModels
                     IsCompleted);
 
                 await _taskService.UpdateTaskAsync(editModel);
-
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
@@ -114,14 +120,14 @@ namespace KMA.TaskManager.Maui.ViewModels
         [RelayCommand]
         private async Task CancelAsync()
         {
+            IsBusy = true;
             try
             {
-                IsBusy = true;
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Помилка", $"Не вдалося повернутися назад: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert("Помилка навігації", ex.Message, "OK");
             }
             finally
             {

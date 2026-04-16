@@ -59,10 +59,12 @@ public partial class ProjectDetailsViewModel : BaseViewModel
         IsBusy = true;
         try
         {
-            await Task.Delay(300);
             CurrentProject = await _projectService.GetProjectDetailsAsync(id);
-
             ApplyTaskFilters();
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Помилка", $"Не вдалося завантажити деталі проєкту: {ex.Message}", "ОК");
         }
         finally
         {
@@ -90,23 +92,33 @@ public partial class ProjectDetailsViewModel : BaseViewModel
             _ => filtered
         };
 
-        DisplayedTasks.Clear();
-
-        foreach (var task in filtered)
-        {
-            DisplayedTasks.Add(task);
-        }
+        // Заміна колекції цілком працює швидше і не викликає зайвих перемальовувань UI
+        DisplayedTasks = new ObservableCollection<TaskListDTO>(filtered);
     }
 
     [RelayCommand]
     private async Task OpenTaskDetailsAsync(Guid taskId)
     {
-        await Shell.Current.GoToAsync($"TaskDetails?TaskId={taskId}");
+        try
+        {
+            await Shell.Current.GoToAsync($"TaskDetails?TaskId={taskId}");
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Помилка навігації", ex.Message, "ОК");
+        }
     }
 
     [RelayCommand]
     private async Task CreateTaskAsync()
     {
-        await Shell.Current.GoToAsync($"TaskCreatePage?ProjectId={ProjectId}");
+        try
+        {
+            await Shell.Current.GoToAsync($"TaskCreatePage?ProjectId={ProjectId}");
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Помилка навігації", ex.Message, "ОК");
+        }
     }
 }
