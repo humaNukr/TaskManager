@@ -25,7 +25,7 @@ public class ProjectDetailsDTO
         string name,
         string description,
         ProjectType projectType,
-        IEnumerable<TaskListDTO> tasks,
+        IEnumerable<TaskListDTO>? tasks,
         int totalTasks,
         int completedTasks,
         double progressFraction,

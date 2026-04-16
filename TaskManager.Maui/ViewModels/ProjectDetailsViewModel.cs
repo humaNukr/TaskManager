@@ -90,7 +90,12 @@ public partial class ProjectDetailsViewModel : BaseViewModel
             _ => filtered
         };
 
-        DisplayedTasks = new ObservableCollection<TaskListDTO>(filtered);
+        DisplayedTasks.Clear();
+
+        foreach (var task in filtered)
+        {
+            DisplayedTasks.Add(task);
+        }
     }
 
     [RelayCommand]
