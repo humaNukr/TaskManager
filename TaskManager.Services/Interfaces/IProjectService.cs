@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using KMA.TaskManager.CreateModels;
+using KMA.TaskManager.DTOModels.Projects;
 using KMA.TaskManager.EditModels;
-using KMA.TaskManager.Services.DTOModels.Projects;
 
 namespace KMA.TaskManager.Services.Interfaces;
 

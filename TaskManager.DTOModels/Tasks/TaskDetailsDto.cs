@@ -1,6 +1,6 @@
 ﻿using KMA.TaskManager.Common.Enums;
 
-namespace KMA.TaskManager.Services.DTOModels.Tasks
+namespace KMA.TaskManager.DTOModels.Tasks
 {
     public class TaskDetailsDto
     {

@@ -1,9 +1,9 @@
 ﻿using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.DataModels;
 using KMA.TaskManager.EditModels;
-using KMA.TaskManager.Services.DTOModels.Tasks;
 using KMA.TaskManager.Services.Interfaces;
 using System;
+using KMA.TaskManager.DTOModels.Tasks;
 
 namespace KMA.TaskManager.Services.Mappers
 {

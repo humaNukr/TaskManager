@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KMA.TaskManager.DTOModels.Tasks;
 using KMA.TaskManager.Services.Interfaces;
-using KMA.TaskManager.Services.DTOModels.Tasks;
 
 namespace KMA.TaskManager.Maui.ViewModels
 {

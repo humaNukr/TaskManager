@@ -1,24 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.DataModels;
-using KMA.TaskManager.Services.DTOModels.Projects;
-using KMA.TaskManager.Services.DTOModels.Tasks;
+using KMA.TaskManager.DTOModels.Projects;
+using KMA.TaskManager.DTOModels.Tasks;
 using KMA.TaskManager.Services.Interfaces;
 
 namespace KMA.TaskManager.Services.Mappers
 {
-    public static class ProjectMapper
+    public class ProjectMapper : IProjectMapper
     {
-        // Допоміжний приватний метод, щоб формула існувала лише в одному місці
-        private static double CalculateProgressFraction(int total, int completed)
+        private double CalculateProgressFraction(int total, int completed)
         {
             return total == 0 ? 0 : (double)completed / total;
         }
 
-        public static ProjectListDTO ToListDTO(ProjectDataModel project, int totalTasks, int completedTasks)
+        public ProjectListDTO MapToListDTO(ProjectDataModel project, int totalTasks, int completedTasks)
         {
             double fraction = CalculateProgressFraction(totalTasks, completedTasks);
-            double progressPercentage = fraction * 100; // Робимо відсотки для списку
+            double progressPercentage = fraction * 100;
 
             return new ProjectListDTO(
                 project.Id,
@@ -29,11 +30,11 @@ namespace KMA.TaskManager.Services.Mappers
             );
         }
 
-        public static ProjectDetailsDTO ToDetailsDTO(ProjectDataModel project, IEnumerable<TaskListDTO> tasks)
+        public ProjectDetailsDTO MapToDetailsDTO(ProjectDataModel project, IEnumerable<TaskListDTO> tasks)
         {
             int totalTasks = tasks?.Count() ?? 0;
             int completedTasks = tasks?.Count(t => t.IsCompleted) ?? 0;
-            double fraction = CalculateProgressFraction(totalTasks, completedTasks); // Використовуємо фракцію для деталей
+            double fraction = CalculateProgressFraction(totalTasks, completedTasks);
             string stats = $"{completedTasks} з {totalTasks} завдань завершено";
 
             return new ProjectDetailsDTO(
@@ -47,6 +48,17 @@ namespace KMA.TaskManager.Services.Mappers
                 fraction,
                 stats
             );
+        }
+
+        public ProjectDataModel MapToData(ProjectCreateModel model)
+        {
+            return new ProjectDataModel
+            {
+                Id = Guid.NewGuid(),
+                Name = model.Name,
+                Description = model.Description,
+                ProjectType = model.ProjectType
+            };
         }
     }
 }

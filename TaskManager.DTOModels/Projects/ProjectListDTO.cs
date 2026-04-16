@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KMA.TaskManager.Services.DTOModels.Projects;
+namespace KMA.TaskManager.DTOModels.Projects;
 
 public class ProjectListDTO
 {

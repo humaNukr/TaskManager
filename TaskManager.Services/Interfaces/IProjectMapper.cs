@@ -1,8 +1,8 @@
 ﻿using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.DataModels;
-using KMA.TaskManager.Services.DTOModels.Projects;
-using KMA.TaskManager.Services.DTOModels.Tasks;
 using System.Collections.Generic;
+using KMA.TaskManager.DTOModels.Projects;
+using KMA.TaskManager.DTOModels.Tasks;
 
 namespace KMA.TaskManager.Services.Interfaces
 {

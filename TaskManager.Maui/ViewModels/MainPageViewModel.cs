@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using KMA.TaskManager.Services.DTOModels.Projects;
+using KMA.TaskManager.DTOModels.Projects;
 using KMA.TaskManager.Services.Interfaces;
 using Microsoft.Maui.Controls;
 

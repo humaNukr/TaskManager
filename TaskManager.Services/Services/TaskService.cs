@@ -2,12 +2,12 @@
 using KMA.TaskManager.EditModels;
 using KMA.TaskManager.DataModels;
 using KMA.TaskManager.Repositories.Interfaces;
-using KMA.TaskManager.Services.DTOModels.Tasks;
 using KMA.TaskManager.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KMA.TaskManager.DTOModels.Tasks;
 
 namespace KMA.TaskManager.Services
 {

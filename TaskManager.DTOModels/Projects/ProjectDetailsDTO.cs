@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using KMA.TaskManager.Common.Enums;
-using KMA.TaskManager.Services.DTOModels.Tasks;
+using KMA.TaskManager.DTOModels.Tasks;
 
-namespace KMA.TaskManager.Services.DTOModels.Projects;
+namespace KMA.TaskManager.DTOModels.Projects;
 
 public class ProjectDetailsDTO
 {

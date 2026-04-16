@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using KMA.TaskManager.CreateModels;
 using KMA.TaskManager.DataModels;
+using KMA.TaskManager.DTOModels.Projects;
 using KMA.TaskManager.EditModels;
 using KMA.TaskManager.Repositories.Interfaces;
-using KMA.TaskManager.Services.DTOModels.Projects;
 using KMA.TaskManager.Services.Interfaces;
 
 namespace KMA.TaskManager.Services;
