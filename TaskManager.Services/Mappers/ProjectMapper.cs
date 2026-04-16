@@ -7,40 +7,45 @@ using KMA.TaskManager.Services.Interfaces;
 
 namespace KMA.TaskManager.Services.Mappers
 {
-    public class ProjectMapper : IProjectMapper
+    public static class ProjectMapper
     {
-        public ProjectListDTO MapToListDTO(ProjectDataModel data, int total, int completed)
+        // Допоміжний приватний метод, щоб формула існувала лише в одному місці
+        private static double CalculateProgressFraction(int total, int completed)
         {
-            if (data == null) return null;
+            return total == 0 ? 0 : (double)completed / total;
+        }
+
+        public static ProjectListDTO ToListDTO(ProjectDataModel project, int totalTasks, int completedTasks)
+        {
+            double fraction = CalculateProgressFraction(totalTasks, completedTasks);
+            double progressPercentage = fraction * 100; // Робимо відсотки для списку
 
             return new ProjectListDTO(
-                data.Id,
-                data.Name,
-                total,
-                completed
+                project.Id,
+                project.Name,
+                totalTasks,
+                completedTasks,
+                progressPercentage
             );
         }
 
-        public ProjectDetailsDTO MapToDetailsDTO(ProjectDataModel data, IEnumerable<TaskListDTO> tasks)
+        public static ProjectDetailsDTO ToDetailsDTO(ProjectDataModel project, IEnumerable<TaskListDTO> tasks)
         {
-            if (data == null) return null;
+            int totalTasks = tasks?.Count() ?? 0;
+            int completedTasks = tasks?.Count(t => t.IsCompleted) ?? 0;
+            double fraction = CalculateProgressFraction(totalTasks, completedTasks); // Використовуємо фракцію для деталей
+            string stats = $"{completedTasks} з {totalTasks} завдань завершено";
 
             return new ProjectDetailsDTO(
-                data.Id,
-                data.Name,
-                data.Description,
-                data.ProjectType,
-                tasks
-            );
-        }
-
-        public ProjectDataModel MapToData(ProjectCreateModel model)
-        {
-            if (model == null) return null;
-            return new ProjectDataModel(
-                model.Name,
-                model.Description,
-                model.ProjectType
+                project.Id,
+                project.Name,
+                project.Description,
+                project.ProjectType,
+                tasks,
+                totalTasks,
+                completedTasks,
+                fraction,
+                stats
             );
         }
     }
